@@ -1,0 +1,18 @@
+{
+  "name": "pattern-recognition-server",
+  "version": "0.0.1",
+  "description": "Server for pattern recognition computer practica",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/char-lie/pattern-recognition-server.git"
+  },
+  "author": "char-lie",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/char-lie/pattern-recognition-server/issues"
+  },
+  "homepage": "https://github.com/char-lie/pattern-recognition-server#readme"
+}
