@@ -3,3 +3,6 @@
 
 # Local packages
 node_modules/
+
+# Build output
+dist/
