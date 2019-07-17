@@ -24,3 +24,13 @@
 html {
   font-family: monospace;
 }
+
+nav a {
+  padding-right: 1ex;
+  text-decoration: none;
+  color: #00f;
+}
+
+nav a:hover {
+  font-weight: bold;
+}
