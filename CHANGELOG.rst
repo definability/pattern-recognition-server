@@ -13,7 +13,18 @@ and this project adheres to `Semantic Versioning`_.
 Unreleased_
 ===========
 
+Added
+-----
+
+- ReactJS_ project skeleton.
+- ``App`` component.
+- ``index`` view.
+- ``main`` stylesheet.
+
 .. _Keep a Changelog:
     http://keepachangelog.com/en/1.0.0
 .. _Semantic Versioning:
     http://semver.org/spec/v2.0.0
+
+.. _ReactJS:
+    https://reactjs.org

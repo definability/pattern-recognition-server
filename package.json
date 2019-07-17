@@ -3,7 +3,17 @@
   "version": "0.0.1",
   "description": "Server for pattern recognition computer practica",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --mode production",
+    "test": "stylelint src/styles/*.css && eslint --ext .jsx,.js ./src/ && jest",
+    "start:dev": "webpack-dev-server"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.css$": "<rootDir>/__mocks__/fileMock.js"
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/test-setup.js"
+    ]
   },
   "repository": {
     "type": "git",
@@ -14,5 +24,44 @@
   "bugs": {
     "url": "https://github.com/char-lie/pattern-recognition-server/issues"
   },
-  "homepage": "https://github.com/char-lie/pattern-recognition-server#readme"
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "homepage": "https://github.com/char-lie/pattern-recognition-server#readme",
+  "devDependencies": {
+    "@babel/core": "^7.5.4",
+    "@babel/preset-env": "^7.5.4",
+    "@babel/preset-react": "^7.0.0",
+    "autoprefixer": "^9.6.1",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.0.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "enzyme-to-json": "^3.3.5",
+    "eslint": "^6.0.1",
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-jest": "^22.9.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.2",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^24.8.0",
+    "jest-enzyme": "^7.0.2",
+    "mini-css-extract-plugin": "^0.7.0",
+    "npm": "^6.10.1",
+    "postcss-loader": "^3.0.0",
+    "style-loader": "^0.23.1",
+    "stylelint": "^10.1.0",
+    "stylelint-config-standard": "^18.3.0",
+    "webpack": "^4.35.3",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.7.2"
+  },
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  }
 }

@@ -1,2 +1,8 @@
 # VIM swapfiles
 *.sw[op]
+
+# Local packages
+node_modules/
+
+# Build output
+dist/
