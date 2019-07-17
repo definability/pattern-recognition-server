@@ -4,7 +4,7 @@
   "description": "Server for pattern recognition computer practica",
   "scripts": {
     "build": "webpack --mode production",
-    "test": "eslint --ext .jsx,.js ./src/ && jest",
+    "test": "stylelint src/styles/*.css && eslint --ext .jsx,.js ./src/ && jest",
     "start:dev": "webpack-dev-server"
   },
   "jest": {
@@ -12,7 +12,7 @@
       "\\.css$": "<rootDir>/__mocks__/fileMock.js"
     },
     "setupFilesAfterEnv": [
-        "<rootDir>/test-setup.js"
+      "<rootDir>/test-setup.js"
     ]
   },
   "repository": {
@@ -54,6 +54,8 @@
     "npm": "^6.10.1",
     "postcss-loader": "^3.0.0",
     "style-loader": "^0.23.1",
+    "stylelint": "^10.1.0",
+    "stylelint-config-standard": "^18.3.0",
     "webpack": "^4.35.3",
     "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.7.2"
