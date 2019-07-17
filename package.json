@@ -4,7 +4,7 @@
   "description": "Server for pattern recognition computer practica",
   "scripts": {
     "build": "webpack --mode production",
-    "test": "eslint --ext .jsx,.js ./src/",
+    "test": "eslint --ext .jsx,.js ./src/ && jest",
     "start:dev": "webpack-dev-server"
   },
   "jest": {
