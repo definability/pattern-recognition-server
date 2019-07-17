@@ -7,6 +7,14 @@
     "test": "eslint --ext .jsx,.js ./src/",
     "start:dev": "webpack-dev-server"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.css$": "<rootDir>/__mocks__/fileMock.js"
+    },
+    "setupFilesAfterEnv": [
+        "<rootDir>/test-setup.js"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/char-lie/pattern-recognition-server.git"
