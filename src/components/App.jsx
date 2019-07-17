@@ -22,9 +22,35 @@
  * SOFTWARE.
  */
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Link,
+  Route,
+  Switch,
+} from 'react-router-dom';
 
-import '../styles/main.css';
+import First from './first/First';
+import Home from './Home';
 
-const App = () => (<div>Welcome to the recognition world</div>);
+const App = () => (
+  <Router>
+    <nav>
+      <Link to="/">Home</Link>
+      <Link to="/first">First</Link>
+    </nav>
+    <Switch>
+      <Route
+        path="/"
+        component={Home}
+        exact
+      />
+      <Route
+        path="/first"
+        component={First}
+        exact
+      />
+    </Switch>
+  </Router>
+);
 
 export default App;
