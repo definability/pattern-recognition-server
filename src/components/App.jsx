@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 import React from 'react';
+
 import '../styles/main.css';
 
 const App = () => (<div>Welcome to the recognition world</div>);
