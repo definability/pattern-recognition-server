@@ -22,13 +22,34 @@
  * SOFTWARE.
  */
 import React from 'react';
-import { shallow } from 'enzyme';
+import { MemoryRouter } from 'react-router';
+import { mount, shallow } from 'enzyme';
 import { shallowToJson } from 'enzyme-to-json';
 
-import App from '../App';
+import App from './App';
+import Home from './Home';
+import First from './first/First';
 
 describe('App', () => {
   it('should render correctly', () => {
     expect(shallowToJson(shallow(<App />))).toMatchSnapshot();
+  });
+  it('should show the home page on /', () => {
+    const wrapper = mount(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    );
+    expect(wrapper.find(Home)).toHaveLength(1);
+    expect(wrapper.find(First).exists()).toEqual(false);
+  });
+  it('should show the first task page on /first', () => {
+    const wrapper = mount(
+      <MemoryRouter initialEntries={['/first']}>
+        <App />
+      </MemoryRouter>,
+    );
+    expect(wrapper.find(First)).toHaveLength(1);
+    expect(wrapper.find(Home).exists()).toEqual(false);
   });
 });
