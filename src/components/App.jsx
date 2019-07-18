@@ -23,7 +23,6 @@
  */
 import React from 'react';
 import {
-  BrowserRouter as Router,
   Link,
   Route,
   Switch,
@@ -33,7 +32,7 @@ import First from './first/First';
 import Home from './Home';
 
 const App = () => (
-  <Router>
+  <div>
     <nav>
       <Link to="/">Home</Link>
       <Link to="/first">First</Link>
@@ -50,7 +49,7 @@ const App = () => (
         exact
       />
     </Switch>
-  </Router>
+  </div>
 );
 
 export default App;
