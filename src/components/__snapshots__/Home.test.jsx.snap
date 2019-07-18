@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`App should render correctly 1`] = `
-<div>
+exports[`Home should render correctly 1`] = `
+<h2>
   Welcome to the recognition world
-</div>
+</h2>
 `;

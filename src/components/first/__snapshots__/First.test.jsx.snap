@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`First should render correctly 1`] = `
+<h2>
+  The first task
+</h2>
+`;

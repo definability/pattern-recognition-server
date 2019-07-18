@@ -22,9 +22,7 @@
  * SOFTWARE.
  */
 import React from 'react';
-import { BrowserRouter as Router, ReactDOM } from 'react-dom';
 
-import '../styles/main.css';
-import App from './App';
+const Home = () => <h2>Welcome to the recognition world</h2>;
 
-ReactDOM.render((<Router><App /></Router>), document.getElementById('root'));
+export default Home;

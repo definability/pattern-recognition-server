@@ -22,9 +22,13 @@
  * SOFTWARE.
  */
 import React from 'react';
-import { BrowserRouter as Router, ReactDOM } from 'react-dom';
+import { shallow } from 'enzyme';
+import { shallowToJson } from 'enzyme-to-json';
 
-import '../styles/main.css';
-import App from './App';
+import Home from './Home';
 
-ReactDOM.render((<Router><App /></Router>), document.getElementById('root'));
+describe('Home', () => {
+  it('should render correctly', () => {
+    expect(shallowToJson(shallow(<Home />))).toMatchSnapshot();
+  });
+});
