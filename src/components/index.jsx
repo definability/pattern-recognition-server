@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, ReactDOM } from 'react-dom';
 
 import '../styles/main.css';
 import App from './App';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render((<Router><App /></Router>), document.getElementById('root'));
