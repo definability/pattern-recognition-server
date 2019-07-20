@@ -40,8 +40,8 @@ describe('App', () => {
         <App />
       </MemoryRouter>,
     );
-    expect(wrapper.find(Home)).toHaveLength(1);
-    expect(wrapper.find(First).exists()).toEqual(false);
+    expect(wrapper).toContainExactlyOneMatchingElement(Home);
+    expect(wrapper).not.toContainMatchingElement(First);
   });
   it('should show the first task page on /first', () => {
     const wrapper = mount(
@@ -49,7 +49,7 @@ describe('App', () => {
         <App />
       </MemoryRouter>,
     );
-    expect(wrapper.find(First)).toHaveLength(1);
-    expect(wrapper.find(Home).exists()).toEqual(false);
+    expect(wrapper).toContainExactlyOneMatchingElement(First);
+    expect(wrapper).not.toContainMatchingElement(Home);
   });
 });
