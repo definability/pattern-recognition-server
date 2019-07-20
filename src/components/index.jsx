@@ -22,7 +22,8 @@
  * SOFTWARE.
  */
 import React from 'react';
-import { BrowserRouter as Router, ReactDOM } from 'react-dom';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import '../styles/main.css';
 import App from './App';
