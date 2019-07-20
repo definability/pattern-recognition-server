@@ -17,6 +17,7 @@
       "\\.css$": "<rootDir>/__mocks__/fileMock.js"
     },
     "setupFilesAfterEnv": [
+      "<rootDir>/node_modules/jest-enzyme/lib/index.js",
       "<rootDir>/test-setup.js"
     ]
   },
