@@ -9,7 +9,7 @@
     "test:dependencies": "npm run test:unused && npm-check-updates",
     "test:eslint": "eslint --ext .jsx,.js ./src/",
     "test:lint": "npm run test:csslint && npm run test:eslint",
-    "test:unused": "depcheck --ignores=stylelint-config-standard",
+    "test:unused": "depcheck --ignores stylelint-config-standard,webpack-cli",
     "start:dev": "webpack-dev-server"
   },
   "jest": {
@@ -70,6 +70,7 @@
     "stylelint": "^10.1.0",
     "stylelint-config-standard": "^18.3.0",
     "webpack": "^4.36.1",
+    "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
