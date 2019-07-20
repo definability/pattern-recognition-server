@@ -12,7 +12,8 @@
       "\\.css$": "<rootDir>/__mocks__/fileMock.js"
     },
     "setupFilesAfterEnv": [
-      "<rootDir>/test-setup.js"
+      "<rootDir>/test-setup.js",
+      "jest-canvas-mock"
     ]
   },
   "repository": {
@@ -49,6 +50,7 @@
     "eslint-plugin-react": "^7.14.2",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^24.8.0",
+    "jest-canvas-mock": "^2.1.0",
     "jest-enzyme": "^7.0.2",
     "mini-css-extract-plugin": "^0.7.0",
     "npm": "^6.10.1",
