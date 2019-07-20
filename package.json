@@ -4,7 +4,12 @@
   "description": "Server for pattern recognition computer practica",
   "scripts": {
     "build": "webpack --mode production",
-    "test": "stylelint src/styles/*.css && eslint --ext .jsx,.js ./src/ && jest",
+    "test": "npm run test:dependencies && npm run test:lint && jest",
+    "test:csslint": "stylelint src/styles/*.css",
+    "test:dependencies": "npm run test:unused && npm-check-updates",
+    "test:eslint": "eslint --ext .jsx,.js ./src/",
+    "test:lint": "npm run test:csslint && npm run test:eslint",
+    "test:unused": "depcheck --ignores=stylelint-config-standard",
     "start:dev": "webpack-dev-server"
   },
   "jest": {
@@ -12,6 +17,7 @@
       "\\.css$": "<rootDir>/__mocks__/fileMock.js"
     },
     "setupFilesAfterEnv": [
+      "<rootDir>/node_modules/jest-enzyme/lib/index.js",
       "<rootDir>/test-setup.js"
     ],
     "setupFiles": [
@@ -35,34 +41,35 @@
   ],
   "homepage": "https://github.com/char-lie/pattern-recognition-server#readme",
   "devDependencies": {
-    "@babel/core": "^7.5.4",
-    "@babel/preset-env": "^7.5.4",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "autoprefixer": "^9.6.1",
     "babel-loader": "^8.0.6",
-    "css-loader": "^3.0.0",
+    "css-loader": "^3.1.0",
+    "depcheck": "^0.8.3",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.3.5",
     "eslint": "^6.0.1",
     "eslint-config-airbnb": "^17.1.1",
-    "eslint-plugin-import": "^2.18.0",
-    "eslint-plugin-jest": "^22.9.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.12.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.2",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^24.8.0",
     "jest-canvas-mock": "^2.1.0",
     "jest-enzyme": "^7.0.2",
-    "mini-css-extract-plugin": "^0.7.0",
+    "mini-css-extract-plugin": "^0.8.0",
     "npm": "^6.10.1",
+    "npm-check-updates": "^3.1.20",
     "postcss-loader": "^3.0.0",
     "react-router": "^5.0.1",
     "style-loader": "^0.23.1",
     "stylelint": "^10.1.0",
     "stylelint-config-standard": "^18.3.0",
-    "webpack": "^4.35.3",
-    "webpack-cli": "^3.3.6",
+    "webpack": "^4.36.1",
     "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
