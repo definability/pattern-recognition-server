@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import assert from 'assert';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -33,13 +34,19 @@ class MatrixCanvas extends React.Component {
         PropTypes.string,
       ]))).isRequired,
       width: PropTypes.number.isRequired,
-      palette: PropTypes.objectOf(PropTypes.string),
+      palette: PropTypes.oneOfType([
+        PropTypes.objectOf(PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.func,
+        ])),
+        PropTypes.arrayOf(PropTypes.string),
+      ]),
     };
   }
 
   static get defaultProps() {
     return {
-      palette: null,
+      palette: color => color,
     };
   }
 
@@ -61,10 +68,12 @@ class MatrixCanvas extends React.Component {
     const originalFillStyle = ctx.fillStyle;
     for (let y = 0; y < matrix.length; y += 1) {
       for (let x = 0; x < matrix[y].length; x += 1) {
-        if (palette) {
+        if (palette instanceof Function) {
+          ctx.fillStyle = palette(matrix[y][x]);
+        } else if (palette instanceof Object && palette !== null) {
           ctx.fillStyle = palette[matrix[y][x]];
         } else {
-          ctx.fillStyle = matrix[y][x];
+          assert(false, `Unsupported palette type ${typeof palette}`);
         }
         ctx.fillRect(
           Math.floor(x * blockWidth),
