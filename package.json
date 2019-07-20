@@ -4,11 +4,12 @@
   "description": "Server for pattern recognition computer practica",
   "scripts": {
     "build": "webpack --mode production",
-    "test": "npm run test:depcheck && npm run test:lint && jest",
-    "test:depcheck": "depcheck --ignores=stylelint-config-standard",
-    "test:lint": "npm run test:csslint && npm run test:eslint",
+    "test": "npm run test:dependencies && npm run test:lint && jest",
     "test:csslint": "stylelint src/styles/*.css",
+    "test:dependencies": "npm run test:unused && npm-check-updates",
     "test:eslint": "eslint --ext .jsx,.js ./src/",
+    "test:lint": "npm run test:csslint && npm run test:eslint",
+    "test:unused": "depcheck --ignores=stylelint-config-standard",
     "start:dev": "webpack-dev-server"
   },
   "jest": {
@@ -57,6 +58,7 @@
     "jest-enzyme": "^7.0.2",
     "mini-css-extract-plugin": "^0.7.0",
     "npm": "^6.10.1",
+    "npm-check-updates": "^3.1.20",
     "postcss-loader": "^3.0.0",
     "react-router": "^5.0.1",
     "style-loader": "^0.23.1",
