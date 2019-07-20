@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MatrixCanvas should render correctly 1`] = `
+<MatrixCanvas
+  height={20}
+  matrix={
+    Array [
+      Array [
+        0,
+        1,
+        2,
+      ],
+      Array [
+        3,
+        4,
+        5,
+      ],
+    ]
+  }
+  palette={[Function]}
+  width={10}
+>
+  <div>
+    <canvas
+      height={20}
+      width={10}
+    />
+  </div>
+</MatrixCanvas>
+`;
