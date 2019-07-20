@@ -23,6 +23,13 @@
  */
 import React from 'react';
 
-const First = () => <h2>The first task</h2>;
+import FirstA from './FirstA';
+
+const First = () => (
+  <div>
+    <h2>The first task</h2>
+    <FirstA />
+  </div>
+);
 
 export default First;
