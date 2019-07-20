@@ -4,7 +4,11 @@
   "description": "Server for pattern recognition computer practica",
   "scripts": {
     "build": "webpack --mode production",
-    "test": "stylelint src/styles/*.css && eslint --ext .jsx,.js ./src/ && jest",
+    "test": "npm run test:depcheck && npm run test:lint && jest",
+    "test:depcheck": "depcheck --ignores=stylelint-config-standard",
+    "test:lint": "npm run test:csslint && npm run test:eslint",
+    "test:csslint": "stylelint src/styles/*.css",
+    "test:eslint": "eslint --ext .jsx,.js ./src/",
     "start:dev": "webpack-dev-server"
   },
   "jest": {
@@ -38,6 +42,7 @@
     "autoprefixer": "^9.6.1",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.0.0",
+    "depcheck": "^0.8.3",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.3.5",
