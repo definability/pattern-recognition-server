@@ -17,8 +17,11 @@ Added
 -----
 
 - ReactJS_ project skeleton.
-- ``App`` component.
-- ``index`` view.
+- ``index`` main view.
+- ``App`` container component with routing.
+- ``Home`` component for the homepage.
+- ``first/MatrixCanvas`` component
+  to visualize matrices based on provided palette.
 - ``main`` stylesheet.
 
 .. _Keep a Changelog:
