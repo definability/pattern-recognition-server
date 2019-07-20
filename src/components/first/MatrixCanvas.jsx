@@ -35,11 +35,9 @@ class MatrixCanvas extends React.Component {
       ]))).isRequired,
       width: PropTypes.number.isRequired,
       palette: PropTypes.oneOfType([
-        PropTypes.objectOf(PropTypes.oneOfType([
-          PropTypes.string,
-          PropTypes.func,
-        ])),
+        PropTypes.objectOf(PropTypes.string),
         PropTypes.arrayOf(PropTypes.string),
+        PropTypes.func,
       ]),
     };
   }
