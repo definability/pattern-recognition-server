@@ -69,6 +69,11 @@ class MatrixCanvas extends React.Component {
     this.draw(matrix);
   }
 
+  /**
+   * Virtually split canvas by a grid
+   * represented by a matrix.
+   * Each cell of grid is filled with the color specified in the matrix.
+   */
   draw(matrix) {
     const { height, width, palette } = this.props;
     const blockHeight = height / matrix.length;
