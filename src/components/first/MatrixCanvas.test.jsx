@@ -22,34 +22,20 @@
  * SOFTWARE.
  */
 import React from 'react';
-import { MemoryRouter } from 'react-router';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { shallowToJson } from 'enzyme-to-json';
 
-import App from './App';
-import Home from './Home';
-import First from './first/First';
+import MatrixCanvas from './MatrixCanvas';
 
-describe('App', () => {
+describe('MatrixCanvas', () => {
   it('should render correctly', () => {
-    expect(shallowToJson(shallow(<App />))).toMatchSnapshot();
-  });
-  it('should show the home page on /', () => {
     const wrapper = mount(
-      <MemoryRouter initialEntries={['/']}>
-        <App />
-      </MemoryRouter>,
+      <MatrixCanvas
+        width={10}
+        height={20}
+        matrix={[[0, 1, 2], [3, 4, 5]]}
+      />,
     );
-    expect(wrapper).toContainExactlyOneMatchingElement(Home);
-    expect(wrapper).not.toContainMatchingElement(First);
-  });
-  it('should show the first task page on /first', () => {
-    const wrapper = mount(
-      <MemoryRouter initialEntries={['/first']}>
-        <App />
-      </MemoryRouter>,
-    );
-    expect(wrapper).toContainExactlyOneMatchingElement(First);
-    expect(wrapper).not.toContainMatchingElement(Home);
+    expect(shallowToJson(wrapper)).toMatchSnapshot();
   });
 });
