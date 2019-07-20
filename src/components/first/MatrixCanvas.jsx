@@ -69,6 +69,11 @@ class MatrixCanvas extends React.Component {
         if (palette instanceof Function) {
           ctx.fillStyle = palette(matrix[y][x]);
         } else if (palette instanceof Object && palette !== null) {
+          if (!(matrix[y][x] in palette)) {
+            throw RangeError(
+              `Key ${matrix[y][x]} does not exist in palette ${palette}`,
+            );
+          }
           ctx.fillStyle = palette[matrix[y][x]];
         } else {
           assert(false, `Unsupported palette type ${typeof palette}`);
