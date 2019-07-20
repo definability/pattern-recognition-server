@@ -25,6 +25,17 @@ import assert from 'assert';
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * @param width in pixels
+ * @param height in pixels
+ * @param palette optional object, array or function with color palette:
+ *   - default is the identity function to use a matrix with colors;
+ *   - you can provide an object or array to map color identifiers to colors;
+ *   - you can also provide the mapping via a function.
+ * @param matrix with colors
+ *   - strings with RGB colors in CSS format with hash
+ *   - numbers with indices of colors from the palette
+ */
 class MatrixCanvas extends React.Component {
   static get propTypes() {
     return {
