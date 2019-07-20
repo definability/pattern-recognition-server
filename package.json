@@ -12,7 +12,9 @@
       "\\.css$": "<rootDir>/__mocks__/fileMock.js"
     },
     "setupFilesAfterEnv": [
-      "<rootDir>/test-setup.js",
+      "<rootDir>/test-setup.js"
+    ],
+    "setupFiles": [
       "jest-canvas-mock"
     ]
   },
