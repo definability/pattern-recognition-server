@@ -21,115 +21,126 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 
 import MatrixCanvas from './MatrixCanvas';
 
-const IDEAL_NUMBERS = [
-  [
-    [1, 1, 1],
-    [1, 0, 1],
-    [1, 0, 1],
-    [1, 0, 1],
-    [1, 1, 1],
-  ],
-  [
-    [0, 1, 0],
-    [0, 1, 0],
-    [0, 1, 0],
-    [0, 1, 0],
-    [0, 1, 0],
-  ],
-  [
-    [1, 1, 1],
-    [0, 0, 1],
-    [1, 1, 1],
-    [1, 0, 0],
-    [1, 1, 1],
-  ],
-  [
-    [1, 1, 1],
-    [0, 0, 1],
-    [1, 1, 1],
-    [0, 0, 1],
-    [1, 1, 1],
-  ],
-  [
-    [1, 0, 1],
-    [1, 0, 1],
-    [1, 1, 1],
-    [0, 0, 1],
-    [0, 0, 1],
-  ],
-  [
-    [1, 1, 1],
-    [1, 0, 0],
-    [1, 1, 1],
-    [0, 0, 1],
-    [1, 1, 1],
-  ],
-  [
-    [1, 1, 1],
-    [1, 0, 0],
-    [1, 1, 1],
-    [1, 0, 1],
-    [1, 1, 1],
-  ],
-  [
-    [1, 1, 1],
-    [0, 0, 1],
-    [0, 1, 0],
-    [1, 0, 0],
-    [1, 0, 0],
-  ],
-  [
-    [1, 1, 1],
-    [1, 0, 1],
-    [1, 1, 1],
-    [1, 0, 1],
-    [1, 1, 1],
-  ],
-  [
-    [1, 1, 1],
-    [1, 0, 1],
-    [1, 1, 1],
-    [0, 0, 1],
-    [0, 0, 1],
-  ],
-];
+class FirstA extends Component {
+  static IDEAL_NUMBERS = [
+    [
+      [1, 1, 1],
+      [1, 0, 1],
+      [1, 0, 1],
+      [1, 0, 1],
+      [1, 1, 1],
+    ],
+    [
+      [0, 1, 0],
+      [0, 1, 0],
+      [0, 1, 0],
+      [0, 1, 0],
+      [0, 1, 0],
+    ],
+    [
+      [1, 1, 1],
+      [0, 0, 1],
+      [1, 1, 1],
+      [1, 0, 0],
+      [1, 1, 1],
+    ],
+    [
+      [1, 1, 1],
+      [0, 0, 1],
+      [1, 1, 1],
+      [0, 0, 1],
+      [1, 1, 1],
+    ],
+    [
+      [1, 0, 1],
+      [1, 0, 1],
+      [1, 1, 1],
+      [0, 0, 1],
+      [0, 0, 1],
+    ],
+    [
+      [1, 1, 1],
+      [1, 0, 0],
+      [1, 1, 1],
+      [0, 0, 1],
+      [1, 1, 1],
+    ],
+    [
+      [1, 1, 1],
+      [1, 0, 0],
+      [1, 1, 1],
+      [1, 0, 1],
+      [1, 1, 1],
+    ],
+    [
+      [1, 1, 1],
+      [0, 0, 1],
+      [0, 1, 0],
+      [1, 0, 0],
+      [1, 0, 0],
+    ],
+    [
+      [1, 1, 1],
+      [1, 0, 1],
+      [1, 1, 1],
+      [1, 0, 1],
+      [1, 1, 1],
+    ],
+    [
+      [1, 1, 1],
+      [1, 0, 1],
+      [1, 1, 1],
+      [0, 0, 1],
+      [0, 0, 1],
+    ],
+  ];
 
-function randomizeMatrix(setMatrix) {
-  const index = Math.floor(Math.random() * IDEAL_NUMBERS.length);
-  const matrix = IDEAL_NUMBERS[index];
-  for (let i = 0; i < matrix.length; i += 1) {
-    for (let j = 0; j < matrix[0].length; j += 1) {
-      /* eslint-disable-next-line no-bitwise */
-      matrix[i][j] ^= (Math.random() < 0.1);
+  static randomizeMatrix() {
+    const index = Math.floor(Math.random() * FirstA.IDEAL_NUMBERS.length);
+    const matrix = FirstA.IDEAL_NUMBERS[index];
+    for (let i = 0; i < matrix.length; i += 1) {
+      for (let j = 0; j < matrix[0].length; j += 1) {
+        /* eslint-disable-next-line no-bitwise */
+        matrix[i][j] ^= (Math.random() < 0.1);
+      }
     }
+    return this.setState(previousState => ({
+      ...previousState,
+      matrix,
+    }));
   }
-  setMatrix(matrix);
-}
 
-const FirstA = () => {
-  const index = Math.floor(Math.random() * IDEAL_NUMBERS.length);
-  const [matrix, setMatrix] = useState(IDEAL_NUMBERS[index]);
-  return (
-    <div>
-      <h3>The first subtask</h3>
-      <button type="button" onClick={() => randomizeMatrix(setMatrix)}>
-        Next
-      </button>
-      <MatrixCanvas
-        height={500}
-        width={300}
-        matrix={matrix}
-        palette={{
-          0: '#FFFFFF',
-          1: '#000000',
-        }}
-      />
-    </div>
-  );
-};
+  constructor(props) {
+    super(props);
+    this.state = {
+      matrix: FirstA.IDEAL_NUMBERS[0],
+    };
+  }
+
+  render() {
+    const { matrix } = this.state;
+    return (
+      <div>
+        <h3>The first subtask</h3>
+        <button type="button" onClick={() => FirstA.randomizeMatrix()}>
+          Next
+        </button>
+        <MatrixCanvas
+          height={500}
+          width={300}
+          matrix={matrix}
+          palette={{
+            0: '#FFFFFF',
+            1: '#000000',
+          }}
+        />
+      </div>
+    );
+  }
+}
 
 export default FirstA;
