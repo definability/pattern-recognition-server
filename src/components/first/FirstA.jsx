@@ -247,7 +247,7 @@ class FirstA extends Component {
     } = this.state;
     return (
       <div>
-        <h3>Subtask A</h3>
+        <h3>Task A</h3>
         <form>
           <label htmlFor={this.widthInput}>
             Width:
