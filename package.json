@@ -12,6 +12,15 @@
     "test:unused": "depcheck --ignores stylelint-config-standard,webpack-cli",
     "start:dev": "webpack-dev-server"
   },
+  "babel": {
+    "plugins": [
+      "@babel/plugin-proposal-class-properties"
+    ],
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ]
+  },
   "jest": {
     "moduleNameMapper": {
       "\\.css$": "<rootDir>/__mocks__/fileMock.js"
@@ -42,6 +51,7 @@
   "homepage": "https://github.com/char-lie/pattern-recognition-server#readme",
   "devDependencies": {
     "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "autoprefixer": "^9.6.1",
