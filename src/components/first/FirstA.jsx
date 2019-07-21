@@ -30,7 +30,7 @@ import MatrixCanvas from './MatrixCanvas';
  * - Header
  * - Control panel
  * - Image
- * 
+ *
  * The header contains only text.
  *
  * The image is a MatrixCanvas component with current noised digit image.
