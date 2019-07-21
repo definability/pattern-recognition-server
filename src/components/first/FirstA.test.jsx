@@ -22,14 +22,13 @@
  * SOFTWARE.
  */
 import React from 'react';
+import { shallow } from 'enzyme';
+import { shallowToJson } from 'enzyme-to-json';
 
 import FirstA from './FirstA';
 
-const First = () => (
-  <div>
-    <h2>The first task</h2>
-    <FirstA />
-  </div>
-);
-
-export default First;
+describe('FirstA', () => {
+  it('should render correctly', () => {
+    expect(shallowToJson(shallow(<FirstA />))).toMatchSnapshot();
+  });
+});

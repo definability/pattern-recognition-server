@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 import assert from 'assert';
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 /**
@@ -36,7 +36,7 @@ import PropTypes from 'prop-types';
  *   - strings with RGB colors in CSS format with hash
  *   - numbers with indices of colors from the palette
  */
-class MatrixCanvas extends React.Component {
+class MatrixCanvas extends Component {
   static get propTypes() {
     return {
       height: PropTypes.number.isRequired,
