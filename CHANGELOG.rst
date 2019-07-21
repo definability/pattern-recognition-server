@@ -20,6 +20,9 @@ Added
 - ``index`` main view.
 - ``App`` container component with routing.
 - ``Home`` component for the homepage.
+- ``first/First`` container component for the first practicum.
+- ``first/FirstA`` container component
+  with the task ``A`` of the first practicum.
 - ``first/MatrixCanvas`` component
   to visualize matrices based on provided palette.
 - ``main`` stylesheet.
