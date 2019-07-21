@@ -24,11 +24,13 @@
 import React from 'react';
 
 import FirstA from './FirstA';
+import FirstB from './FirstB';
 
 const First = () => (
   <div>
-    <h2>The first task</h2>
+    <h2>The first practicum</h2>
     <FirstA />
+    <FirstB />
   </div>
 );
 
