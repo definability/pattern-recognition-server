@@ -27,6 +27,7 @@ Added
   to visualize matrices based on provided palette.
 - ``AnimationSprite`` class
   to store information about animating sprites.
+- ``drawMatrix`` function to draw a matrix on a canvas.
 - ``main`` stylesheet.
 
 .. _Keep a Changelog:
