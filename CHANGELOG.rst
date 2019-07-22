@@ -25,6 +25,8 @@ Added
   with the task ``A`` of the first practicum.
 - ``first/MatrixCanvas`` component
   to visualize matrices based on provided palette.
+- ``first/AnimationCanvas`` component
+  to visualize and animate ``AnimationSprite`` instances.
 - ``AnimationSprite`` class
   to store information about animating sprites.
 - ``drawMatrix`` function to draw a matrix on a canvas.
