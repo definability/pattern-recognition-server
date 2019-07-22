@@ -60,25 +60,6 @@ class MatrixCanvas extends Component {
     };
   }
 
-  componentDidMount() {
-    const {
-      matrix,
-      height,
-      palette,
-      width,
-    } = this.props;
-    const context = this.canvas.getContext('2d');
-    const scaleX = width / matrix[0].length;
-    const scaleY = height / matrix.length;
-    drawMatrix({
-      context,
-      matrix,
-      palette,
-      scaleX,
-      scaleY,
-    });
-  }
-
   componentDidUpdate() {
     const {
       matrix,
