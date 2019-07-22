@@ -25,6 +25,8 @@ import assert from 'assert';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import drawMatrix from '../../scripts/drawMatrix.js';
+
 /**
  * @param width in pixels
  * @param height in pixels
@@ -61,12 +63,34 @@ class MatrixCanvas extends Component {
 
   componentDidMount() {
     const { matrix, height, palette, width } = this.props;
-    this.drawMatrix({ matrix, height, palette, width });
+    const context = this.canvas.getContext('2d');
+    const scaleX = width / matrix[0].length;
+    const scaleY = height / matrix.length;
+    drawMatrix({
+      context,
+      height,
+      matrix,
+      palette,
+      scaleX,
+      scaleY,
+      width,
+    });
   }
 
   componentDidUpdate() {
     const { matrix, height, palette, width } = this.props;
-    this.drawMatrix({ matrix, width, palette, height });
+    const context = this.canvas.getContext('2d');
+    const scaleX = width / matrix[0].length;
+    const scaleY = height / matrix.length;
+    drawMatrix({
+      context,
+      height,
+      matrix,
+      palette,
+      scaleX,
+      scaleY,
+      width,
+    });
   }
 
   cleanCanvas({
@@ -77,55 +101,6 @@ class MatrixCanvas extends Component {
     const ctx = this.canvas.getContext('2d');
     ctx.fillStyle = cleanColor;
     ctx.fillRect(0, 0, width, height);
-  }
-
-  /**
-   * Virtually split canvas by a grid
-   * represented by a matrix.
-   * Each cell of grid is filled with the color specified in the matrix.
-   */
-  drawMatrix({
-    matrix,
-    width,
-    height,
-    palette,
-    offsetX = 0,
-    offsetY = 0,
-    scaleX = 1,
-    scaleY = 1,
-    realScale = false,
-  }) {
-    const blockHeight = realScale ? 1 : (height / (matrix.length * scaleY));
-    const blockWidth = realScale ? 1 : (width / (matrix[0].length * scaleX));
-    const ctx = this.canvas.getContext('2d');
-    const originalFillStyle = ctx.fillStyle;
-    for (let y = 0; y < matrix.length; y += 1) {
-      for (let x = 0; x < matrix[y].length; x += 1) {
-        let color = '';
-        if (palette instanceof Function) {
-          color = palette(matrix[y][x]);
-        } else if (palette instanceof Object && palette !== null) {
-          if (!(matrix[y][x] in palette)) {
-            throw RangeError(
-              `Key ${matrix[y][x]} does not exist in palette ${palette}`,
-            );
-          }
-          color = palette[matrix[y][x]];
-        } else {
-          assert(false, `Unsupported palette type ${typeof palette}`);
-        }
-        if (color !== '') {
-          ctx.fillStyle = color;
-          ctx.fillRect(
-            Math.floor((offsetX + x * scaleX) * blockWidth),
-            Math.floor((offsetY + y * scaleY) * blockHeight),
-            Math.ceil(blockWidth * scaleX),
-            Math.ceil(blockHeight * scaleY),
-          );
-        }
-      }
-    }
-    ctx.fillStyle = originalFillStyle;
   }
 
   render() {
