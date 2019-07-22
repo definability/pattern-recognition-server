@@ -98,16 +98,6 @@ class MatrixCanvas extends Component {
     });
   }
 
-  cleanCanvas({
-    cleanColor,
-    height,
-    width,
-  }) {
-    const ctx = this.canvas.getContext('2d');
-    ctx.fillStyle = cleanColor;
-    ctx.fillRect(0, 0, width, height);
-  }
-
   render() {
     const { height, width } = this.props;
     return (
