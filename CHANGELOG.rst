@@ -25,6 +25,8 @@ Added
   with the task ``A`` of the first practicum.
 - ``first/MatrixCanvas`` component
   to visualize matrices based on provided palette.
+- ``AnimationSprite`` class
+  to store information about animating sprites.
 - ``main`` stylesheet.
 
 .. _Keep a Changelog:
