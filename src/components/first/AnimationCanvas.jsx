@@ -24,59 +24,57 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import AnimationSprite from '../../scripts/AnimationSprite';
 import drawMatrix from '../../scripts/drawMatrix';
 
 /**
  * @param width in pixels
  * @param height in pixels
- * @param palette optional object, array or function with color palette:
- *   - default is the identity function to use a matrix with colors;
- *   - you can provide an object or array to map color identifiers to colors;
- *   - you can also provide the mapping via a function.
- * @param matrix with colors
- *   - strings with RGB colors in CSS format with hash
- *   - numbers with indices of colors from the palette
+ * @param sprites with AnimationSprite instances to render and animate
  */
-class MatrixCanvas extends Component {
+class AnimationCanvas extends Component {
   static get propTypes() {
     return {
       height: PropTypes.number.isRequired,
-      matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-      ]))).isRequired,
+      sprites: PropTypes.arrayOf(PropTypes.instanceOf(AnimationSprite)),
       width: PropTypes.number.isRequired,
-      palette: PropTypes.oneOfType([
-        PropTypes.objectOf(PropTypes.string),
-        PropTypes.arrayOf(PropTypes.string),
-        PropTypes.func,
-      ]),
     };
   }
 
   static get defaultProps() {
     return {
-      palette: color => color,
+      sprites: [],
     };
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
+    window.requestAnimationFrame(() => this.animation());
+  }
+
+  animation() {
     const {
-      matrix,
       height,
-      palette,
+      sprites,
       width,
     } = this.props;
+
+    const time = new Date();
     const context = this.canvas.getContext('2d');
-    const scaleX = width / matrix[0].length;
-    const scaleY = height / matrix.length;
-    drawMatrix({
-      context,
-      matrix,
-      palette,
-      scaleX,
-      scaleY,
+    context.clearRect(0, 0, width, height);
+
+    sprites.filter(sprite => !sprite.needDestroy(time)).forEach((sprite) => {
+      drawMatrix({
+        context,
+        matrix: sprite.image(time),
+        offsetX: sprite.offsetX(time),
+        offsetY: sprite.offsetY(time),
+        palette: sprite.palette,
+        scaleX: sprite.scale(time),
+        scaleY: sprite.scale(time),
+      });
     });
+
+    window.requestAnimationFrame(() => this.animation());
   }
 
   render() {
@@ -93,4 +91,4 @@ class MatrixCanvas extends Component {
   }
 }
 
-export default MatrixCanvas;
+export default AnimationCanvas;
