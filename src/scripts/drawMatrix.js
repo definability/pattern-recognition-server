@@ -21,16 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import assert from 'assert';
 
 /**
- * Draw a matrix on the canvas of the specified width and height.
- * Move the matrix by specified offset and apply the provided scale.
+ * Move the matrix by specified offset, apply the provided scale
+ * and draw it on the canvas.
  */
 function drawMatrix({
   context,
   matrix,
-  width,
-  height,
   palette,
   offsetX = 0,
   offsetY = 0,
@@ -54,6 +53,7 @@ function drawMatrix({
         assert(false, `Unsupported palette type ${typeof palette}`);
       }
       if (color !== '') {
+        /* eslint-disable-next-line no-param-reassign */
         context.fillStyle = color;
         context.fillRect(
           Math.floor(offsetX + x * scaleX),
@@ -64,6 +64,7 @@ function drawMatrix({
       }
     }
   }
+  /* eslint-disable-next-line no-param-reassign */
   context.fillStyle = originalFillStyle;
 }
 

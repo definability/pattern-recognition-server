@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import assert from 'assert';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -68,12 +67,10 @@ class MatrixCanvas extends Component {
     const scaleY = height / matrix.length;
     drawMatrix({
       context,
-      height,
       matrix,
       palette,
       scaleX,
       scaleY,
-      width,
     });
   }
 
@@ -84,12 +81,10 @@ class MatrixCanvas extends Component {
     const scaleY = height / matrix.length;
     drawMatrix({
       context,
-      height,
       matrix,
       palette,
       scaleX,
       scaleY,
-      width,
     });
   }
 
