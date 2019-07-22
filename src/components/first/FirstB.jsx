@@ -24,17 +24,34 @@
 import React, { Component } from 'react';
 
 import MatrixCanvas from './MatrixCanvas';
+import AnimationCanvas from './AnimationCanvas';
+import HelicopterSprite from './HelicopterSprite';
 
 class FirstB extends Component {
   /**
    * Default canvas width.
    */
-  static WIDTH = 300;
+  static WIDTH = 1000;
+
+  static SKY_HEIGHT = 200;
+
+  static grayPalette = color => (
+    `#${color.toString(16).toUpperCase().padStart(2, '0').repeat(3)}`
+  );
 
   /**
-   * Default canvas height.
+   * Default heatmap height.
    */
-  static HEIGHT = 20;
+  static HEATMAP_HEIGHT = 20;
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      heatmap: [0],
+      width: 1,
+      helicopters: [],
+    };
+  }
 
   /**
    * Change image width multiplier.
@@ -52,24 +69,25 @@ class FirstB extends Component {
     }));
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      heatmap: [0],
-      width: 1,
-    };
+  drop() {
+    const helicopter = new HelicopterSprite({
+      canvasWidth: Math.round(FirstB.WIDTH),
+      canvasHeight: FirstB.SKY_HEIGHT,
+      offsetY: Math.random() * (FirstB.SKY_HEIGHT - HelicopterSprite.IMAGE[0].length * 5),
+      scale: 5,
+      velocity: 100,
+    });
+    this.setState(previousState => ({
+      ...previousState,
+      helicopters: [...previousState.helicopters, helicopter],
+    }));
   }
 
   generateHeatmap() {
     const { width } = this.state;
-    const heatmap = [];
-    for (let i = 0; i < width; i += 1) {
-      let value = 0;
-      if (i == 0) {
-        value = Math.random() * 255;
-      } else {
-        value = heatmap[i - 1] + (Math.random() - 0.5) * 500 / (width ** 0.5);
-      }
+    const heatmap = [Math.random() * 255];
+    for (let i = 1; i < width; i += 1) {
+      const value = heatmap[i - 1] + (Math.random() - 0.5) * 500 / (width ** 0.5);
 
       if (value < 0) {
         heatmap.push(0);
@@ -79,7 +97,7 @@ class FirstB extends Component {
         heatmap.push(value);
       }
     }
-    this.setState((previousState) => ({
+    this.setState(previousState => ({
       ...previousState,
       heatmap: heatmap.map(Math.round),
     }));
@@ -88,9 +106,9 @@ class FirstB extends Component {
   render() {
     const {
       heatmap,
+      helicopters,
       width,
     } = this.state;
-    console.log(heatmap);
     return (
       <div>
         <h3>Task B</h3>
@@ -108,14 +126,20 @@ class FirstB extends Component {
           <button type="button" onClick={() => this.generateHeatmap()}>
             Next
           </button>
+          <button type="button" onClick={() => this.drop()}>
+            Drop
+          </button>
         </form>
+        <AnimationCanvas
+          height={Math.round(FirstB.SKY_HEIGHT)}
+          width={Math.round(FirstB.WIDTH)}
+          sprites={helicopters}
+        />
         <MatrixCanvas
-          height={Math.round(FirstB.HEIGHT)}
+          height={Math.round(FirstB.HEATMAP_HEIGHT)}
           width={Math.round(FirstB.WIDTH)}
           matrix={[heatmap]}
-          palette={(color) =>
-            '#' + color.toString(16).toUpperCase().padStart(2, '0').repeat(3)
-          }
+          palette={FirstB.grayPalette}
         />
       </div>
     );
