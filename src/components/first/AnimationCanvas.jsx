@@ -30,13 +30,7 @@ import drawMatrix from '../../scripts/drawMatrix';
 /**
  * @param width in pixels
  * @param height in pixels
- * @param palette optional object, array or function with color palette:
- *   - default is the identity function to use a matrix with colors;
- *   - you can provide an object or array to map color identifiers to colors;
- *   - you can also provide the mapping via a function.
- * @param matrix with colors
- *   - strings with RGB colors in CSS format with hash
- *   - numbers with indices of colors from the palette
+ * @param sprites with AnimationSprite instances to render and animate
  */
 class AnimationCanvas extends Component {
   static get propTypes() {
