@@ -25,7 +25,7 @@ import React, { Component } from 'react';
 
 import MatrixCanvas from './MatrixCanvas';
 import AnimationCanvas from './AnimationCanvas';
-import HelicopterSprite from './HelicopterSprite';
+import HelicopterSprite from '../../scripts/HelicopterSprite';
 
 class FirstB extends Component {
   /**
@@ -71,6 +71,7 @@ class FirstB extends Component {
 
   drop() {
     const helicopter = new HelicopterSprite({
+      birthDate: new Date(),
       canvasWidth: Math.round(FirstB.WIDTH),
       canvasHeight: FirstB.SKY_HEIGHT,
       offsetY: Math.random() * (FirstB.SKY_HEIGHT - HelicopterSprite.IMAGE[0].length * 5),
