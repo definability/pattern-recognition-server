@@ -42,8 +42,14 @@ class AnimationCanvas extends Component {
   static get propTypes() {
     return {
       height: PropTypes.number.isRequired,
-      sprites: PropTypes.arrayOf(PropTypes.instanceOf(AnimationSprite)).isRequired,
+      sprites: PropTypes.arrayOf(PropTypes.instanceOf(AnimationSprite)),
       width: PropTypes.number.isRequired,
+    };
+  }
+
+  static get defaultProps() {
+    return {
+      sprites: [],
     };
   }
 
