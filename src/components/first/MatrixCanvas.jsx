@@ -60,13 +60,23 @@ class MatrixCanvas extends Component {
   }
 
   componentDidMount() {
-    const { matrix } = this.props;
-    this.draw(matrix);
+    const { matrix, height, palette, width } = this.props;
+    this.drawMatrix({ matrix, height, palette, width });
   }
 
   componentDidUpdate() {
-    const { matrix } = this.props;
-    this.draw(matrix);
+    const { matrix, height, palette, width } = this.props;
+    this.drawMatrix({ matrix, width, palette, height });
+  }
+
+  cleanCanvas({
+    cleanColor,
+    height,
+    width,
+  }) {
+    const ctx = this.canvas.getContext('2d');
+    ctx.fillStyle = cleanColor;
+    ctx.fillRect(0, 0, width, height);
   }
 
   /**
@@ -74,32 +84,45 @@ class MatrixCanvas extends Component {
    * represented by a matrix.
    * Each cell of grid is filled with the color specified in the matrix.
    */
-  draw(matrix) {
-    const { height, width, palette } = this.props;
-    const blockHeight = height / matrix.length;
-    const blockWidth = width / matrix[0].length;
+  drawMatrix({
+    matrix,
+    width,
+    height,
+    palette,
+    offsetX = 0,
+    offsetY = 0,
+    scaleX = 1,
+    scaleY = 1,
+    realScale = false,
+  }) {
+    const blockHeight = realScale ? 1 : (height / (matrix.length * scaleY));
+    const blockWidth = realScale ? 1 : (width / (matrix[0].length * scaleX));
     const ctx = this.canvas.getContext('2d');
     const originalFillStyle = ctx.fillStyle;
     for (let y = 0; y < matrix.length; y += 1) {
       for (let x = 0; x < matrix[y].length; x += 1) {
+        let color = '';
         if (palette instanceof Function) {
-          ctx.fillStyle = palette(matrix[y][x]);
+          color = palette(matrix[y][x]);
         } else if (palette instanceof Object && palette !== null) {
           if (!(matrix[y][x] in palette)) {
             throw RangeError(
               `Key ${matrix[y][x]} does not exist in palette ${palette}`,
             );
           }
-          ctx.fillStyle = palette[matrix[y][x]];
+          color = palette[matrix[y][x]];
         } else {
           assert(false, `Unsupported palette type ${typeof palette}`);
         }
-        ctx.fillRect(
-          Math.floor(x * blockWidth),
-          Math.floor(y * blockHeight),
-          Math.ceil(blockWidth),
-          Math.ceil(blockHeight),
-        );
+        if (color !== '') {
+          ctx.fillStyle = color;
+          ctx.fillRect(
+            Math.floor((offsetX + x * scaleX) * blockWidth),
+            Math.floor((offsetY + y * scaleY) * blockHeight),
+            Math.ceil(blockWidth * scaleX),
+            Math.ceil(blockHeight * scaleY),
+          );
+        }
       }
     }
     ctx.fillStyle = originalFillStyle;
