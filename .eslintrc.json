@@ -5,5 +5,8 @@
     "browser": true,
     "jest/globals": true
   },
-  "parser": "babel-eslint"
+  "parser": "babel-eslint",
+  "rules": {
+    "class-methods-use-this": "warn"
+  }
 }
