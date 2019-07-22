@@ -23,7 +23,7 @@
  */
 class AnimationSprite {
   constructor(birthDate) {
-    this.identifier = Symbol();
+    this.identifier = Symbol(this.constructor.name);
     if (!birthDate) {
       this.birthDate = null;
     } else {
@@ -36,9 +36,9 @@ class AnimationSprite {
       this.birthDate = date;
     } else {
       throw Error(
-        "You cannot restart the ongoing animation. "
-        + "The entity was already started by `startAnimation` "
-        + "or by providing `birthDate` to the constructor."
+        'You cannot restart the ongoing animation. '
+        + 'The entity was already started by `startAnimation` '
+        + 'or by providing `birthDate` to the constructor.',
       );
     }
     return this;
