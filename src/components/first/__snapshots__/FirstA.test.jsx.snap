@@ -3,7 +3,7 @@
 exports[`FirstA should render correctly 1`] = `
 <div>
   <h3>
-    Subtask A
+    Task A
   </h3>
   <form>
     <label>
