@@ -137,10 +137,6 @@ class HelicopterSprite extends AnimationSprite {
     }
   }
 
-  lifetime(time) {
-    return (time - this.birthDate) / 1E3;
-  }
-
   needDestroy(time) {
     const lifetime = this.lifetime(time);
     const offsetX = this.offsetX(lifetime);
