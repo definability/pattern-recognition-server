@@ -130,7 +130,10 @@ class HelicopterSprite extends AnimationSprite {
       case 3:
         return images[1];
       default:
-        assert(false, `Impossible case ${Math.round(this.lifetime(time) * 4) % 4}`);
+        assert(
+          false,
+          `Impossible lifetime ${Math.round(this.lifetime(time) * 4) % 4}`,
+        );
     }
   }
 
