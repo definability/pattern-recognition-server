@@ -139,8 +139,8 @@ class HelicopterSprite extends AnimationSprite {
 
   needDestroy(time) {
     const lifetime = this.lifetime(time);
-    const offsetX = this.offsetX(lifetime);
-    const width = this.width(lifetime);
+    const offsetX = this.offsetX(time);
+    const width = this.width(time);
     if (this.#moveRight && offsetX >= this.#canvasWidth + width) {
       return true;
     }
