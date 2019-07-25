@@ -43,7 +43,7 @@ import AnimationSprite from './AnimationSprite';
  * - Space is a space, it's transparent.
  */
 class HelicopterSprite extends AnimationSprite {
-  static IMAGE = [
+  static IMAGES = [
     [
       [' ', 'M', 'M', 'M', 'M', 'M', 'M', 'M'],
       [' ', ' ', ' ', ' ', 'M', ' ', ' ', ' '],
@@ -73,7 +73,7 @@ class HelicopterSprite extends AnimationSprite {
     ],
   ];
 
-  static REVERSED = HelicopterSprite.IMAGE.map(sprite =>
+  static REVERSED = HelicopterSprite.IMAGES.map(sprite =>
     sprite.map(row => [...row].reverse())
   );
 
@@ -115,11 +115,11 @@ class HelicopterSprite extends AnimationSprite {
   }
 
   height(time) {
-    return this.scale(time) * HelicopterSprite.IMAGE[0].length;
+    return this.scale(time) * HelicopterSprite.IMAGES[0].length;
   }
 
   image(time) {
-    const images = this.#moveRight ? HelicopterSprite.IMAGE : HelicopterSprite.REVERSED;
+    const images = this.#moveRight ? HelicopterSprite.IMAGES : HelicopterSprite.REVERSED;
     switch (Math.round(this.lifetime(time) * 4) % 4) {
       case 0:
         return images[0];
@@ -170,7 +170,7 @@ class HelicopterSprite extends AnimationSprite {
   }
 
   width(time) {
-    return this.scale(time) * HelicopterSprite.IMAGE[0][0].length;
+    return this.scale(time) * HelicopterSprite.IMAGES[0][0].length;
   }
 
   timeFromOffsetX(offsetX) {
