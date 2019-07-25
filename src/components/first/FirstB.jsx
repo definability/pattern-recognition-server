@@ -77,6 +77,22 @@ class FirstB extends Component {
     }));
   }
 
+  updateSprites(time) {
+    const { helicopters } = this.state;
+    const existingHelicopters = helicopters.filter(
+      sprite => !sprite.needDestroy(time)
+    );
+    if (existingHelicopters.length !== helicopters.length) {
+      this.setState(previousState => ({
+        ...previousState,
+        helicopters: existingHelicopters,
+      }));
+    }
+  }
+
+  /**
+   * Create new helicopter to drop an item.
+   */
   drop() {
     const helicopter = new HelicopterSprite({
       birthDate: new Date(),
@@ -146,6 +162,7 @@ class FirstB extends Component {
           height={Math.round(FirstB.SKY_HEIGHT)}
           width={Math.round(FirstB.WIDTH)}
           sprites={helicopters}
+          updateSprites={time => this.updateSprites(time)}
         />
         <MatrixCanvas
           height={Math.round(FirstB.HEATMAP_HEIGHT)}
