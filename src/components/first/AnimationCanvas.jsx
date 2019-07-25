@@ -65,7 +65,9 @@ class AnimationCanvas extends Component {
     const context = this.canvas.getContext('2d');
     context.clearRect(0, 0, width, height);
 
-    sprites.filter(sprite => !sprite.needDestroy(time)).forEach((sprite) => {
+    sprites.filter(
+      sprite => !sprite.needDestroy(time) && sprite.visible(time)
+    ).forEach((sprite) => {
       drawMatrix({
         context,
         matrix: sprite.image(time),
