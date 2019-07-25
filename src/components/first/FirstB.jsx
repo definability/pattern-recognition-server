@@ -26,6 +26,7 @@ import React, { Component } from 'react';
 import MatrixCanvas from './MatrixCanvas';
 import AnimationCanvas from './AnimationCanvas';
 import HelicopterSprite from '../../scripts/HelicopterSprite';
+import AidSprite from '../../scripts/AidSprite';
 
 class FirstB extends Component {
   /**
@@ -58,6 +59,7 @@ class FirstB extends Component {
       heatmap: [0],
       width: 1,
       helicopters: [],
+      aids: [],
     };
   }
 
@@ -78,14 +80,27 @@ class FirstB extends Component {
   }
 
   updateSprites(time) {
-    const { helicopters } = this.state;
+    const { aids, helicopters } = this.state;
+    const existingAids = aids.filter(
+      sprite => !sprite.needDestroy(time)
+    );
     const existingHelicopters = helicopters.filter(
       sprite => !sprite.needDestroy(time)
     );
+    const stateChanges = {};
+    let change = false;
     if (existingHelicopters.length !== helicopters.length) {
+      stateChanges.helicopters = existingHelicopters;
+      change = true;
+    }
+    if (existingAids.length !== aids.length) {
+      stateChanges.aids = existingAids;
+      change = true;
+    }
+    if (change) {
       this.setState(previousState => ({
         ...previousState,
-        helicopters: existingHelicopters,
+        ...stateChanges,
       }));
     }
   }
@@ -98,13 +113,23 @@ class FirstB extends Component {
       birthDate: new Date(),
       canvasWidth: Math.round(FirstB.WIDTH),
       canvasHeight: FirstB.SKY_HEIGHT,
-      offsetY: Math.random() * (FirstB.SKY_HEIGHT - HelicopterSprite.IMAGE[0].length * 5),
+      offsetY: Math.random() * (FirstB.SKY_HEIGHT - HelicopterSprite.IMAGES[0].length * 5),
+      scale: 5,
+      velocity: 100,
+    });
+    const aid = new AidSprite({
+      birthDate: new Date(),
+      canvasHeight: FirstB.SKY_HEIGHT,
+      canvasWidth: Math.round(FirstB.WIDTH),
+      dropX: Math.random() * (FirstB.WIDTH - AidSprite.IMAGE[0].length * 5),
+      helicopter,
       scale: 5,
       velocity: 100,
     });
     this.setState(previousState => ({
       ...previousState,
       helicopters: [...previousState.helicopters, helicopter],
+      aids: [...previousState.aids, aid],
     }));
   }
 
@@ -135,6 +160,7 @@ class FirstB extends Component {
     const {
       heatmap,
       helicopters,
+      aids,
       width,
     } = this.state;
     return (
@@ -161,7 +187,7 @@ class FirstB extends Component {
         <AnimationCanvas
           height={Math.round(FirstB.SKY_HEIGHT)}
           width={Math.round(FirstB.WIDTH)}
-          sprites={helicopters}
+          sprites={[...helicopters, ...aids]}
           updateSprites={time => this.updateSprites(time)}
         />
         <MatrixCanvas
