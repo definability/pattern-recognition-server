@@ -33,8 +33,16 @@ class FirstB extends Component {
    */
   static WIDTH = 1000;
 
+  /**
+   * Height of a sky with helicopters there.
+   */
   static SKY_HEIGHT = 200;
 
+  /**
+   * Palette for heatmap.
+   * Converts color value from `[0; 255]`
+   * to `[#000000; #FFFFFF]` grayscale.
+   */
   static grayPalette = color => (
     `#${color.toString(16).toUpperCase().padStart(2, '0').repeat(3)}`
   );
@@ -84,6 +92,9 @@ class FirstB extends Component {
     }));
   }
 
+  /**
+   * Generate new heatmap.
+   */
   generateHeatmap() {
     const { width } = this.state;
     const heatmap = [Math.random() * 255];
