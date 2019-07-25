@@ -115,7 +115,7 @@ class HelicopterSprite extends AnimationSprite {
   }
 
   height(time) {
-    return this.scale(time) * HelicopterSprite.IMAGE.length;
+    return this.scale(time) * HelicopterSprite.IMAGE[0].length;
   }
 
   image(time) {
@@ -170,7 +170,7 @@ class HelicopterSprite extends AnimationSprite {
   }
 
   width(time) {
-    return this.scale(time) * HelicopterSprite.IMAGE.length;
+    return this.scale(time) * HelicopterSprite.IMAGE[0][0].length;
   }
 }
 
