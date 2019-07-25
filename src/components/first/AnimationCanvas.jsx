@@ -38,12 +38,14 @@ class AnimationCanvas extends Component {
       height: PropTypes.number.isRequired,
       sprites: PropTypes.arrayOf(PropTypes.instanceOf(AnimationSprite)),
       width: PropTypes.number.isRequired,
+      updateSprites: PropTypes.func,
     };
   }
 
   static get defaultProps() {
     return {
       sprites: [],
+      updateSprites: () => {},
     };
   }
 
@@ -56,6 +58,7 @@ class AnimationCanvas extends Component {
       height,
       sprites,
       width,
+      updateSprites,
     } = this.props;
 
     const time = new Date();
@@ -74,6 +77,7 @@ class AnimationCanvas extends Component {
       });
     });
 
+    updateSprites(time);
     window.requestAnimationFrame(() => this.animation());
   }
 
