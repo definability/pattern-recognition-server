@@ -152,7 +152,7 @@ class HelicopterSprite extends AnimationSprite {
 
   offsetX(time) {
     if (this.#moveRight) {
-      return this.lifetime(time) * this.#velocity - this.width(0);
+      return this.lifetime(time) * this.#velocity - this.width(this.birthDate);
     }
     return this.#canvasWidth - this.lifetime(time) * this.#velocity;
   }
