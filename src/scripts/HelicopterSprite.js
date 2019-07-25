@@ -172,6 +172,16 @@ class HelicopterSprite extends AnimationSprite {
   width(time) {
     return this.scale(time) * HelicopterSprite.IMAGE[0][0].length;
   }
+
+  timeFromOffsetX(offsetX) {
+    if (this.#moveRight) {
+      return new Date(Number(this.birthDate)
+        + 1E3 * offsetX / this.#velocity);
+    }
+    return new Date(Number(this.birthDate)
+      + 1E3 * (this.#canvasWidth - offsetX + this.width(this.birthDate))
+        / this.#velocity);
+  }
 }
 
 export default HelicopterSprite;
