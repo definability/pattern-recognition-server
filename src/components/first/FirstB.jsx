@@ -105,6 +105,17 @@ class FirstB extends Component {
     }
   }
 
+  generateDropX() {
+    const { heatmap, width } = this.state;
+    const cumulative = heatmap.reduce(
+      (result, value, i) => result.length ? [...result, result[i - 1] + value] : [value],
+      []
+    );
+    const value = Math.random() * cumulative[cumulative.length - 1];
+    const index = cumulative.findIndex(element => element >= value);
+    return (FirstB.WIDTH / width) * (index + Math.random());
+  }
+
   /**
    * Create new helicopter to drop an item.
    */
@@ -121,7 +132,7 @@ class FirstB extends Component {
       birthDate: new Date(),
       canvasHeight: FirstB.SKY_HEIGHT,
       canvasWidth: Math.round(FirstB.WIDTH),
-      dropX: Math.random() * (FirstB.WIDTH - AidSprite.IMAGE[0].length * 5),
+      dropX: this.generateDropX() - AidSprite.IMAGE[0].length * 5,
       helicopter,
       scale: 5,
       velocity: 100,
