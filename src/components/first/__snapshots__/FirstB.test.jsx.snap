@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`FirstA should render correctly 1`] = `
+exports[`FirstB should render correctly 1`] = `
 <div>
   <h3>
-    Task A
+    Task B
   </h3>
   <form>
     <label>
@@ -12,7 +12,7 @@ exports[`FirstA should render correctly 1`] = `
         onChange={[Function]}
         step={1}
         type="number"
-        value={1}
+        value={100}
       />
     </label>
     <label>
@@ -21,16 +21,25 @@ exports[`FirstA should render correctly 1`] = `
         onChange={[Function]}
         step={1}
         type="number"
+        value={100}
+      />
+    </label>
+    <label>
+      Bars number:
+      <input
+        onChange={[Function]}
+        step={1}
+        type="number"
         value={1}
       />
     </label>
     <label>
-      Noise level:
+      Aim life delta:
       <input
         onChange={[Function]}
-        step={0.1}
+        step={1}
         type="number"
-        value={0}
+        value={-1}
       />
     </label>
     <button
@@ -39,9 +48,21 @@ exports[`FirstA should render correctly 1`] = `
     >
       Next
     </button>
+    <button
+      onClick={[Function]}
+      type="button"
+    >
+      Drop
+    </button>
   </form>
+  <AnimationCanvas
+    height={100}
+    sprites={Array []}
+    updateSprites={[Function]}
+    width={100}
+  />
   <MatrixCanvas
-    height={500}
+    height={20}
     matrix={
       Array [
         Array [
@@ -49,13 +70,8 @@ exports[`FirstA should render correctly 1`] = `
         ],
       ]
     }
-    palette={
-      Object {
-        "0": "#FFFFFF",
-        "1": "#000000",
-      }
-    }
-    width={300}
+    palette={[Function]}
+    width={100}
   />
 </div>
 `;

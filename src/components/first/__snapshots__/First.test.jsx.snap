@@ -3,8 +3,9 @@
 exports[`First should render correctly 1`] = `
 <div>
   <h2>
-    The first task
+    The first practicum
   </h2>
   <FirstA />
+  <FirstB />
 </div>
 `;

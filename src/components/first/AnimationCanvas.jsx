@@ -38,12 +38,14 @@ class AnimationCanvas extends Component {
       height: PropTypes.number.isRequired,
       sprites: PropTypes.arrayOf(PropTypes.instanceOf(AnimationSprite)),
       width: PropTypes.number.isRequired,
+      updateSprites: PropTypes.func,
     };
   }
 
   static get defaultProps() {
     return {
       sprites: [],
+      updateSprites: () => {},
     };
   }
 
@@ -56,13 +58,16 @@ class AnimationCanvas extends Component {
       height,
       sprites,
       width,
+      updateSprites,
     } = this.props;
 
     const time = new Date();
     const context = this.canvas.getContext('2d');
     context.clearRect(0, 0, width, height);
 
-    sprites.filter(sprite => !sprite.needDestroy(time)).forEach((sprite) => {
+    sprites.filter(
+      sprite => !sprite.needDestroy(time) && sprite.visible(time),
+    ).forEach((sprite) => {
       drawMatrix({
         context,
         matrix: sprite.image(time),
@@ -74,6 +79,7 @@ class AnimationCanvas extends Component {
       });
     });
 
+    updateSprites(time);
     window.requestAnimationFrame(() => this.animation());
   }
 
