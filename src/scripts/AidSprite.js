@@ -46,13 +46,15 @@ class AidSprite extends AnimationSprite {
 
   #canvasWidth = 0
 
-  #helicopter = 0;
+  #helicopter = null;
 
   #dropX = 0;
 
   #scale = 1;
 
   #velocity = 0;
+
+  #taken = false;
 
   constructor({
     canvasHeight,
@@ -80,8 +82,20 @@ class AidSprite extends AnimationSprite {
       return AidSprite.IMAGE;
   }
 
+  isLanded(time) {
+    return this.offsetY(time) >= this.#canvasHeight - this.height(time) - 1;
+  }
+
+  landingTime() {
+    const dropTime = this.dropTime();
+    return new Date(Number(dropTime) + 1E3 * (this.#canvasHeight
+      - this.#helicopter.offsetY(dropTime)
+      - this.#helicopter.height(dropTime) / 2
+      - this.height(this.birthDate)) / this.#velocity);
+  }
+
   needDestroy(time) {
-    return false;
+    return this.#taken;
   }
 
   offsetX() {
@@ -101,16 +115,12 @@ class AidSprite extends AnimationSprite {
     if (time < this.dropTime()) {
       return 0;
     }
-
-    const offsetY = (
-      this.#helicopter.offsetY(dropTime)
-      + this.#helicopter.height(dropTime) / 2
-      + this.#velocity * (time - dropTime) * 1E-3
-    );
-    if (offsetY + this.height(time) >= this.#canvasHeight) {
-      return this.#canvasHeight - this.height(time);
+    if (time < this.landingTime()) {
+      return this.#helicopter.offsetY(dropTime)
+        + this.#helicopter.height(dropTime) / 2
+        + this.#velocity * (time - dropTime) * 1E-3
     }
-    return offsetY;
+    return this.#canvasHeight - this.height(time);
   }
 
   palette(color) {
@@ -119,6 +129,10 @@ class AidSprite extends AnimationSprite {
 
   scale() {
     return this.#scale;
+  }
+
+  take() {
+    this.#taken = true;
   }
 
   visible(time) {
