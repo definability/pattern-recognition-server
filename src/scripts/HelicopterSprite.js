@@ -73,8 +73,8 @@ class HelicopterSprite extends AnimationSprite {
     ],
   ];
 
-  static REVERSED = HelicopterSprite.IMAGES.map(sprite =>
-    sprite.map(row => [...row].reverse())
+  static REVERSED = HelicopterSprite.IMAGES.map(
+    sprite => sprite.map(row => [...row].reverse()),
   );
 
   static PALETTE = {
@@ -135,10 +135,10 @@ class HelicopterSprite extends AnimationSprite {
           `Impossible lifetime ${Math.round(this.lifetime(time) * 4) % 4}`,
         );
     }
+    return null;
   }
 
   needDestroy(time) {
-    const lifetime = this.lifetime(time);
     const offsetX = this.offsetX(time);
     const width = this.width(time);
     if (this.#moveRight && offsetX >= this.#canvasWidth + width) {

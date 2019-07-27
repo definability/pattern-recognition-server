@@ -21,10 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import assert from 'assert';
-
 import AnimationSprite from './AnimationSprite';
-import AidSprite from './AidSprite';
 
 /**
  * Aim for the aid to save.
@@ -91,7 +88,7 @@ class AimSprite extends AnimationSprite {
         [' ', 'F', ' ', ' ', ' '],
       ],
     ],
-    DEAD:[
+    DEAD: [
       [' ', ' ', 'T', ' ', ' '],
       [' ', ' ', 'T', ' ', ' '],
       ['T', 'T', 'T', 'T', 'T'],
@@ -105,14 +102,14 @@ class AimSprite extends AnimationSprite {
   };
 
   static PALETTE = {
-    'O': '#FF88AA',
-    'W': '#FF88AA',
-    'F': '#AA5500',
-    'X': '#55AA55',
+    ' ': '',
     '-': '#55AA55',
     '|': '#8888EE',
-    'T': '#AAAAAA',
-    ' ': '',
+    F: '#AA5500',
+    O: '#FF88AA',
+    T: '#AAAAAA',
+    W: '#FF88AA',
+    X: '#55AA55',
   };
 
   #aid = null;
@@ -199,8 +196,8 @@ class AimSprite extends AnimationSprite {
     const theoreticalDistance = this.#velocity * (time - landingTime) * 1E-3;
     const distance = (
       this.#maxDistance <= 0 || theoreticalDistance <= this.#maxDistance
-      ? theoreticalDistance
-      : this.#maxDistance
+        ? theoreticalDistance
+        : this.#maxDistance
     );
     const aidOffsetX = this.#aid.offsetX(time);
     if (Math.abs(this.#offsetX - aidOffsetX) <= distance) {
@@ -226,7 +223,7 @@ class AimSprite extends AnimationSprite {
     this.#aid.take();
   }
 
-  visible(time) {
+  visible() {
     return true;
   }
 

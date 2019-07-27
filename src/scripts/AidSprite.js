@@ -21,10 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import assert from 'assert';
-
 import AnimationSprite from './AnimationSprite';
-import HelicopterSprite from './HelicopterSprite';
 
 /**
  * The aid is just a red cross like `+`,
@@ -32,14 +29,14 @@ import HelicopterSprite from './HelicopterSprite';
  */
 class AidSprite extends AnimationSprite {
   static IMAGE = [
-      [' ', '+', ' '],
-      ['+', '+', '+'],
-      [' ', '+', ' '],
+    [' ', '+', ' '],
+    ['+', '+', '+'],
+    [' ', '+', ' '],
   ];
 
   static PALETTE = {
-    '+': '#AA5555',
     ' ': '',
+    '+': '#AA5555',
   };
 
   #canvasHeight = 0;
@@ -78,8 +75,8 @@ class AidSprite extends AnimationSprite {
     return this.scale(time) * AidSprite.IMAGE.length;
   }
 
-  image(time) {
-      return AidSprite.IMAGE;
+  image() {
+    return AidSprite.IMAGE;
   }
 
   isLanded(time) {
@@ -94,7 +91,7 @@ class AidSprite extends AnimationSprite {
       - this.height(this.birthDate)) / this.#velocity);
   }
 
-  needDestroy(time) {
+  needDestroy() {
     return this.#taken;
   }
 
@@ -106,7 +103,7 @@ class AidSprite extends AnimationSprite {
     return this.#helicopter.timeFromOffsetX(
       this.offsetX()
       + this.#helicopter.width(this.#helicopter.birthDate)
-      - this.width(this.birthDate)
+      - this.width(this.birthDate),
     );
   }
 
@@ -118,7 +115,7 @@ class AidSprite extends AnimationSprite {
     if (time < this.landingTime()) {
       return this.#helicopter.offsetY(dropTime)
         + this.#helicopter.height(dropTime) / 2
-        + this.#velocity * (time - dropTime) * 1E-3
+        + this.#velocity * (time - dropTime) * 1E-3;
     }
     return this.#canvasHeight - this.height(time);
   }

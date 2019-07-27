@@ -89,9 +89,9 @@ class AnimationSprite {
   lifetime(time) {
     if (!this.birthDate) {
       throw new Error(
-        "The object was not born yet. "
-        + "Call `startAnimation` method with the birth date "
-        + "or pass the birth date to the object constructor."
+        'The object was not born yet. '
+        + 'Call `startAnimation` method with the birth date '
+        + 'or pass the birth date to the object constructor.',
       );
     }
     return (time - this.birthDate) / 1E3;

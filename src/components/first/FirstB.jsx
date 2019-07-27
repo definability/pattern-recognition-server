@@ -148,16 +148,16 @@ class FirstB extends Component {
   updateSprites(time) {
     const { aids, aims, helicopters } = this.state;
     const existingAids = aids.filter(
-      sprite => !sprite.needDestroy(time)
+      sprite => !sprite.needDestroy(time),
     );
     aims.filter(aim => aim.needDestroy(time) || aim.isDead(time)).forEach(
-      aim => aim.takeAid()
+      aim => aim.takeAid(),
     );
     const existingAims = aims.filter(
-      sprite => !sprite.needDestroy(time)
+      sprite => !sprite.needDestroy(time),
     );
     const existingHelicopters = helicopters.filter(
-      sprite => !sprite.needDestroy(time)
+      sprite => !sprite.needDestroy(time),
     );
     const stateChanges = {};
     let change = false;
@@ -184,8 +184,12 @@ class FirstB extends Component {
   generateX() {
     const { heatmap, barsNumber, width } = this.state;
     const cumulative = heatmap.reduce(
-      (result, value, i) => result.length ? [...result, result[i - 1] + value] : [value],
-      []
+      (result, value, i) => (
+        result.length
+          ? [...result, result[i - 1] + value]
+          : [value]
+      ),
+      [],
     );
     const value = Math.random() * cumulative[cumulative.length - 1];
     const index = cumulative.findIndex(element => element >= value);
@@ -196,7 +200,13 @@ class FirstB extends Component {
    * Create new helicopter to drop an item.
    */
   drop() {
-    const { aimDelta, barsNumber, height, width } = this.state;
+    const {
+      aimDelta,
+      barsNumber,
+      height,
+      width,
+    } = this.state;
+
     const helicopter = new HelicopterSprite({
       birthDate: new Date(),
       canvasWidth: Math.round(width),
