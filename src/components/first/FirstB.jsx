@@ -33,12 +33,12 @@ class FirstB extends Component {
   /**
    * Default canvas width.
    */
-  static WIDTH = 1000;
+  static WIDTH = 100;
 
   /**
    * Height of a sky with helicopters there.
    */
-  static SKY_HEIGHT = 200;
+  static SKY_HEIGHT = 100;
 
   /**
    * Palette for heatmap.
@@ -57,17 +57,78 @@ class FirstB extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      heatmap: [0],
-      width: 1,
-      helicopters: [],
       aids: [],
+      aimDelta: -1,
       aims: [],
+      barsNumber: 1,
+      heatmap: [0],
+      height: FirstB.SKY_HEIGHT,
+      helicopters: [],
+      width: FirstB.WIDTH,
     };
   }
 
   /**
-   * Change image width multiplier.
-   * The width is a positive integer.
+   * Change number of bars in heatmap.
+   */
+  changeAimDelta(inputAimDelta) {
+    let aimDelta = 0;
+    if (inputAimDelta === '-') {
+      aimDelta = -1;
+    } else {
+      aimDelta = Number(inputAimDelta);
+    }
+    if (aimDelta < -1) {
+      aimDelta = -1;
+    }
+    aimDelta = Math.round(aimDelta);
+    this.setState(previousState => ({
+      ...previousState,
+      aids: [],
+      aims: [],
+      aimDelta,
+      helicopters: [],
+    }));
+  }
+
+  /**
+   * Change number of bars in heatmap.
+   */
+  changeBarsNumber(inputBarsNumber) {
+    let barsNumber = Number(inputBarsNumber);
+    if (barsNumber < 1) {
+      barsNumber = 1;
+    }
+    barsNumber = Math.round(barsNumber);
+    this.setState(previousState => ({
+      ...previousState,
+      aids: [],
+      aims: [],
+      barsNumber,
+      helicopters: [],
+    }));
+  }
+
+  /**
+   * Change number of bars in heatmap.
+   */
+  changeHeight(inputHeight) {
+    let height = Number(inputHeight);
+    if (height < 1) {
+      height = 1;
+    }
+    height = Math.round(height);
+    this.setState(previousState => ({
+      ...previousState,
+      aids: [],
+      aims: [],
+      helicopters: [],
+      height,
+    }));
+  }
+
+  /**
+   * Change number of bars in heatmap.
    */
   changeWidth(inputWidth) {
     let width = Number(inputWidth);
@@ -77,6 +138,9 @@ class FirstB extends Component {
     width = Math.round(width);
     this.setState(previousState => ({
       ...previousState,
+      aids: [],
+      aims: [],
+      helicopters: [],
       width,
     }));
   }
@@ -118,33 +182,34 @@ class FirstB extends Component {
   }
 
   generateX() {
-    const { heatmap, width } = this.state;
+    const { heatmap, barsNumber, width } = this.state;
     const cumulative = heatmap.reduce(
       (result, value, i) => result.length ? [...result, result[i - 1] + value] : [value],
       []
     );
     const value = Math.random() * cumulative[cumulative.length - 1];
     const index = cumulative.findIndex(element => element >= value);
-    return (FirstB.WIDTH / width) * (index + 0.5);
+    return (width / barsNumber) * (index + 0.5);
   }
 
   /**
    * Create new helicopter to drop an item.
    */
   drop() {
+    const { aimDelta, barsNumber, height, width } = this.state;
     const helicopter = new HelicopterSprite({
       birthDate: new Date(),
-      canvasWidth: Math.round(FirstB.WIDTH),
-      canvasHeight: FirstB.SKY_HEIGHT,
-      offsetY: Math.random() * (FirstB.SKY_HEIGHT - HelicopterSprite.IMAGES[0].length * 5),
+      canvasWidth: Math.round(width),
+      canvasHeight: height,
+      offsetY: Math.random() * (height - HelicopterSprite.IMAGES[0].length * 5),
       scale: 5,
-      velocity: 100,
+      velocity: 200,
     });
     const aid = new AidSprite({
       birthDate: new Date(),
-      canvasHeight: FirstB.SKY_HEIGHT,
-      canvasWidth: Math.round(FirstB.WIDTH),
-      dropX: Math.random() * (FirstB.WIDTH - AidSprite.IMAGE[0].length),
+      canvasHeight: height,
+      canvasWidth: Math.round(width),
+      dropX: Math.random() * (width - AidSprite.IMAGE[0].length),
       helicopter,
       scale: 5,
       velocity: 200,
@@ -152,9 +217,9 @@ class FirstB extends Component {
     const aim = new AimSprite({
       aid,
       birthDate: new Date(),
-      canvasHeight: FirstB.SKY_HEIGHT,
-      canvasWidth: Math.round(FirstB.WIDTH),
-      maxDistance: 200,
+      canvasHeight: height,
+      canvasWidth: Math.round(width),
+      maxDistance: (aimDelta + 0.5) * width / barsNumber,
       offsetX: this.generateX(),
       scale: 3,
       velocity: 100,
@@ -171,11 +236,12 @@ class FirstB extends Component {
    * Generate new heatmap.
    */
   generateHeatmap() {
-    const { width } = this.state;
+    const { barsNumber } = this.state;
     const heatmap = [Math.random() * 255];
-    for (let i = 1; i < width; i += 1) {
-      const value = heatmap[i - 1] + (Math.random() - 0.5) * 500 / (width ** 0.5);
-
+    for (let i = 1; i < barsNumber; i += 1) {
+      const value = (
+        heatmap[i - 1] + (Math.random() - 0.5) * 500 / (barsNumber ** 0.5)
+      );
       if (value < 0) {
         heatmap.push(0);
       } else if (value > 255) {
@@ -186,16 +252,22 @@ class FirstB extends Component {
     }
     this.setState(previousState => ({
       ...previousState,
+      aids: [],
+      aims: [],
       heatmap: heatmap.map(Math.round),
+      helicopters: [],
     }));
   }
 
   render() {
     const {
-      heatmap,
-      helicopters,
       aids,
+      aimDelta,
       aims,
+      barsNumber,
+      heatmap,
+      height,
+      helicopters,
       width,
     } = this.state;
     return (
@@ -212,6 +284,36 @@ class FirstB extends Component {
               onChange={event => this.changeWidth(event.target.value)}
             />
           </label>
+          <label htmlFor={this.heightInput}>
+            Height:
+            <input
+              ref={(component) => { this.heightInput = component; }}
+              type="number"
+              value={height}
+              step={1}
+              onChange={event => this.changeHeight(event.target.value)}
+            />
+          </label>
+          <label htmlFor={this.barsNumberInput}>
+            Bars number:
+            <input
+              ref={(component) => { this.barsNumberInput = component; }}
+              type="number"
+              value={barsNumber}
+              step={1}
+              onChange={event => this.changeBarsNumber(event.target.value)}
+            />
+          </label>
+          <label htmlFor={this.aimDeltaInput}>
+            Aim life delta:
+            <input
+              ref={(component) => { this.aimDeltaInput = component; }}
+              type="number"
+              value={aimDelta}
+              step={1}
+              onChange={event => this.changeAimDelta(event.target.value)}
+            />
+          </label>
           <button type="button" onClick={() => this.generateHeatmap()}>
             Next
           </button>
@@ -220,14 +322,14 @@ class FirstB extends Component {
           </button>
         </form>
         <AnimationCanvas
-          height={Math.round(FirstB.SKY_HEIGHT)}
-          width={Math.round(FirstB.WIDTH)}
+          height={height}
+          width={Math.round(width)}
           sprites={[...helicopters, ...aids, ...aims]}
           updateSprites={time => this.updateSprites(time)}
         />
         <MatrixCanvas
           height={Math.round(FirstB.HEATMAP_HEIGHT)}
-          width={Math.round(FirstB.WIDTH)}
+          width={width}
           matrix={[heatmap]}
           palette={FirstB.grayPalette}
         />
