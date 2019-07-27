@@ -198,7 +198,7 @@ class AimSprite extends AnimationSprite {
     }
     const theoreticalDistance = this.#velocity * (time - landingTime) * 1E-3;
     const distance = (
-      this.#maxDistance > 0 && theoreticalDistance <= this.#maxDistance
+      this.#maxDistance <= 0 || theoreticalDistance <= this.#maxDistance
       ? theoreticalDistance
       : this.#maxDistance
     );
