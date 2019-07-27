@@ -27,6 +27,7 @@ import MatrixCanvas from './MatrixCanvas';
 import AnimationCanvas from './AnimationCanvas';
 import HelicopterSprite from '../../scripts/HelicopterSprite';
 import AidSprite from '../../scripts/AidSprite';
+import AimSprite from '../../scripts/AimSprite';
 
 class FirstB extends Component {
   /**
@@ -60,6 +61,7 @@ class FirstB extends Component {
       width: 1,
       helicopters: [],
       aids: [],
+      aims: [],
     };
   }
 
@@ -80,8 +82,14 @@ class FirstB extends Component {
   }
 
   updateSprites(time) {
-    const { aids, helicopters } = this.state;
+    const { aids, aims, helicopters } = this.state;
     const existingAids = aids.filter(
+      sprite => !sprite.needDestroy(time)
+    );
+    aims.filter(aim => aim.needDestroy(time) || aim.isDead(time)).forEach(
+      aim => aim.takeAid()
+    );
+    const existingAims = aims.filter(
       sprite => !sprite.needDestroy(time)
     );
     const existingHelicopters = helicopters.filter(
@@ -97,6 +105,10 @@ class FirstB extends Component {
       stateChanges.aids = existingAids;
       change = true;
     }
+    if (existingAims.length !== aims.length) {
+      stateChanges.aims = existingAims;
+      change = true;
+    }
     if (change) {
       this.setState(previousState => ({
         ...previousState,
@@ -105,7 +117,7 @@ class FirstB extends Component {
     }
   }
 
-  generateDropX() {
+  generateX() {
     const { heatmap, width } = this.state;
     const cumulative = heatmap.reduce(
       (result, value, i) => result.length ? [...result, result[i - 1] + value] : [value],
@@ -113,7 +125,7 @@ class FirstB extends Component {
     );
     const value = Math.random() * cumulative[cumulative.length - 1];
     const index = cumulative.findIndex(element => element >= value);
-    return (FirstB.WIDTH / width) * (index + Math.random());
+    return (FirstB.WIDTH / width) * (index + 0.5);
   }
 
   /**
@@ -132,15 +144,26 @@ class FirstB extends Component {
       birthDate: new Date(),
       canvasHeight: FirstB.SKY_HEIGHT,
       canvasWidth: Math.round(FirstB.WIDTH),
-      dropX: this.generateDropX() - AidSprite.IMAGE[0].length * 5,
+      dropX: Math.random() * (FirstB.WIDTH - AidSprite.IMAGE[0].length),
       helicopter,
       scale: 5,
+      velocity: 200,
+    });
+    const aim = new AimSprite({
+      aid,
+      birthDate: new Date(),
+      canvasHeight: FirstB.SKY_HEIGHT,
+      canvasWidth: Math.round(FirstB.WIDTH),
+      maxDistance: 200,
+      offsetX: this.generateX(),
+      scale: 3,
       velocity: 100,
     });
     this.setState(previousState => ({
       ...previousState,
       helicopters: [...previousState.helicopters, helicopter],
       aids: [...previousState.aids, aid],
+      aims: [...previousState.aims, aim],
     }));
   }
 
@@ -172,6 +195,7 @@ class FirstB extends Component {
       heatmap,
       helicopters,
       aids,
+      aims,
       width,
     } = this.state;
     return (
@@ -198,7 +222,7 @@ class FirstB extends Component {
         <AnimationCanvas
           height={Math.round(FirstB.SKY_HEIGHT)}
           width={Math.round(FirstB.WIDTH)}
-          sprites={[...helicopters, ...aids]}
+          sprites={[...helicopters, ...aids, ...aims]}
           updateSprites={time => this.updateSprites(time)}
         />
         <MatrixCanvas
