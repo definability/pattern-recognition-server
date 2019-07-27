@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FirstB should render correctly 1`] = `
+<div>
+  <h3>
+    Task B
+  </h3>
+  <form>
+    <label>
+      Width:
+      <input
+        onChange={[Function]}
+        step={1}
+        type="number"
+        value={100}
+      />
+    </label>
+    <label>
+      Height:
+      <input
+        onChange={[Function]}
+        step={1}
+        type="number"
+        value={100}
+      />
+    </label>
+    <label>
+      Bars number:
+      <input
+        onChange={[Function]}
+        step={1}
+        type="number"
+        value={1}
+      />
+    </label>
+    <label>
+      Aim life delta:
+      <input
+        onChange={[Function]}
+        step={1}
+        type="number"
+        value={-1}
+      />
+    </label>
+    <button
+      onClick={[Function]}
+      type="button"
+    >
+      Next
+    </button>
+    <button
+      onClick={[Function]}
+      type="button"
+    >
+      Drop
+    </button>
+  </form>
+  <AnimationCanvas
+    height={100}
+    sprites={Array []}
+    updateSprites={[Function]}
+    width={100}
+  />
+  <MatrixCanvas
+    height={20}
+    matrix={
+      Array [
+        Array [
+          0,
+        ],
+      ]
+    }
+    palette={[Function]}
+    width={100}
+  />
+</div>
+`;
