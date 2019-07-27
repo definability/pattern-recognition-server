@@ -27,40 +27,65 @@ import AnimationSprite from './AnimationSprite';
 import AidSprite from './AidSprite';
 
 /**
- * Aim for the aid.
+ * Aim for the aid to save.
+ * The aim is a human looking like this
+ *
+ *   O
+ *  ###
+ * # # #
+ * # # #
+ *  # #
+ *  # #
+ *  # #
+ *  # #
+ *
+ * It can run and die.
+ * When its dead, it turns into a cross.
+ * I'm not christian
+ * but this is a recognizable sign of death.
+ *
+ *   #
+ *   #
+ * #####
+ *   #
+ *   ##
+ *   #
+ *  ##
+ *   #
+ *   #
  */
 class AimSprite extends AnimationSprite {
   static IMAGES = {
     NEUTRAL: [
+      [' ', ' ', ' ', ' ', ' '],
       [' ', ' ', 'O', ' ', ' '],
-      [' ', ' ', 'H', ' ', ' '],
       [' ', '-', 'X', '-', ' '],
       ['-', ' ', 'X', ' ', '-'],
       ['W', ' ', 'X', ' ', 'W'],
-      [' ', '|', ' ', '|', ' '],
+      [' ', '|', '|', '|', ' '],
       [' ', '|', ' ', '|', ' '],
       [' ', '|', ' ', '|', ' '],
       [' ', 'F', ' ', 'F', ' '],
     ],
     WALKING: [
       [
+        [' ', ' ', ' ', ' ', ' '],
         [' ', ' ', 'O', ' ', ' '],
-        [' ', ' ', 'H', ' ', ' '],
         [' ', '-', 'X', '-', ' '],
         ['-', ' ', 'X', ' ', 'W'],
         ['W', ' ', 'X', ' ', ' '],
-        [' ', '|', ' ', '|', ' '],
+        [' ', '|', '|', '|', ' '],
         [' ', '|', ' ', '|', ' '],
         [' ', ' ', ' ', '|', ' '],
         [' ', ' ', ' ', 'F', ' '],
       ],
       [
+        [' ', ' ', ' ', ' ', ' '],
         [' ', ' ', 'O', ' ', ' '],
-        [' ', ' ', 'H', ' ', ' '],
         [' ', '-', 'X', '-', ' '],
         ['W', ' ', 'X', ' ', '-'],
         [' ', ' ', 'X', ' ', 'W'],
-        [' ', '|', ' ', '|', ' '],
+        [' ', '|', '|', '|', ' '],
         [' ', '|', ' ', '|', ' '],
         [' ', '|', ' ', ' ', ' '],
         [' ', 'F', ' ', ' ', ' '],
@@ -80,9 +105,8 @@ class AimSprite extends AnimationSprite {
   };
 
   static PALETTE = {
-    'O': '#DDDD55',
-    'H': '#55CC55',
-    'W': '#DDDD55',
+    'O': '#FF88AA',
+    'W': '#FF88AA',
     'F': '#AA5500',
     'X': '#55AA55',
     '-': '#55AA55',
