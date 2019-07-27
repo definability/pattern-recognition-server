@@ -29,6 +29,29 @@ import HelicopterSprite from '../../scripts/HelicopterSprite';
 import AidSprite from '../../scripts/AidSprite';
 import AimSprite from '../../scripts/AimSprite';
 
+/**
+ * The component consists of the three main parts:
+ * - Header
+ * - Control panel
+ * - Map
+ * - Heatmap
+ *
+ * The header contains only text.
+ *
+ * The control panel contains controls
+ * width and height of the map and heatmap canvas,
+ * At the moment, it also sets number of the heatmap bars
+ * and maximal distance between aid and aim.
+ *
+ * Map displays helicopters providing aid to the aim.
+ * Aim position is chosen randomly based on the heatmap.
+ * Aid drop position is chosen randomly at the moment,
+ * but then it should be chosen by the algorithm,
+ * given the heatmap (without knowing actual aim position).
+ *
+ * Heatmap is generated randomly without normalization
+ * and rendered as a sequence of grayscale rectangles.
+ */
 class FirstB extends Component {
   /**
    * Default canvas width.
