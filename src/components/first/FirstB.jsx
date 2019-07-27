@@ -69,15 +69,13 @@ class FirstB extends Component {
   }
 
   /**
-   * Change number of bars in heatmap.
+   * Change the maximal good distance between aim and aid
+   * in heatmap bars.
+   * Zero beans only current bar.
+   * Set `-1` to remove the constraint.
    */
   changeAimDelta(inputAimDelta) {
-    let aimDelta = 0;
-    if (inputAimDelta === '-') {
-      aimDelta = -1;
-    } else {
-      aimDelta = Number(inputAimDelta);
-    }
+    let aimDelta = Number(inputAimDelta);
     if (aimDelta < -1) {
       aimDelta = -1;
     }
