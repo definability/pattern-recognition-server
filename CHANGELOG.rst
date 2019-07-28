@@ -16,21 +16,29 @@ Unreleased_
 Added
 -----
 
-- ReactJS_ project skeleton.
-- ``index`` main view.
-- ``App`` container component with routing.
-- ``Home`` component for the homepage.
-- ``first/First`` container component for the first practicum.
-- ``first/FirstA`` container component
-  with the task ``A`` of the first practicum.
-- ``first/MatrixCanvas`` component
-  to visualize matrices based on provided palette.
-- ``first/AnimationCanvas`` component
-  to visualize and animate ``AnimationSprite`` instances.
-- ``AnimationSprite`` class
-  to store information about animating sprites.
-- ``drawMatrix`` function to draw a matrix on a canvas.
-- ``main`` stylesheet.
+- ReactJS_ client.
+  - ``index`` main view.
+  - ``App`` container component with routing.
+  - ``Home`` component for the homepage.
+  - ``first/First`` container component for the first practicum.
+  - ``first/FirstA`` container component
+    with the task ``A`` of the first practicum.
+  - ``first/FirstB`` container component
+    with the task ``B`` of the first practicum.
+  - ``first/MatrixCanvas`` component
+    to visualize matrices based on provided palette.
+  - ``first/AnimationCanvas`` component
+    to visualize and animate ``AnimationSprite`` instances.
+  - ``AnimationSprite`` class
+    to store information about animating sprites.
+  - ``AimSprite`` with the aim to save.
+  - ``AidSprite`` sprite with aid for the aim.
+  - ``HelicopterSprite`` sprite
+    for helicopter providing the aid.
+  - ``drawMatrix`` function to draw a matrix on a canvas.
+  - ``main`` stylesheet.
+- ExpressJS_ server.
+  - ``index`` module serves the ReactJS static.
 
 .. _Keep a Changelog:
     http://keepachangelog.com/en/1.0.0
@@ -39,3 +47,5 @@ Added
 
 .. _ReactJS:
     https://reactjs.org
+.. _ExpressJS:
+    https://expressjs.com
