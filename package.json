@@ -10,6 +10,7 @@
     "test:eslint": "eslint --ext .jsx,.js ./src/",
     "test:lint": "npm run test:csslint && npm run test:eslint",
     "test:unused": "depcheck --ignores stylelint-config-standard,webpack-cli",
+    "start": "node src/server/index.js",
     "start:dev": "webpack-dev-server"
   },
   "babel": {
