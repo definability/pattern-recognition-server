@@ -23,6 +23,10 @@
       "@babel/preset-react"
     ]
   },
+  "engines": {
+    "node": "^12",
+    "npm": "^6"
+  },
   "jest": {
     "moduleNameMapper": {
       "\\.css$": "<rootDir>/__mocks__/fileMock.js"
