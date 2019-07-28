@@ -13,6 +13,9 @@ and this project adheres to `Semantic Versioning`_.
 Unreleased_
 ===========
 
+0.0.1 - 2019-07-28
+==================
+
 Added
 -----
 
@@ -39,6 +42,9 @@ Added
   - ``main`` stylesheet.
 - ExpressJS_ server.
   - ``index`` module serves the ReactJS static.
+
+.. _Unreleased:
+    https://github.com/char-lie/pattern-recognition-server/compare/v0.0.1...HEAD
 
 .. _Keep a Changelog:
     http://keepachangelog.com/en/1.0.0

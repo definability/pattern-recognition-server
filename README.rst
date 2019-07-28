@@ -7,10 +7,21 @@ Pattern Recognition Server
 
 .. contents::
 
+How to use
+==========
+
+Available on `sprs.herokuapp.com`_.
+If it doesn't respond for several seconds,
+just wait.
+I use free Heroku plan,
+so the application sleeps if it isn't in use for an hour.
+After the response it wakes up again.
+
 How to launch
 =============
 
-Tastes better with nvm_.
+If you want to launch the application locally,
+remember: it tastes better with nvm_.
 
 - Install NodeJS_ 12 or later (you can use ``nvm install node`` for this)
 - Download the project using
@@ -39,3 +50,5 @@ Development mode
     https://github.com/nvm-sh/nvm
 .. _NodeJS:
     https://nodejs.org
+.. _sprs.herokuapp.com:
+    https://sprs.herokuapp.com
