@@ -14,12 +14,26 @@ Tastes better with nvm_.
 
 - Install NodeJS_ 12 or later (you can use ``nvm install node`` for this)
 - Download the project using
-  ``git clone git@github.com:char-lie/pattern-recognition-server.git``
+  ``git clone git@github.com:char-lie/pattern-recognition-server.git``.
+
+Production mode
+---------------
+
 - Go to the project directory and run ``npm i``,
   and it will install all needed dependencies locally.
+- Execute ``npm build`` to build all static files.
+- Execute ``npm start``.
+  You can also provide ``PORT`` environment variable
+  to specify the port to bind the server to.
+
+Development mode
+----------------
+
 - If you want to develop, run ``npm i -D``
   to install development dependencies as well
   (development server, linter, transpilers, etc.)
+- Launch ``npm run start:dev`` to start development server
+  with real-time restart on code changes.
 
 .. _nvm:
     https://github.com/nvm-sh/nvm

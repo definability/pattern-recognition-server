@@ -10,6 +10,7 @@
     "test:eslint": "eslint --ext .jsx,.js ./src/",
     "test:lint": "npm run test:csslint && npm run test:eslint",
     "test:unused": "depcheck --ignores stylelint-config-standard,webpack-cli",
+    "start": "node src/server/index.js",
     "start:dev": "webpack-dev-server"
   },
   "babel": {
@@ -87,6 +88,7 @@
     "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
+    "express": "^4.17.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
