@@ -1,16 +1,15 @@
-const path = require('path');
 const express = require('express');
+const path = require('path');
+const SocketServer = require('ws').Server;
 
-const app = express();
-const port = process.env.PORT || 3000;
-const staticPath = path.join(__dirname, '..', '..', 'dist');
+const PORT = process.env.PORT || 3000;
 
-app.use(express.static(staticPath));
+const STATIC_PATH = path.join(__dirname, '..', '..', 'dist');
+const INDEX_FILE = path.join(STATIC_PATH, 'index.html');
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(staticPath, 'index.html'));
-});
-
-app.listen(port, () => {
-  console.log(`Pattern recognition server is listening on port ${port}`);
-});
+const server = express()
+  .use(express.static(STATIC_PATH))
+  .use((req, res) => res.sendFile(INDEX_FILE))
+  .listen(PORT, () => {
+    console.log(`Pattern recognition server is listening on port ${PORT}`);
+  });
