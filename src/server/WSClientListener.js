@@ -58,34 +58,9 @@ class WSClientListener {
   }
 
   onClose() {
+    clearTimeout(this.ttlTimeout);
     this.afterClose();
   }
 }
 
-/**
- * This client is able to send commands
- * to interact with the server.
- */
-class WSClientListenerExecutor extends WSClientListener {
-  onMessage(message) {
-    console.log(`Executor says '${message}'`);
-  }
-}
-
-/**
- * This client is able only to receive messages
- * as a passive observer.
- * Attempts to send a message end up with connection close.
- */
-class WSClientListenerObserver extends WSClientListener {
-  onMessage(message) {
-    console.log(`Unexpected message from observer '${message}'`);
-    clearTimeout(this.ttlTimeout);
-    this.socket.close();
-  }
-}
-
-module.exports = {
-  WSClientListenerExecutor,
-  WSClientListenerObserver,
-};
+module.exports = WSClientListener;

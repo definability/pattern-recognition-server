@@ -21,32 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-const express = require('express');
-const path = require('path');
-const WSTaskServer = require('./WSTaskServer');
-const WebSocketPool = require('./WebSocketPool');
-const WSClientListenerExecutor = require('./WSClientListenerExecutor')
-const WSClientListenerObserver = require('./WSClientListenerObserver')
+const WSClientListener = require('./WSClientListener');
 
-const PORT = process.env.PORT || 3000;
+/**
+ * This client is able to send commands
+ * to interact with the server.
+ */
+class WSClientListenerExecutor extends WSClientListener {
+  onMessage(message) {
+    console.log(`Executor says '${message}'`);
+  }
+}
 
-const STATIC_PATH = path.join(__dirname, '..', '..', 'dist');
-const INDEX_FILE = path.join(STATIC_PATH, 'index.html');
-
-const server = express()
-  .use(express.static(STATIC_PATH))
-  .use((req, res) => res.sendFile(INDEX_FILE))
-  .listen(PORT, () => {
-    console.log(`Pattern recognition server is listening on port ${PORT}`);
-  });
-
-const socketPool = new WebSocketPool(5);
-
-/* eslint-disable-next-line no-unused-vars */
-const wss = new WSTaskServer({
-  Executor: WSClientListenerExecutor,
-  Observer: WSClientListenerObserver,
-  server,
-  socketPool,
-  taskPath: '/',
-});
+module.exports = WSClientListenerExecutor;
