@@ -25,8 +25,8 @@ const express = require('express');
 const path = require('path');
 const WSTaskServer = require('./WSTaskServer');
 const WebSocketPool = require('./WebSocketPool');
-const WSClientListenerExecutor = require('./WSClientListenerExecutor')
-const WSClientListenerObserver = require('./WSClientListenerObserver')
+const WSClientListenerExecutor = require('./WSClientListenerExecutor');
+const WSClientListenerObserver = require('./WSClientListenerObserver');
 
 const PORT = process.env.PORT || 3000;
 
