@@ -42,9 +42,9 @@ class WSClientListener {
   }
 
   registerListeners(socket) {
-    socket.on('error', error => this.onError(error));
+    socket.on('error', (error) => this.onError(error));
     socket.on('close', () => this.onClose());
-    socket.on('message', message => this.onMessage(message));
+    socket.on('message', (message) => this.onMessage(message));
   }
 
   onError(error) {

@@ -82,7 +82,7 @@ class WSTaskServer {
    * Register error and new client connection events listeners.
    */
   registerListeners(server) {
-    server.on('error', error => this.onError(error));
+    server.on('error', (error) => this.onError(error));
     server.on(
       'connection',
       (socket, request) => this.onConnection(socket, request),
