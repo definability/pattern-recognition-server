@@ -38,28 +38,6 @@ import drawMatrix from '../../scripts/drawMatrix';
  *   - numbers with indices of colors from the palette
  */
 class MatrixCanvas extends Component {
-  static get propTypes() {
-    return {
-      height: PropTypes.number.isRequired,
-      matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-      ]))).isRequired,
-      width: PropTypes.number.isRequired,
-      palette: PropTypes.oneOfType([
-        PropTypes.objectOf(PropTypes.string),
-        PropTypes.arrayOf(PropTypes.string),
-        PropTypes.func,
-      ]),
-    };
-  }
-
-  static get defaultProps() {
-    return {
-      palette: color => color,
-    };
-  }
-
   componentDidUpdate() {
     const {
       matrix,
@@ -92,5 +70,23 @@ class MatrixCanvas extends Component {
     );
   }
 }
+
+MatrixCanvas.propTypes = {
+  height: PropTypes.number.isRequired,
+  matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]))).isRequired,
+  width: PropTypes.number.isRequired,
+  palette: PropTypes.oneOfType([
+    PropTypes.objectOf(PropTypes.string),
+    PropTypes.arrayOf(PropTypes.string),
+    PropTypes.func,
+  ]),
+};
+
+MatrixCanvas.defaultProps = {
+  palette: (color) => color,
+};
 
 export default MatrixCanvas;

@@ -33,22 +33,6 @@ import drawMatrix from '../../scripts/drawMatrix';
  * @param sprites with AnimationSprite instances to render and animate
  */
 class AnimationCanvas extends Component {
-  static get propTypes() {
-    return {
-      height: PropTypes.number.isRequired,
-      sprites: PropTypes.arrayOf(PropTypes.instanceOf(AnimationSprite)),
-      width: PropTypes.number.isRequired,
-      updateSprites: PropTypes.func,
-    };
-  }
-
-  static get defaultProps() {
-    return {
-      sprites: [],
-      updateSprites: () => {},
-    };
-  }
-
   componentDidMount() {
     window.requestAnimationFrame(() => this.animation());
   }
@@ -66,7 +50,7 @@ class AnimationCanvas extends Component {
     context.clearRect(0, 0, width, height);
 
     sprites.filter(
-      sprite => !sprite.needDestroy(time) && sprite.visible(time),
+      (sprite) => !sprite.needDestroy(time) && sprite.visible(time),
     ).forEach((sprite) => {
       drawMatrix({
         context,
@@ -96,5 +80,17 @@ class AnimationCanvas extends Component {
     );
   }
 }
+
+AnimationCanvas.propTypes = {
+  height: PropTypes.number.isRequired,
+  sprites: PropTypes.arrayOf(PropTypes.instanceOf(AnimationSprite)),
+  width: PropTypes.number.isRequired,
+  updateSprites: PropTypes.func,
+};
+
+AnimationCanvas.defaultProps = {
+  sprites: [],
+  updateSprites: () => {},
+};
 
 export default AnimationCanvas;
