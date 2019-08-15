@@ -175,12 +175,10 @@ class HelicopterSprite extends AnimationSprite {
 
   timeFromOffsetX(offsetX) {
     if (this.#moveRight) {
-      return new Date(Number(this.birthDate)
-        + 1E3 * offsetX / this.#velocity);
+      return new Date(Number(this.birthDate) + (1E3 * offsetX) / this.#velocity);
     }
-    return new Date(Number(this.birthDate)
-      + 1E3 * (this.#canvasWidth - offsetX + this.width(this.birthDate))
-        / this.#velocity);
+    const distance = this.#canvasWidth - offsetX + this.width(this.birthDate);
+    return new Date(Number(this.birthDate) + (1E3 * distance) / this.#velocity);
   }
 }
 

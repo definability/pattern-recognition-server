@@ -271,7 +271,7 @@ class FirstB extends Component {
     const heatmap = [Math.random() * 255];
     for (let i = 1; i < barsNumber; i += 1) {
       const value = (
-        heatmap[i - 1] + (Math.random() - 0.5) * 500 / (barsNumber ** 0.5)
+        heatmap[i - 1] + ((Math.random() - 0.5) * 500) / (barsNumber ** 0.5)
       );
       if (value < 0) {
         heatmap.push(0);

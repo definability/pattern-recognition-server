@@ -85,10 +85,11 @@ class AidSprite extends AnimationSprite {
 
   landingTime() {
     const dropTime = this.dropTime();
-    return new Date(Number(dropTime) + 1E3 * (this.#canvasHeight
+    const dropHeight = this.#canvasHeight
       - this.#helicopter.offsetY(dropTime)
       - this.#helicopter.height(dropTime) / 2
-      - this.height(this.birthDate)) / this.#velocity);
+      - this.height(this.birthDate);
+    return new Date(Number(dropTime) + (1E3 * dropHeight) / this.#velocity);
   }
 
   needDestroy() {
