@@ -50,7 +50,7 @@ class AnimationCanvas extends Component {
     context.clearRect(0, 0, width, height);
 
     sprites.filter(
-      sprite => !sprite.needDestroy(time) && sprite.visible(time),
+      (sprite) => !sprite.needDestroy(time) && sprite.visible(time),
     ).forEach((sprite) => {
       drawMatrix({
         context,

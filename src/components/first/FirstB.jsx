@@ -68,7 +68,7 @@ class FirstB extends Component {
    * Converts color value from `[0; 255]`
    * to `[#000000; #FFFFFF]` grayscale.
    */
-  static grayPalette = color => (
+  static grayPalette = (color) => (
     `#${color.toString(16).toUpperCase().padStart(2, '0').repeat(3)}`
   );
 
@@ -103,7 +103,7 @@ class FirstB extends Component {
       aimDelta = -1;
     }
     aimDelta = Math.round(aimDelta);
-    this.setState(previousState => ({
+    this.setState((previousState) => ({
       ...previousState,
       aids: [],
       aims: [],
@@ -121,7 +121,7 @@ class FirstB extends Component {
       barsNumber = 1;
     }
     barsNumber = Math.round(barsNumber);
-    this.setState(previousState => ({
+    this.setState((previousState) => ({
       ...previousState,
       aids: [],
       aims: [],
@@ -139,7 +139,7 @@ class FirstB extends Component {
       height = 1;
     }
     height = Math.round(height);
-    this.setState(previousState => ({
+    this.setState((previousState) => ({
       ...previousState,
       aids: [],
       aims: [],
@@ -157,7 +157,7 @@ class FirstB extends Component {
       width = 1;
     }
     width = Math.round(width);
-    this.setState(previousState => ({
+    this.setState((previousState) => ({
       ...previousState,
       aids: [],
       aims: [],
@@ -169,16 +169,16 @@ class FirstB extends Component {
   updateSprites(time) {
     const { aids, aims, helicopters } = this.state;
     const existingAids = aids.filter(
-      sprite => !sprite.needDestroy(time),
+      (sprite) => !sprite.needDestroy(time),
     );
-    aims.filter(aim => aim.needDestroy(time) || aim.isDead(time)).forEach(
-      aim => aim.takeAid(),
+    aims.filter((aim) => aim.needDestroy(time) || aim.isDead(time)).forEach(
+      (aim) => aim.takeAid(),
     );
     const existingAims = aims.filter(
-      sprite => !sprite.needDestroy(time),
+      (sprite) => !sprite.needDestroy(time),
     );
     const existingHelicopters = helicopters.filter(
-      sprite => !sprite.needDestroy(time),
+      (sprite) => !sprite.needDestroy(time),
     );
     const stateChanges = {};
     let change = false;
@@ -195,7 +195,7 @@ class FirstB extends Component {
       change = true;
     }
     if (change) {
-      this.setState(previousState => ({
+      this.setState((previousState) => ({
         ...previousState,
         ...stateChanges,
       }));
@@ -213,7 +213,7 @@ class FirstB extends Component {
       [],
     );
     const value = Math.random() * cumulative[cumulative.length - 1];
-    const index = cumulative.findIndex(element => element >= value);
+    const index = cumulative.findIndex((element) => element >= value);
     return (width / barsNumber) * (index + 0.5);
   }
 
@@ -250,12 +250,12 @@ class FirstB extends Component {
       birthDate: new Date(),
       canvasHeight: height,
       canvasWidth: Math.round(width),
-      maxDistance: (aimDelta + 0.5) * width / barsNumber,
+      maxDistance: ((aimDelta + 0.5) * width) / barsNumber,
       offsetX: this.generateX(),
       scale: 3,
       velocity: 100,
     });
-    this.setState(previousState => ({
+    this.setState((previousState) => ({
       ...previousState,
       helicopters: [...previousState.helicopters, helicopter],
       aids: [...previousState.aids, aid],
@@ -281,7 +281,7 @@ class FirstB extends Component {
         heatmap.push(value);
       }
     }
-    this.setState(previousState => ({
+    this.setState((previousState) => ({
       ...previousState,
       aids: [],
       aims: [],
@@ -312,7 +312,7 @@ class FirstB extends Component {
               type="number"
               value={width}
               step={1}
-              onChange={event => this.changeWidth(event.target.value)}
+              onChange={(event) => this.changeWidth(event.target.value)}
             />
           </label>
           <label htmlFor={this.heightInput}>
@@ -322,7 +322,7 @@ class FirstB extends Component {
               type="number"
               value={height}
               step={1}
-              onChange={event => this.changeHeight(event.target.value)}
+              onChange={(event) => this.changeHeight(event.target.value)}
             />
           </label>
           <label htmlFor={this.barsNumberInput}>
@@ -332,7 +332,7 @@ class FirstB extends Component {
               type="number"
               value={barsNumber}
               step={1}
-              onChange={event => this.changeBarsNumber(event.target.value)}
+              onChange={(event) => this.changeBarsNumber(event.target.value)}
             />
           </label>
           <label htmlFor={this.aimDeltaInput}>
@@ -342,7 +342,7 @@ class FirstB extends Component {
               type="number"
               value={aimDelta}
               step={1}
-              onChange={event => this.changeAimDelta(event.target.value)}
+              onChange={(event) => this.changeAimDelta(event.target.value)}
             />
           </label>
           <button type="button" onClick={() => this.generateHeatmap()}>
@@ -356,7 +356,7 @@ class FirstB extends Component {
           height={height}
           width={Math.round(width)}
           sprites={[...helicopters, ...aids, ...aims]}
-          updateSprites={time => this.updateSprites(time)}
+          updateSprites={(time) => this.updateSprites(time)}
         />
         <MatrixCanvas
           height={Math.round(FirstB.HEATMAP_HEIGHT)}

@@ -156,7 +156,7 @@ class FirstA extends Component {
       height = 1;
     }
     height = Math.round(height);
-    this.setState(previousState => ({
+    this.setState((previousState) => ({
       ...previousState,
       height,
     }));
@@ -173,7 +173,7 @@ class FirstA extends Component {
     } else if (noiseLevel > 1) {
       noiseLevel = 1;
     }
-    this.setState(previousState => ({
+    this.setState((previousState) => ({
       ...previousState,
       noiseLevel,
     }));
@@ -189,7 +189,7 @@ class FirstA extends Component {
       width = 1;
     }
     width = Math.round(width);
-    this.setState(previousState => ({
+    this.setState((previousState) => ({
       ...previousState,
       width,
     }));
@@ -232,7 +232,7 @@ class FirstA extends Component {
       }
     });
 
-    this.setState(previousState => ({
+    this.setState((previousState) => ({
       ...previousState,
       matrix,
     }));
@@ -256,7 +256,7 @@ class FirstA extends Component {
               type="number"
               value={width}
               step={1}
-              onChange={event => this.changeWidth(event.target.value)}
+              onChange={(event) => this.changeWidth(event.target.value)}
             />
           </label>
           <label htmlFor={this.heightInput}>
@@ -266,7 +266,7 @@ class FirstA extends Component {
               type="number"
               value={height}
               step={1}
-              onChange={event => this.changeHeight(event.target.value)}
+              onChange={(event) => this.changeHeight(event.target.value)}
             />
           </label>
           <label htmlFor={this.noiseLevelInput}>
@@ -276,7 +276,7 @@ class FirstA extends Component {
               type="number"
               value={noiseLevel}
               step={0.1}
-              onChange={event => this.changeNoiseLevel(event.target.value)}
+              onChange={(event) => this.changeNoiseLevel(event.target.value)}
             />
           </label>
           <button type="button" onClick={() => this.generateMatrix()}>

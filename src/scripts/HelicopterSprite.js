@@ -74,7 +74,7 @@ class HelicopterSprite extends AnimationSprite {
   ];
 
   static REVERSED = HelicopterSprite.IMAGES.map(
-    sprite => sprite.map(row => [...row].reverse()),
+    (sprite) => sprite.map((row) => [...row].reverse()),
   );
 
   static PALETTE = {
