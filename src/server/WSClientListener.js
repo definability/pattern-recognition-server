@@ -21,14 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-const WS_TTL_MILLISECONDS = 30 * 1E3;
+const DEFAULT_WS_TTL_MILLISECONDS = 30 * 1E3;
 
 class WSClientListener {
   constructor({
     connectionDate,
     socket,
     afterClose = () => {},
-    ttl,
+    ttl = DEFAULT_WS_TTL_MILLISECONDS,
   }) {
     this.connectionDate = connectionDate;
     this.socket = socket;
@@ -36,7 +36,7 @@ class WSClientListener {
     this.ttl = ttl;
     this.ttlTimeout = setTimeout(() => {
       socket.close();
-    }, WS_TTL_MILLISECONDS);
+    }, this.ttl);
 
     this.registerListeners(this.socket);
   }
@@ -49,6 +49,7 @@ class WSClientListener {
 
   onError(error) {
     console.error(error);
+    clearTimeout(this.ttlTimeout);
     this.afterClose();
   }
 
