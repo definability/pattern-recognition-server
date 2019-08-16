@@ -38,21 +38,19 @@ const DEFAULT_MAX_CLIENTS = 100;
  */
 class WSTaskServer {
   constructor({
-    server,
-    maxPayload = MAX_PAYLOAD,
-    maxClients = DEFAULT_MAX_CLIENTS,
     clientTTL = DEFAULT_CLIENT_TTL,
-    taskPath,
-    socketPool,
-    Observer,
     Executor,
+    maxPayload = MAX_PAYLOAD,
+    Observer,
+    server,
+    socketPool,
+    taskPath,
   }) {
+    this.clientTTL = clientTTL;
     this.Executor = Executor;
-    this.maxClients = maxClients;
     this.Observer = Observer;
     this.socketPool = socketPool;
     this.taskPath = taskPath;
-    this.clientTTL = clientTTL;
 
     this.sessions = new Map();
 
