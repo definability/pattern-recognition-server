@@ -55,6 +55,15 @@ class WSClientListener {
   }
 
   onClose() {
+    console.log(`Close client`);
+  }
+
+  send(message) {
+    this.socket.send(message);
+  }
+
+  close() {
+    this.socket.close();
   }
 
   _registerListeners(socket) {
