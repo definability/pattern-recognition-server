@@ -142,7 +142,13 @@ class WSTaskServer {
     };
 
     if (this.sessions.has(sessionId)) {
-      this.sessions.get(sessionId).add(new this.Observer(clientData));
+      const observer = new this.Observer({
+        ...clientData,
+      });
+      observer.afterClose = () => {
+        this.removeObserver(sessionId, observer);
+      };
+      this.sessions.get(sessionId).add(observer);
       this.broadcastObservers(sessionId, 'New observer connected');
       console.log(`Connect to ${sessionId} session`);
     } else {
@@ -169,6 +175,13 @@ class WSTaskServer {
         client.send(`Executor: ${message}`);
       }
     });
+  }
+
+  removeObserver(sessionId, client) {
+    if (sessions.has(sessionId)) {
+      this.sessions.get(sessionId).delete(client);
+      this.socketPool.remove(client.socket);
+    }
   }
 
   closeSession(sessionId) {
