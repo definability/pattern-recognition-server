@@ -25,32 +25,29 @@ const DEFAULT_WS_TTL_MILLISECONDS = 30 * 1E3;
 
 class WSClientListener {
   constructor({
+    afterClose = () => {},
+    afterMessage = () => {},
     connectionDate,
     socket,
-    afterClose = () => {},
     ttl = DEFAULT_WS_TTL_MILLISECONDS,
   }) {
+    this.afterClose = afterClose;
+    this.afterMessage = afterMessage;
     this.connectionDate = connectionDate;
     this.socket = socket;
-    this.afterClose = afterClose;
     this.ttl = ttl;
-    this.ttlTimeout = setTimeout(() => {
-      socket.close();
-    }, this.ttl);
+    this.ttlTimeout = setTimeout(
+      () => {
+        socket.close();
+      },
+      this.ttl,
+    );
 
-    this.registerListeners(this.socket);
-  }
-
-  registerListeners(socket) {
-    socket.on('error', (error) => this.onError(error));
-    socket.on('close', () => this.onClose());
-    socket.on('message', (message) => this.onMessage(message));
+    this._registerListeners(this.socket);
   }
 
   onError(error) {
     console.error(error);
-    clearTimeout(this.ttlTimeout);
-    this.afterClose();
   }
 
   onMessage(message) {
@@ -58,7 +55,28 @@ class WSClientListener {
   }
 
   onClose() {
+  }
+
+  _registerListeners(socket) {
+    socket.on('error', (error) => this._onError(error));
+    socket.on('close', () => this._onClose());
+    socket.on('message', (message) => this._onMessage(message));
+  }
+
+  _onError(error) {
     clearTimeout(this.ttlTimeout);
+    this.onError(error);
+    this.afterClose();
+  }
+
+  _onMessage(message) {
+    this.onMessage(message);
+    this.afterMessage(message);
+  }
+
+  _onClose() {
+    clearTimeout(this.ttlTimeout);
+    this.onClose();
     this.afterClose();
   }
 }
