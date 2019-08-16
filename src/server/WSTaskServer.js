@@ -137,26 +137,48 @@ class WSTaskServer {
   }) {
     const clientData = {
       connectionDate: new Date(),
-      onClose: () => {
-        this.sessions.delete(socket);
-      },
       socket,
       ttl: this.clientTTL,
     };
 
     if (this.sessions.has(sessionId)) {
-      this.sessions.get(sessionId).set(
-        socket,
-        new this.Observer(clientData),
-      );
+      this.sessions.get(sessionId).add(new this.Observer(clientData));
+      this.broadcastObservers(sessionId, 'New observer connected');
       console.log(`Connect to ${sessionId} session`);
     } else {
+      const executor = new this.Executor({
+        ...clientData,
+        afterMessage: (message) => {
+          this.broadcastObservers(sessionId, message);
+        },
+        afterClose: () => {
+          this.closeSession(sessionId);
+        },
+      });
       this.sessions.set(
         sessionId,
-        new Map([socket, new this.Executor(clientData)]),
+        new Set([executor]),
       );
       console.log(`Open new session ${sessionId}`);
     }
+  }
+
+  broadcastObservers(sessionId, message) {
+    this.sessions.get(sessionId).forEach((client) => {
+      if (client instanceof this.Observer) {
+        client.send(`Executor: ${message}`);
+      }
+    });
+  }
+
+  closeSession(sessionId) {
+    this.sessions.get(sessionId).forEach((client) => {
+      client.close();
+      this.socketPool.remove(client.socket);
+    });
+    this.sessions.get(sessionId).clear();
+    this.sessions.delete(sessionId);
+    console.log(`Close the session ${sessionId}`);
   }
 }
 
