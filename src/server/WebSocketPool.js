@@ -50,6 +50,10 @@ class WebSocketPool {
     this.pool.delete(socket);
     return this;
   }
+
+  forEach(callback) {
+    this.pool.forEach(callback);
+  }
 }
 
 module.exports = WebSocketPool;
