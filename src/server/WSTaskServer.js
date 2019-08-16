@@ -118,7 +118,7 @@ class WSTaskServer {
       this.addClient({ socket, sessionId });
     } catch (error) {
       console.error(
-        `Cannot connect a client to session ${sessionId}, because ${error}`,
+        `Cannot connect a client to session ${sessionId}. ${error}`,
       );
       this.socketPool.remove(socket);
       socket.close();
