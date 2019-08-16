@@ -47,7 +47,7 @@ class WebSocketPool {
         'The pool doesn\'t have the socket you want to remove.',
       );
     }
-    this.pool.remove(socket);
+    this.pool.delete(socket);
     return this;
   }
 }
