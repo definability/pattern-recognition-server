@@ -81,6 +81,7 @@ class WSTaskServer {
    */
   registerListeners(server) {
     server.on('error', (error) => this.onError(error));
+    server.on('close', () => this.onClose(error));
     server.on(
       'connection',
       (socket, request) => this.onConnection(socket, request),
@@ -92,6 +93,10 @@ class WSTaskServer {
    */
   onError(error) {
     console.error(error);
+  }
+
+  onClose() {
+    console.log('Close the server');
   }
 
   /**
