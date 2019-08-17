@@ -28,6 +28,7 @@ const WebSocketPool = require('./WebSocketPool');
 const WSExecutorZero = require('./WSExecutorZero');
 
 const PORT = process.env.PORT || 3000;
+const MAX_CONNECTED_CLIENTS = Number(process.env.MAX_CONNECTED_CLIENTS) || 1;
 
 const STATIC_PATH = path.join(__dirname, '..', '..', 'dist');
 const INDEX_FILE = path.join(STATIC_PATH, 'index.html');
@@ -39,7 +40,7 @@ const server = express()
     console.log(`Pattern recognition server is listening on port ${PORT}`);
   });
 
-const socketPool = new WebSocketPool(5);
+const socketPool = new WebSocketPool(MAX_CONNECTED_CLIENTS);
 
 /* eslint-disable-next-line no-unused-vars */
 const wss = new WSTaskServer({
