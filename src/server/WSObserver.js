@@ -33,6 +33,10 @@ class WSObserver extends WSClientListener {
     console.log(`Unexpected message from observer '${message}'`);
     this.socket.close();
   }
+
+  send(message) {
+    this.socket.send(message);
+  }
 }
 
 module.exports = WSObserver;
