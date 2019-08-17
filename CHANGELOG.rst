@@ -20,6 +20,7 @@ Added
 -----
 
 - ReactJS_ client.
+
   - ``index`` main view.
   - ``App`` container component with routing.
   - ``Home`` component for the homepage.
@@ -40,8 +41,19 @@ Added
     for helicopter providing the aid.
   - ``drawMatrix`` function to draw a matrix on a canvas.
   - ``main`` stylesheet.
-- ExpressJS_ server.
+
+- ExpressJS_ ``server`` module.
+
   - ``index`` module serves the ReactJS static.
+
+- WebSocket_ ``server`` module.
+
+  - ``WSClientListener`` base class to serve connected clients.
+  - ``WSObserver`` listener for passive observers of tasks.
+  - ``WSExecutor`` listener/emitter to serve task executor.
+  - ``WSExecutorZero`` checker for task zero.
+  - ``WSTaskServer`` tasks manager.
+  - ``WebSocketPool`` serverwise connection pool.
 
 .. _Unreleased:
     https://github.com/char-lie/pattern-recognition-server/compare/v0.0.1...HEAD
@@ -55,3 +67,5 @@ Added
     https://reactjs.org
 .. _ExpressJS:
     https://expressjs.com
+.. _WebSocket:
+    https://github.com/websockets/ws
