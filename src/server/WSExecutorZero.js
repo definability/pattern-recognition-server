@@ -40,13 +40,17 @@ class WSExecutorZero extends WSExecutor {
     START: 'START',
     SOLVE: 'SOLVE',
   };
+
   static OPERATORS = {
     '+': (x, y) => x + y,
     '-': (x, y) => x - y,
     '*': (x, y) => x * y,
   }
+
   static PATH = '/zero/';
+
   static DEFAULT_TTL_SECONDS = 60;
+
   static DEFAULT_TTL = WSExecutorZero.DEFAULT_TTL_SECONDS * 1E3;
 
   constructor(data) {
@@ -94,7 +98,7 @@ class WSExecutorZero extends WSExecutor {
       this.expression[0],
       this.expression[2],
     );
-    if (Number(message) !==  solution) {
+    if (Number(message) !== solution) {
       console.error('Wrong answer');
       this.socket.close();
       return;

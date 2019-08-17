@@ -81,7 +81,7 @@ class WSTaskServer {
    * after the task path.
    */
   verifyClient(info) {
-    const url = info.req.url;
+    const { url } = info.req;
     return !this.socketPool.full()
       && typeof url === 'string'
       && typeof this.ExecutorFactory(url) === 'function';
@@ -126,7 +126,7 @@ class WSTaskServer {
     this.socketPool.add(socket);
     const Executor = this.ExecutorFactory(request.url);
     if (typeof Executor !== 'function') {
-      throw new Error("Executor is not a function");
+      throw new Error('Executor is not a function');
     }
     const sessionId = request.url.substr(Executor.PATH.length);
     try {

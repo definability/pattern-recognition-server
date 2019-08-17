@@ -60,7 +60,7 @@ class WSClientListener {
   }
 
   onClose() {
-    console.log(`Close client`);
+    console.log('Close client');
   }
 
   close() {

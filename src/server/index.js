@@ -50,15 +50,14 @@ const wss = new WSTaskServer({
     if (typeof path !== 'string') {
       return null;
     }
-    const executors = [WSExecutorZero].filter((Executor) => {
-      return (
-        path.startsWith(Executor.PATH)
+    const executors = [WSExecutorZero].filter((Executor) => (
+      path.startsWith(Executor.PATH)
         && path.length > Executor.PATH.length
-      );
-    });
+    ));
     if (!executors.length) {
       return null;
-    } else if (executors.length > 1) {
+    }
+    if (executors.length > 1) {
       throw new Error(`${executors.length} executors left.`);
     }
     return executors[0];
