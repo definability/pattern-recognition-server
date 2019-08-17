@@ -25,8 +25,7 @@ const express = require('express');
 const path = require('path');
 const WSTaskServer = require('./WSTaskServer');
 const WebSocketPool = require('./WebSocketPool');
-const WSClientListenerExecutor = require('./WSClientListenerExecutor');
-const WSClientListenerObserver = require('./WSClientListenerObserver');
+const WSClientListenerExecutorZero = require('./zero/WSClientListenerExecutorZero');
 
 const PORT = process.env.PORT || 3000;
 
@@ -44,9 +43,23 @@ const socketPool = new WebSocketPool(5);
 
 /* eslint-disable-next-line no-unused-vars */
 const wss = new WSTaskServer({
-  Executor: WSClientListenerExecutor,
-  Observer: WSClientListenerObserver,
   server,
   socketPool,
-  taskPath: '/',
+  ExecutorFactory: (path) => {
+    if (typeof path !== 'string') {
+      return null;
+    }
+    const executors = [WSClientListenerExecutorZero].filter((Executor) => {
+      return (
+        path.startsWith(Executor.PATH)
+        && path.length > Executor.PATH.length
+      );
+    });
+    if (!executors.length) {
+      return null;
+    } else if (executors.length > 1) {
+      throw new Error(`${executors.length} executors left.`);
+    }
+    return executors[0];
+  },
 });
