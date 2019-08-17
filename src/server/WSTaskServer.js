@@ -157,7 +157,7 @@ class WSTaskServer {
         this.removeObserver(sessionId, observer);
       };
       this.sessions.get(sessionId).add(observer);
-      this.broadcastObservers(sessionId, 'New observer connected');
+      this.broadcastObservers(sessionId, 'Server: New observer connected');
       console.log(`Connect to ${sessionId} session`);
     } else {
       if (typeof this.ExecutorFactory(path) !== 'function') {
@@ -167,14 +167,14 @@ class WSTaskServer {
       const executor = new (this.ExecutorFactory(path))({
         ...clientData,
         afterMessage: (message) => {
-          this.broadcastObservers(sessionId, message);
+          this.broadcastObservers(sessionId, `Executor: ${message}`);
         },
         afterClose: () => {
           this.closeSession(sessionId);
         },
         send: (message) => {
           socket.send(message);
-          this.broadcastObservers(sessionId, message);
+          this.broadcastObservers(sessionId, `Server: ${message}`);
         },
       });
       this.sessions.set(
