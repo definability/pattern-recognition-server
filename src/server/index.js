@@ -25,7 +25,7 @@ const express = require('express');
 const path = require('path');
 const WSTaskServer = require('./WSTaskServer');
 const WebSocketPool = require('./WebSocketPool');
-const WSExecutorZero = require('./zero/WSExecutorZero');
+const WSExecutorZero = require('./WSExecutorZero');
 
 const PORT = process.env.PORT || 3000;
 
