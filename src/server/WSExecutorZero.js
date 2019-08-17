@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-const WSExecutor = require('../WSExecutor');
+const WSExecutor = require('./WSExecutor');
 
 /**
  * This client is able to send commands
