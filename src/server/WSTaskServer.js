@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 const WebSocket = require('ws');
+const WSClientListenerObserver = require('./WSClientListenerObserver');
 
 const MAX_PAYLOAD_KB = 1;
 const MAX_PAYLOAD = Math.round(MAX_PAYLOAD_KB * (2 ** 10));
@@ -39,16 +40,14 @@ const DEFAULT_MAX_CLIENTS = 100;
 class WSTaskServer {
   constructor({
     clientTTL = DEFAULT_CLIENT_TTL,
-    Executor,
+    ExecutorFactory,
     maxPayload = MAX_PAYLOAD,
-    Observer,
     server,
     socketPool,
     taskPath,
   }) {
     this.clientTTL = clientTTL;
-    this.Executor = Executor;
-    this.Observer = Observer;
+    this.ExecutorFactory = ExecutorFactory;
     this.socketPool = socketPool;
     this.taskPath = taskPath;
 
@@ -57,7 +56,7 @@ class WSTaskServer {
     this.server = new WebSocket.Server({
       maxPayload,
       server,
-      verifyClient: () => this.verifyClient,
+      verifyClient: (info) => this.verifyClient(info),
     });
 
     this.registerListeners(this.server);
@@ -69,11 +68,11 @@ class WSTaskServer {
    * Also, it should have session identifier
    * after the task path.
    */
-  verifyClient(client) {
+  verifyClient(info) {
+    const url = info.req.url;
     return !this.socketPool.full()
-      && typeof client.url === 'string'
-      && client.url.startsWith(this.taskPath)
-      && client.url.length > this.taskPath;
+      && typeof url === 'string'
+      && typeof this.ExecutorFactory(url) === 'function';
   }
 
   /**
@@ -113,9 +112,17 @@ class WSTaskServer {
       return;
     }
     this.socketPool.add(socket);
-    const sessionId = request.url.substr(this.taskPath.length);
+    const Executor = this.ExecutorFactory(request.url);
+    if (typeof Executor !== 'function') {
+      throw new Error("Executor is not a function");
+    }
+    const sessionId = request.url.substr(Executor.PATH.length);
     try {
-      this.addClient({ socket, sessionId });
+      this.addClient({
+        path: request.url,
+        sessionId,
+        socket,
+      });
     } catch (error) {
       console.error(
         `Cannot connect a client to session ${sessionId}. ${error}`,
@@ -132,8 +139,9 @@ class WSTaskServer {
    * but listen to messages.
    */
   addClient({
-    socket,
+    path,
     sessionId,
+    socket,
   }) {
     const clientData = {
       connectionDate: new Date(),
@@ -142,7 +150,7 @@ class WSTaskServer {
     };
 
     if (this.sessions.has(sessionId)) {
-      const observer = new this.Observer({
+      const observer = new WSClientListenerObserver({
         ...clientData,
       });
       observer.afterClose = () => {
@@ -152,13 +160,21 @@ class WSTaskServer {
       this.broadcastObservers(sessionId, 'New observer connected');
       console.log(`Connect to ${sessionId} session`);
     } else {
-      const executor = new this.Executor({
+      if (typeof this.ExecutorFactory(path) !== 'function') {
+        throw new Error(`Executor for ${path} is not found`);
+        return;
+      }
+      const executor = new (this.ExecutorFactory(path))({
         ...clientData,
         afterMessage: (message) => {
           this.broadcastObservers(sessionId, message);
         },
         afterClose: () => {
           this.closeSession(sessionId);
+        },
+        send: (message) => {
+          socket.send(message);
+          this.broadcastObservers(sessionId, message);
         },
       });
       this.sessions.set(
@@ -171,14 +187,14 @@ class WSTaskServer {
 
   broadcastObservers(sessionId, message) {
     this.sessions.get(sessionId).forEach((client) => {
-      if (client instanceof this.Observer) {
+      if (client instanceof WSClientListenerObserver) {
         client.send(`Executor: ${message}`);
       }
     });
   }
 
   removeObserver(sessionId, client) {
-    if (sessions.has(sessionId)) {
+    if (this.sessions.has(sessionId)) {
       this.sessions.get(sessionId).delete(client);
       this.socketPool.remove(client.socket);
     }
