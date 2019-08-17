@@ -30,7 +30,7 @@ const WSClientListener = require('./WSClientListener');
  */
 class WSObserver extends WSClientListener {
   onMessage(message) {
-    console.log(`Unexpected message from observer '${message}'`);
+    console.log(`Unexpected message from observer: '${message}'`);
     this.socket.close();
   }
 

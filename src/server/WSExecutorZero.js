@@ -61,7 +61,7 @@ class WSExecutorZero extends WSExecutor {
   }
 
   onMessage(message) {
-    console.log(`Executor says '${message}'`);
+    console.log(`Executor says: '${message}'`);
     switch (this.state) {
       case WSExecutorZero.STATES.START:
         this.onStart(message);

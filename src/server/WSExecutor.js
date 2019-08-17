@@ -37,7 +37,7 @@ class WSExecutor extends WSClientListener {
   }
 
   onMessage(message) {
-    console.log(`Executor says '${message}'`);
+    console.log(`Executor says: '${message}'`);
   }
 }
 
