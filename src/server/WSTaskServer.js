@@ -27,9 +27,6 @@ const WSObserver = require('./WSObserver');
 const MAX_PAYLOAD_KB = 1;
 const MAX_PAYLOAD = Math.round(MAX_PAYLOAD_KB * (2 ** 10));
 
-const DEFAULT_CLIENT_TTL_SECONDS = 60;
-const DEFAULT_CLIENT_TTL = Math.round(DEFAULT_CLIENT_TTL_SECONDS * 1E3);
-
 const DEFAULT_MAX_CLIENTS = 100;
 
 /**
@@ -39,14 +36,12 @@ const DEFAULT_MAX_CLIENTS = 100;
  */
 class WSTaskServer {
   constructor({
-    clientTTL = DEFAULT_CLIENT_TTL,
     ExecutorFactory,
     maxPayload = MAX_PAYLOAD,
     server,
     socketPool,
     taskPath,
   }) {
-    this.clientTTL = clientTTL;
     this.ExecutorFactory = ExecutorFactory;
     this.socketPool = socketPool;
     this.taskPath = taskPath;
@@ -143,10 +138,15 @@ class WSTaskServer {
     sessionId,
     socket,
   }) {
+    const Executor = this.ExecutorFactory(path);
+    if (typeof Executor !== 'function') {
+      throw new Error(`Executor for ${path} is not found`);
+      return;
+    }
     const clientData = {
       connectionDate: new Date(),
       socket,
-      ttl: this.clientTTL,
+      ttl: Executor.DEFAULT_TTL,
     };
 
     if (this.sessions.has(sessionId)) {
@@ -160,11 +160,7 @@ class WSTaskServer {
       this.broadcastObservers(sessionId, 'Server: New observer connected');
       console.log(`Connect to ${sessionId} session`);
     } else {
-      if (typeof this.ExecutorFactory(path) !== 'function') {
-        throw new Error(`Executor for ${path} is not found`);
-        return;
-      }
-      const executor = new (this.ExecutorFactory(path))({
+      const executor = new Executor({
         ...clientData,
         afterMessage: (message) => {
           this.broadcastObservers(sessionId, `Executor: ${message}`);
