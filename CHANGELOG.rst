@@ -20,6 +20,7 @@ Added
 -----
 
 - ReactJS_ client.
+
   - ``index`` main view.
   - ``App`` container component with routing.
   - ``Home`` component for the homepage.
@@ -40,9 +41,13 @@ Added
     for helicopter providing the aid.
   - ``drawMatrix`` function to draw a matrix on a canvas.
   - ``main`` stylesheet.
+
 - ExpressJS_ ``server`` module.
+
   - ``index`` module serves the ReactJS static.
+
 - WebSocket_ ``server`` module.
+
   - ``WSClientListener`` base class to serve connected clients.
   - ``WSObserver`` listener for passive observers of tasks.
   - ``WSExecutor`` listener/emitter to serve task executor.
