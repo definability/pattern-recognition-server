@@ -50,38 +50,46 @@ class WSExecutorZero extends WSExecutor {
     console.log(`Executor says '${message}'`);
     switch (this.state) {
       case WSExecutorZero.STATES.START:
-        if (message !== 'Let\'s start') {
-          console.error('Wrong message');
-          this.socket.close();
-          return;
-        }
-        this.expression = [
-          Math.round(Math.random() * 100 + 1),
-          Object.keys(WSExecutorZero.OPERATORS)[
-            Math.floor(Math.random()
-            * (Object.keys(WSExecutorZero.OPERATORS).length - 1E-4))
-          ],
-          Math.round(Math.random() * 100 + 1),
-        ];
-        this.state = WSExecutorZero.STATES.SOLVE;
-        this.send(`Solve ${this.expression.join(' ')}`);
+        this.onStart(message);
         break;
       case WSExecutorZero.STATES.SOLVE:
-        const solution = WSExecutorZero.OPERATORS[this.expression[1]](
-          this.expression[0],
-          this.expression[2],
-        );
-        if (Number(message) !==  solution) {
-          console.error('Wrong answer');
-          this.socket.close();
-          return;
-        }
-        this.send('Correct!');
+        this.onSolve(message);
         break;
       default:
         console.error(`Unknown state ${this.state}`);
         break;
     }
+  }
+
+  onStart(message) {
+    if (message !== 'Let\'s start') {
+      console.error('Wrong message');
+      this.socket.close();
+      return;
+    }
+    this.expression = [
+      Math.round(Math.random() * 100 + 1),
+      Object.keys(WSExecutorZero.OPERATORS)[
+        Math.floor(Math.random()
+        * (Object.keys(WSExecutorZero.OPERATORS).length - 1E-4))
+      ],
+      Math.round(Math.random() * 100 + 1),
+    ];
+    this.state = WSExecutorZero.STATES.SOLVE;
+    this.send(`Solve ${this.expression.join(' ')}`);
+  }
+
+  onSolve(message) {
+    const solution = WSExecutorZero.OPERATORS[this.expression[1]](
+      this.expression[0],
+      this.expression[2],
+    );
+    if (Number(message) !==  solution) {
+      console.error('Wrong answer');
+      this.socket.close();
+      return;
+    }
+    this.send('Correct!');
   }
 }
 
