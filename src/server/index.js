@@ -46,13 +46,13 @@ const socketPool = new WebSocketPool(MAX_CONNECTED_CLIENTS);
 const wss = new WSTaskServer({
   server,
   socketPool,
-  ExecutorFactory: (path) => {
-    if (typeof path !== 'string') {
+  ExecutorFactory: (urlPath) => {
+    if (typeof urlPath !== 'string') {
       return null;
     }
     const executors = [WSExecutorZero].filter((Executor) => (
-      path.startsWith(Executor.PATH)
-        && path.length > Executor.PATH.length
+      urlPath.startsWith(Executor.PATH)
+        && urlPath.length > Executor.PATH.length
     ));
     if (!executors.length) {
       return null;

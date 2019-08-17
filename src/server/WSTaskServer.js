@@ -27,8 +27,6 @@ const WSObserver = require('./WSObserver');
 const MAX_PAYLOAD_KB = 1;
 const MAX_PAYLOAD = Math.round(MAX_PAYLOAD_KB * (2 ** 10));
 
-const DEFAULT_MAX_CLIENTS = 100;
-
 /**
  * Initialize websocket server with validation of connected clients.
  * Create tasks execution sessions to watch by observers.
@@ -92,7 +90,7 @@ class WSTaskServer {
    */
   registerListeners(server) {
     server.on('error', (error) => this.onError(error));
-    server.on('close', () => this.onClose(error));
+    server.on('close', () => this.onClose());
     server.on(
       'connection',
       (socket, request) => this.onConnection(socket, request),
@@ -158,7 +156,6 @@ class WSTaskServer {
     const Executor = this.ExecutorFactory(path);
     if (typeof Executor !== 'function') {
       throw new Error(`Executor for ${path} is not found`);
-      return;
     }
     const clientData = {
       connectionDate: new Date(),
