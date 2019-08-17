@@ -24,7 +24,7 @@
 const WSExecutor = require('./WSExecutor');
 
 /**
- * Executor for the task zero.
+ * Executor for task zero.
  *
  * The task is:
  * - Create a session on the server under `/zero` path
