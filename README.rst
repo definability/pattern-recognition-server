@@ -34,8 +34,6 @@ Production mode
   and it will install all needed dependencies locally.
 - Execute ``npm build`` to build all static files.
 - Execute ``npm start``.
-  You can also provide ``PORT`` environment variable
-  to specify the port to bind the server to.
 
 Development mode
 ----------------
@@ -45,6 +43,14 @@ Development mode
   (development server, linter, transpilers, etc.)
 - Launch ``npm run start:dev`` to start development server
   with real-time restart on code changes.
+
+Environment variables
+---------------------
+
+- ``PORT`` specifies the port to bind the server to.
+  ``3000`` by default.
+- ``MAX_CONNECTED_CLIENTS`` is the websocket connection pool size.
+  ``1`` by default.
 
 .. _nvm:
     https://github.com/nvm-sh/nvm
