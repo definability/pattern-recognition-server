@@ -27,7 +27,7 @@ const WSClientListener = require('./WSClientListener');
  * This client is able to send commands
  * to interact with the server.
  */
-class WSClientListenerExecutor extends WSClientListener {
+class WSExecutor extends WSClientListener {
   constructor({
     send = () => {},
     ...data
@@ -41,4 +41,4 @@ class WSClientListenerExecutor extends WSClientListener {
   }
 }
 
-module.exports = WSClientListenerExecutor;
+module.exports = WSExecutor;

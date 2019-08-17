@@ -28,11 +28,11 @@ const WSClientListener = require('./WSClientListener');
  * as a passive observer.
  * Attempts to send a message end up with connection close.
  */
-class WSClientListenerObserver extends WSClientListener {
+class WSObserver extends WSClientListener {
   onMessage(message) {
     console.log(`Unexpected message from observer '${message}'`);
     this.socket.close();
   }
 }
 
-module.exports = WSClientListenerObserver;
+module.exports = WSObserver;

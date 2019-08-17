@@ -25,7 +25,7 @@ const express = require('express');
 const path = require('path');
 const WSTaskServer = require('./WSTaskServer');
 const WebSocketPool = require('./WebSocketPool');
-const WSClientListenerExecutorZero = require('./zero/WSClientListenerExecutorZero');
+const WSExecutorZero = require('./zero/WSExecutorZero');
 
 const PORT = process.env.PORT || 3000;
 
@@ -49,7 +49,7 @@ const wss = new WSTaskServer({
     if (typeof path !== 'string') {
       return null;
     }
-    const executors = [WSClientListenerExecutorZero].filter((Executor) => {
+    const executors = [WSExecutorZero].filter((Executor) => {
       return (
         path.startsWith(Executor.PATH)
         && path.length > Executor.PATH.length

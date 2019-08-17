@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 const WebSocket = require('ws');
-const WSClientListenerObserver = require('./WSClientListenerObserver');
+const WSObserver = require('./WSObserver');
 
 const MAX_PAYLOAD_KB = 1;
 const MAX_PAYLOAD = Math.round(MAX_PAYLOAD_KB * (2 ** 10));
@@ -150,7 +150,7 @@ class WSTaskServer {
     };
 
     if (this.sessions.has(sessionId)) {
-      const observer = new WSClientListenerObserver({
+      const observer = new WSObserver({
         ...clientData,
       });
       observer.afterClose = () => {
@@ -187,7 +187,7 @@ class WSTaskServer {
 
   broadcastObservers(sessionId, message) {
     this.sessions.get(sessionId).forEach((client) => {
-      if (client instanceof WSClientListenerObserver) {
+      if (client instanceof WSObserver) {
         client.send(`Executor: ${message}`);
       }
     });
