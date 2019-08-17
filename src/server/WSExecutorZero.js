@@ -38,6 +38,8 @@ class WSExecutorZero extends WSExecutor {
     '*': (x, y) => x * y,
   }
   static PATH = '/zero/';
+  static DEFAULT_TTL_SECONDS = 60;
+  static DEFAULT_TTL = WSExecutorZero.DEFAULT_TTL_SECONDS * 1E3;
 
   constructor(data) {
     super(data);
