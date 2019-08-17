@@ -110,7 +110,7 @@ class WSTaskServer {
 
   /**
    * When new connection is connected,
-   * first check whether the socket pool is not full.
+   * first, check whether the socket pool is not full.
    * If it is, close the connection.
    *
    * Check whether the client is connected to existent session
