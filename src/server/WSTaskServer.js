@@ -30,9 +30,26 @@ const MAX_PAYLOAD = Math.round(MAX_PAYLOAD_KB * (2 ** 10));
 const DEFAULT_MAX_CLIENTS = 100;
 
 /**
- * Base task server.
  * Initialize websocket server with validation of connected clients.
  * Create tasks execution sessions to watch by observers.
+ * Type of executors is defined by ExecutorFactory
+ * basing on the path a socket is connected to.
+ *
+ * Each connection connects to a task,
+ * which is the first part of the path (after the hostname).
+ * For example, in `wss://server.com/zero/123`
+ * the path is `/zero/123`.
+ * It belongs to `zero` task executor.
+ * It's session id is `123`.
+ *
+ * If the session is not created yet,
+ * the client is an executor.
+ * Otherwise, it's an observer.
+ *
+ * When executor disconnects,
+ * all observers are disconnected too
+ * and the session is removed,
+ * so its name can be reused again.
  */
 class WSTaskServer {
   constructor({

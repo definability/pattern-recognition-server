@@ -24,8 +24,16 @@
 const WSExecutor = require('./WSExecutor');
 
 /**
- * This client is able to send commands
- * to interact with the server.
+ * Executor for the task zero.
+ *
+ * The task is:
+ * - Create a session on the server under `/zero` path
+ * - Send `Let's start` message to the server
+ * - Receive and parse a string from the server.
+ *   The format is: `[number] [operator] [number]`,
+ *   where `[number]` is an integer from `1` to `100`
+ *   and `[operator]` is one of `+`, `-` and `*`.
+ * - Send the solution to the problem (an integer).
  */
 class WSExecutorZero extends WSExecutor {
   static STATES = {
@@ -70,12 +78,12 @@ class WSExecutorZero extends WSExecutor {
       return;
     }
     this.expression = [
-      Math.round(Math.random() * 100 + 1),
+      Math.round(Math.random() * 99 + 1),
       Object.keys(WSExecutorZero.OPERATORS)[
         Math.floor(Math.random()
         * (Object.keys(WSExecutorZero.OPERATORS).length - 1E-4))
       ],
-      Math.round(Math.random() * 100 + 1),
+      Math.round(Math.random() * 99 + 1),
     ];
     this.state = WSExecutorZero.STATES.SOLVE;
     this.send(`Solve ${this.expression.join(' ')}`);

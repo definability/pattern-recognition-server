@@ -23,6 +23,11 @@
  */
 const DEFAULT_WS_TTL_MILLISECONDS = 30 * 1E3;
 
+/**
+ * The base entity to serve connected clients.
+ * Automatically disconnects client after specified ttl
+ * and adds listeners.
+ */
 class WSClientListener {
   constructor({
     afterClose = () => {},

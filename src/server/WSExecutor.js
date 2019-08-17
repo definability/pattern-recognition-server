@@ -25,7 +25,7 @@ const WSClientListener = require('./WSClientListener');
 
 /**
  * This client is able to send commands
- * to interact with the server.
+ * to interact with task server.
  */
 class WSExecutor extends WSClientListener {
   constructor({
