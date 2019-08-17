@@ -28,6 +28,14 @@ const WSClientListener = require('./WSClientListener');
  * to interact with the server.
  */
 class WSClientListenerExecutor extends WSClientListener {
+  constructor({
+    send = () => {},
+    ...data
+  }) {
+    super(data);
+    this.send = send;
+  }
+
   onMessage(message) {
     console.log(`Executor says '${message}'`);
   }
