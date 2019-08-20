@@ -23,6 +23,21 @@
  */
 import React, { Component } from 'react';
 
+/**
+ * The component consists of three main parts:
+ * - Header
+ * - Session name input panel
+ * - Messages list
+ *
+ * The header contains the practicum name.
+ *
+ * The session name input panel contains one text input and a button.
+ * You enter existing session identifier and click the button
+ * to create WebSocket client.
+ *
+ * Messages list will be populated by messages
+ * received by the client as an observer.
+ */
 class Zero extends Component {
   constructor(props) {
     super(props);
