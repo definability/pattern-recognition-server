@@ -116,15 +116,15 @@ class Zero extends Component {
       sessionId,
     } = this.state;
     const messagesHtml = messages.map((message) => (
-      <div>
+      <li>
         {message.author}
-:
-        {' '}
+        {': '}
         {message.data}
-      </div>
+      </li>
     ));
     return (
       <div>
+        <h3>Task 0</h3>
         <label htmlFor={this.sessionId}>
         Session ID:
           <input
@@ -135,7 +135,7 @@ class Zero extends Component {
         Observe
         </button>
         <div>{sessionId}</div>
-        <div>{messagesHtml}</div>
+        <ul>{messagesHtml}</ul>
       </div>
     );
   }
