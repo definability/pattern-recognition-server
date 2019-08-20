@@ -24,6 +24,7 @@ Added
   - ``index`` main view.
   - ``App`` container component with routing.
   - ``Home`` component for the homepage.
+  - ``zero/Zero`` component for the test practicum (practicum zero).
   - ``first/First`` container component for the first practicum.
   - ``first/FirstA`` container component
     with the task ``A`` of the first practicum.

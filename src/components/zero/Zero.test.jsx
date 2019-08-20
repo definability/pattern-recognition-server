@@ -22,41 +22,13 @@
  * SOFTWARE.
  */
 import React from 'react';
-import {
-  Link,
-  Route,
-  Switch,
-} from 'react-router-dom';
+import { shallow } from 'enzyme';
+import { shallowToJson } from 'enzyme-to-json';
 
-import Zero from './zero/Zero';
-import First from './first/First';
-import Home from './Home';
+import Zero from './Zero';
 
-const App = () => (
-  <div>
-    <nav>
-      <Link to="/">Home</Link>
-      <Link to="/zero">Zero</Link>
-      <Link to="/first">First</Link>
-    </nav>
-    <Switch>
-      <Route
-        path="/"
-        component={Home}
-        exact
-      />
-      <Route
-        path="/zero"
-        component={Zero}
-        exact
-      />
-      <Route
-        path="/first"
-        component={First}
-        exact
-      />
-    </Switch>
-  </div>
-);
-
-export default App;
+describe('Zero', () => {
+  it('should render correctly', () => {
+    expect(shallowToJson(shallow(<Zero />))).toMatchSnapshot();
+  });
+});
