@@ -44,19 +44,19 @@ class Zero extends Component {
       oldWS.removeEventListener('error', oldWS.onerror);
       oldWS.close(1000);
     }
-    const HOST = location.origin.replace(/^http/, 'ws');
+    const HOST = window.location.origin.replace(/^http/, 'ws');
     const ws = new WebSocket(`${HOST}/zero/${sessionId}`);
     ws.addEventListener('open', () => {
       const message = {
         author: 'Client',
-        data: `Connect to session ${sessionId}`
+        data: `Connect to session ${sessionId}`,
       };
       this.setState((previousState) => ({
         ...previousState,
         messages: [...previousState.messages, message],
       }));
     });
-    ws.addEventListener('close', ({code, target: {url}}) => {
+    ws.addEventListener('close', ({ code, target: { url } }) => {
       const message = {
         author: 'Client',
         data: `Disconnected from ${url} with code ${code}`,
@@ -66,7 +66,7 @@ class Zero extends Component {
         messages: [...previousState.messages, message],
       }));
     });
-    ws.addEventListener('error', ({target: {url}}) => {
+    ws.addEventListener('error', ({ target: { url } }) => {
       const message = {
         author: 'Client',
         data: `Error in ${url}`,
@@ -76,12 +76,12 @@ class Zero extends Component {
         messages: [...previousState.messages, message],
       }));
     });
-    ws.addEventListener('message', ({data: message}) => {
+    ws.addEventListener('message', ({ data: message }) => {
       const colonIndex = message.search(':');
       const author = colonIndex === -1 ? '' : message.slice(0, colonIndex);
       const dataIndex = colonIndex === -1 ? 0 : colonIndex + 2;
       const data = message.slice(dataIndex, message.length);
-      const newMessage = {author, data};
+      const newMessage = { author, data };
       this.setState((previousState) => ({
         ...previousState,
         messages: [...previousState.messages, newMessage],
@@ -101,22 +101,29 @@ class Zero extends Component {
       sessionId,
     } = this.state;
     const messagesHtml = messages.map((message) => (
-      <div>{message.author}: {message.data}</div>
+      <div>
+        {message.author}
+:
+        {' '}
+        {message.data}
+      </div>
     ));
-    return (<div>
-      <label htmlFor={this.sessionId}>
+    return (
+      <div>
+        <label htmlFor={this.sessionId}>
         Session ID:
-        <input
-          ref={(component) => { this.sessionId = component; }}
-        />
-      </label>
-      <button type="button" onClick={() => this.observeSession()}>
+          <input
+            ref={(component) => { this.sessionId = component; }}
+          />
+        </label>
+        <button type="button" onClick={() => this.observeSession()}>
         Observe
-      </button>
-      <div>{sessionId}</div>
-      <div>{messagesHtml}</div>
-    </div>);
-  };
+        </button>
+        <div>{sessionId}</div>
+        <div>{messagesHtml}</div>
+      </div>
+    );
+  }
 }
 
 export default Zero;
