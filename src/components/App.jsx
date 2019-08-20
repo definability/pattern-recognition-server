@@ -28,6 +28,7 @@ import {
   Switch,
 } from 'react-router-dom';
 
+import Zero from './zero/Zero';
 import First from './first/First';
 import Home from './Home';
 
@@ -35,12 +36,18 @@ const App = () => (
   <div>
     <nav>
       <Link to="/">Home</Link>
+      <Link to="/zero">Zero</Link>
       <Link to="/first">First</Link>
     </nav>
     <Switch>
       <Route
         path="/"
         component={Home}
+        exact
+      />
+      <Route
+        path="/zero"
+        component={Zero}
         exact
       />
       <Route
