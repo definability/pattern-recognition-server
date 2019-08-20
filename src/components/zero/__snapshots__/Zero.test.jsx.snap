@@ -2,6 +2,9 @@
 
 exports[`Zero should render correctly 1`] = `
 <div>
+  <h3>
+    Task 0
+  </h3>
   <label>
     Session ID:
     <input />
@@ -13,6 +16,6 @@ exports[`Zero should render correctly 1`] = `
     Observe
   </button>
   <div />
-  <div />
+  <ul />
 </div>
 `;
