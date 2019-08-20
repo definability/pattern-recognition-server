@@ -198,7 +198,7 @@ class WSTaskServer {
   broadcastObservers(sessionId, message) {
     this.sessions.get(sessionId).forEach((client) => {
       if (client instanceof WSObserver) {
-        client.send(`Executor: ${message}`);
+        client.send(message);
       }
     });
   }
