@@ -9,6 +9,11 @@ exports[`App should render correctly 1`] = `
       Home
     </Link>
     <Link
+      to="/zero"
+    >
+      Zero
+    </Link>
+    <Link
       to="/first"
     >
       First
@@ -19,6 +24,11 @@ exports[`App should render correctly 1`] = `
       component={[Function]}
       exact={true}
       path="/"
+    />
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/zero"
     />
     <Route
       component={[Function]}
