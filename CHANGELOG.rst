@@ -30,7 +30,7 @@ Added
 Changed
 -------
 
-- Rename components
+- Renamed components
 
   - ``first/FirstA`` to ``First``.
   - ``first/FirstB`` to ``Second``.
