@@ -13,6 +13,30 @@ and this project adheres to `Semantic Versioning`_.
 Unreleased_
 ===========
 
+Added
+-----
+
+- ``Zero`` component for the test practicum (practicum zero).
+
+- WebSocket_ ``server`` module.
+
+  - ``WSClientListener`` base class to serve connected clients.
+  - ``WSObserver`` listener for passive observers of tasks.
+  - ``WSExecutor`` listener/emitter to serve task executor.
+  - ``WSExecutorZero`` checker for task zero.
+  - ``WSTaskServer`` tasks manager.
+  - ``WebSocketPool`` serverwise connection pool.
+
+Changed
+-------
+
+- Rename components
+
+  - ``first/FirstA`` to ``First``.
+  - ``first/FirstB`` to ``Second``.
+  - ``first/MatrixCanvas`` to ``MatrixCanvas``.
+  - ``first/AnimationCanvas`` to ``AnimationCanvas``.
+
 0.0.1 - 2019-07-28
 ==================
 
@@ -24,12 +48,14 @@ Added
   - ``index`` main view.
   - ``App`` container component with routing.
   - ``Home`` component for the homepage.
-  - ``Zero`` component for the test practicum (practicum zero).
-  - ``First`` component with the first practicum.
-  - ``Second`` component with the second practicum.
-  - ``MatrixCanvas`` component
+  - ``first/First`` container component for the first practicum.
+  - ``first/FirstA`` container component
+    with the task ``A`` of the first practicum.
+  - ``first/FirstB`` container component
+    with the task ``B`` of the first practicum.
+  - ``first/MatrixCanvas`` component
     to visualize matrices based on provided palette.
-  - ``AnimationCanvas`` component
+  - ``first/AnimationCanvas`` component
     to visualize and animate ``AnimationSprite`` instances.
   - ``AnimationSprite`` class
     to store information about animating sprites.
@@ -40,18 +66,9 @@ Added
   - ``drawMatrix`` function to draw a matrix on a canvas.
   - ``main`` stylesheet.
 
-- ExpressJS_ ``server`` module.
+- ExpressJS_ server.
 
   - ``index`` module serves the ReactJS static.
-
-- WebSocket_ ``server`` module.
-
-  - ``WSClientListener`` base class to serve connected clients.
-  - ``WSObserver`` listener for passive observers of tasks.
-  - ``WSExecutor`` listener/emitter to serve task executor.
-  - ``WSExecutorZero`` checker for task zero.
-  - ``WSTaskServer`` tasks manager.
-  - ``WebSocketPool`` serverwise connection pool.
 
 .. _Unreleased:
     https://github.com/char-lie/pattern-recognition-server/compare/v0.0.1...HEAD
