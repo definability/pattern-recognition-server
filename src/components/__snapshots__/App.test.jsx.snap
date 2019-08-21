@@ -18,6 +18,11 @@ exports[`App should render correctly 1`] = `
     >
       First
     </Link>
+    <Link
+      to="/second"
+    >
+      Second
+    </Link>
   </nav>
   <Switch>
     <Route
@@ -34,6 +39,11 @@ exports[`App should render correctly 1`] = `
       component={[Function]}
       exact={true}
       path="/first"
+    />
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/second"
     />
   </Switch>
 </div>

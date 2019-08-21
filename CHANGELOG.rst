@@ -24,15 +24,12 @@ Added
   - ``index`` main view.
   - ``App`` container component with routing.
   - ``Home`` component for the homepage.
-  - ``zero/Zero`` component for the test practicum (practicum zero).
-  - ``first/First`` container component for the first practicum.
-  - ``first/FirstA`` container component
-    with the task ``A`` of the first practicum.
-  - ``first/FirstB`` container component
-    with the task ``B`` of the first practicum.
-  - ``first/MatrixCanvas`` component
+  - ``Zero`` component for the test practicum (practicum zero).
+  - ``First`` component with the first practicum.
+  - ``Second`` component with the second practicum.
+  - ``MatrixCanvas`` component
     to visualize matrices based on provided palette.
-  - ``first/AnimationCanvas`` component
+  - ``AnimationCanvas`` component
     to visualize and animate ``AnimationSprite`` instances.
   - ``AnimationSprite`` class
     to store information about animating sprites.

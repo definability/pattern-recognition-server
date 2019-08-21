@@ -22,48 +22,20 @@
  * SOFTWARE.
  */
 import React from 'react';
-import {
-  Link,
-  Route,
-  Switch,
-} from 'react-router-dom';
+import { mount } from 'enzyme';
+import { shallowToJson } from 'enzyme-to-json';
 
-import Zero from './Zero';
-import First from './First';
-import Second from './Second';
-import Home from './Home';
+import MatrixCanvas from './MatrixCanvas';
 
-const App = () => (
-  <div>
-    <nav>
-      <Link to="/">Home</Link>
-      <Link to="/zero">Zero</Link>
-      <Link to="/first">First</Link>
-      <Link to="/second">Second</Link>
-    </nav>
-    <Switch>
-      <Route
-        path="/"
-        component={Home}
-        exact
-      />
-      <Route
-        path="/zero"
-        component={Zero}
-        exact
-      />
-      <Route
-        path="/first"
-        component={First}
-        exact
-      />
-      <Route
-        path="/second"
-        component={Second}
-        exact
-      />
-    </Switch>
-  </div>
-);
-
-export default App;
+describe('MatrixCanvas', () => {
+  it('should render correctly', () => {
+    const wrapper = mount(
+      <MatrixCanvas
+        width={10}
+        height={20}
+        matrix={[[0, 1, 2], [3, 4, 5]]}
+      />,
+    );
+    expect(shallowToJson(wrapper)).toMatchSnapshot();
+  });
+});

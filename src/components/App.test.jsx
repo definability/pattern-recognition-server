@@ -28,7 +28,8 @@ import { shallowToJson } from 'enzyme-to-json';
 
 import App from './App';
 import Home from './Home';
-import First from './first/First';
+import First from './First';
+import Second from './Second';
 
 describe('App', () => {
   it('should render correctly', () => {
@@ -42,6 +43,7 @@ describe('App', () => {
     );
     expect(wrapper).toContainExactlyOneMatchingElement(Home);
     expect(wrapper).not.toContainMatchingElement(First);
+    expect(wrapper).not.toContainMatchingElement(Second);
   });
   it('should show the first task page on /first', () => {
     const wrapper = mount(
@@ -50,6 +52,17 @@ describe('App', () => {
       </MemoryRouter>,
     );
     expect(wrapper).toContainExactlyOneMatchingElement(First);
+    expect(wrapper).not.toContainMatchingElement(Second);
+    expect(wrapper).not.toContainMatchingElement(Home);
+  });
+  it('should show the second task page on /second', () => {
+    const wrapper = mount(
+      <MemoryRouter initialEntries={['/second']}>
+        <App />
+      </MemoryRouter>,
+    );
+    expect(wrapper).toContainExactlyOneMatchingElement(Second);
+    expect(wrapper).not.toContainMatchingElement(First);
     expect(wrapper).not.toContainMatchingElement(Home);
   });
 });

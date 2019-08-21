@@ -81,7 +81,7 @@
     "jest-canvas-mock": "^2.1.1",
     "jest-enzyme": "^7.1.0",
     "mini-css-extract-plugin": "^0.8.0",
-    "npm": "^6.10.3",
+    "npm": "^6.11.1",
     "npm-check-updates": "^3.1.21",
     "postcss-loader": "^3.0.0",
     "react-router": "^5.0.1",
