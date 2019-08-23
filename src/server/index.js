@@ -26,6 +26,7 @@ const path = require('path');
 const WSTaskServer = require('./WSTaskServer');
 const WebSocketPool = require('./WebSocketPool');
 const WSExecutorZero = require('./WSExecutorZero');
+const WSExecutorFirst = require('./WSExecutorFirst');
 
 const PORT = process.env.PORT || 3000;
 const MAX_CONNECTED_CLIENTS = Number(process.env.MAX_CONNECTED_CLIENTS) || 1;
@@ -50,7 +51,7 @@ const wss = new WSTaskServer({
     if (typeof urlPath !== 'string') {
       return null;
     }
-    const executors = [WSExecutorZero].filter((Executor) => (
+    const executors = [WSExecutorZero, WSExecutorFirst].filter((Executor) => (
       urlPath.startsWith(Executor.PATH)
         && urlPath.length > Executor.PATH.length
     ));
