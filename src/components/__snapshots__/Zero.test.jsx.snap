@@ -5,17 +5,21 @@ exports[`Zero should render correctly 1`] = `
   <h3>
     Task 0
   </h3>
-  <label>
-    Session ID:
-    <input />
-  </label>
-  <button
-    onClick={[Function]}
-    type="button"
-  >
-    Observe
-  </button>
-  <div />
+  <form>
+    <label>
+      Session ID:
+      <input />
+    </label>
+    <button
+      onClick={[Function]}
+      type="button"
+    >
+      Observe
+    </button>
+  </form>
+  <div>
+    Session
+  </div>
   <ul />
 </div>
 `;
