@@ -24,6 +24,7 @@ Added
   - ``WSObserver`` listener for passive observers of tasks.
   - ``WSExecutor`` listener/emitter to serve task executor.
   - ``WSExecutorZero`` checker for task zero.
+  - ``WSExecutorFirst`` checker for first task.
   - ``WSTaskServer`` tasks manager.
   - ``WebSocketPool`` serverwise connection pool.
 
@@ -36,6 +37,8 @@ Changed
   - ``first/FirstB`` to ``Second``.
   - ``first/MatrixCanvas`` to ``MatrixCanvas``.
   - ``first/AnimationCanvas`` to ``AnimationCanvas``.
+
+- Use WebSocket as an interface instead of ``input`` in ``First`` component.
 
 0.0.1 - 2019-07-28
 ==================
