@@ -125,16 +125,21 @@ class Zero extends Component {
     return (
       <div>
         <h3>Task 0</h3>
-        <label htmlFor={this.sessionId}>
-        Session ID:
-          <input
-            ref={(component) => { this.sessionId = component; }}
-          />
-        </label>
-        <button type="button" onClick={() => this.observeSession()}>
-        Observe
-        </button>
-        <div>{sessionId}</div>
+        <form>
+          <label htmlFor={this.sessionId}>
+          Session ID:
+            <input
+              ref={(component) => { this.sessionId = component; }}
+            />
+          </label>
+          <button type="button" onClick={() => this.observeSession()}>
+          Observe
+          </button>
+        </form>
+        <div>
+          Session
+          {sessionId}
+        </div>
         <ul>{messagesHtml}</ul>
       </div>
     );
