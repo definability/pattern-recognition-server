@@ -85,7 +85,7 @@ class WSExecutorZero extends WSExecutor {
       Math.round(Math.random() * 99 + 1),
       Object.keys(WSExecutorZero.OPERATORS)[
         Math.floor(Math.random()
-        * (Object.keys(WSExecutorZero.OPERATORS).length - 1E-4))
+        * (Object.keys(WSExecutorZero.OPERATORS).length))
       ],
       Math.round(Math.random() * 99 + 1),
     ];
