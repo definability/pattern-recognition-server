@@ -22,6 +22,11 @@
  * SOFTWARE.
  */
 import React, { Component } from 'react';
+import {
+  Button,
+  Col,
+  Form,
+} from 'react-bootstrap';
 
 import MatrixCanvas from './MatrixCanvas';
 
@@ -241,18 +246,26 @@ class First extends Component {
     ));
     return (
       <div>
-        <h3>Task A</h3>
-        <form>
-          <label htmlFor={this.sessionId}>
-          Session ID:
-            <input
-              ref={(component) => { this.sessionId = component; }}
-            />
-          </label>
-          <button type="button" onClick={() => this.observeSession()}>
-          Observe
-          </button>
-        </form>
+        <h3>Task 1</h3>
+        <Form>
+          <Form.Row>
+            <Col sm={2}>
+              <Form.Control
+                ref={(component) => { this.sessionId = component; }}
+                placeholder="Session ID"
+              />
+            </Col>
+            <Col sm={1}>
+              <Button
+                variant="primary"
+                type="button"
+                onClick={() => this.observeSession()}
+              >
+                Observe
+              </Button>
+            </Col>
+          </Form.Row>
+        </Form>
         <MatrixCanvas
           height={Math.round(First.HEIGHT)}
           width={Math.round(First.WIDTH)}

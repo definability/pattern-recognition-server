@@ -22,6 +22,11 @@
  * SOFTWARE.
  */
 import React, { Component } from 'react';
+import {
+  Button,
+  Col,
+  Form,
+} from 'react-bootstrap';
 
 /**
  * The component consists of three main parts:
@@ -125,17 +130,25 @@ class Zero extends Component {
     return (
       <div>
         <h3>Task 0</h3>
-        <form>
-          <label htmlFor={this.sessionId}>
-          Session ID:
-            <input
-              ref={(component) => { this.sessionId = component; }}
-            />
-          </label>
-          <button type="button" onClick={() => this.observeSession()}>
-          Observe
-          </button>
-        </form>
+        <Form>
+          <Form.Row>
+            <Col sm={2}>
+              <Form.Control
+                ref={(component) => { this.sessionId = component; }}
+                placeholder="Session ID"
+              />
+            </Col>
+            <Col sm={1}>
+              <Button
+                variant="primary"
+                type="button"
+                onClick={() => this.observeSession()}
+              >
+                Observe
+              </Button>
+            </Col>
+          </Form.Row>
+        </Form>
         <div>{sessionId ? `Session ${sessionId}` : ''}</div>
         <ul>{messagesHtml}</ul>
       </div>
