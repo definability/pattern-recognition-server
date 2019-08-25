@@ -181,6 +181,12 @@ class WSExecutorFirst extends WSExecutor {
 
   static DEFAULT_TTL = WSExecutorFirst.DEFAULT_TTL_SECONDS * 1E3;
 
+  static MAX_TOTAL_STEPS = Math.round(1E6);
+
+  static MAX_VERTICAL_SCALE = 100;
+
+  static MAX_HORIZONTAL_SCALE = 100;
+
   static matrix2string(matrix) {
     return matrix.map((row) => row.join(' ')).join('\n');
   }
@@ -241,7 +247,10 @@ class WSExecutorFirst extends WSExecutor {
 
   onSetup(message) {
     const messageSplit = message.split(' ').map(Number);
-    if (messageSplit.length !== 4 || !messageSplit.reduce((acc, e) => acc && e >= 0)) {
+    if (
+      messageSplit.length !== 4
+      || !messageSplit.reduce((acc, e) => acc && e >= 0)
+    ) {
       console.error('Wrong message');
       this.socket.close();
       return;
@@ -254,15 +263,24 @@ class WSExecutorFirst extends WSExecutor {
       this.totalSteps,
     ] = messageSplit;
 
-    if (Math.round(this.horizontalScale) !== this.horizontalScale) {
+    if (
+      Math.round(this.horizontalScale) !== this.horizontalScale
+      || this.horizontalScale > WSExecutorFirst.MAX_HORIZONTAL_SCALE
+    ) {
       console.error('Wrong width');
       this.socket.close();
     }
-    if (Math.round(this.verticalScale) !== this.verticalScale) {
+    if (
+      Math.round(this.verticalScale) !== this.verticalScale
+      || this.verticalScale > WSExecutorFirst.MAX_VERTICAL_SCALE
+    ) {
       console.error('Wrong height');
       this.socket.close();
     }
-    if (Math.round(this.totalSteps) !== this.totalSteps) {
+    if (
+      Math.round(this.totalSteps) !== this.totalSteps
+      || this.totalSteps > WSExecutorFirst.MAX_HORIZONTAL_SCALE
+    ) {
       console.error('Wrong totalSteps number');
       this.socket.close();
     }
