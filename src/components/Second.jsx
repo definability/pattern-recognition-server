@@ -26,13 +26,15 @@ import {
   Button,
   Col,
   Form,
+  Table,
 } from 'react-bootstrap';
 
-import MatrixCanvas from './MatrixCanvas';
-import AnimationCanvas from './AnimationCanvas';
-import HelicopterSprite from '../scripts/HelicopterSprite';
 import AidSprite from '../scripts/AidSprite';
 import AimSprite from '../scripts/AimSprite';
+import AnimationCanvas from './AnimationCanvas';
+import HelicopterSprite from '../scripts/HelicopterSprite';
+import MatrixCanvas from './MatrixCanvas';
+import WSTable from './WSTable';
 
 /**
  * The component consists of the three main parts:
@@ -402,13 +404,6 @@ class Second extends Component {
       sessionId,
       width,
     } = this.state;
-    const messagesHtml = messages.map((message) => (
-      <li>
-        {message.author}
-        {': '}
-        {message.data}
-      </li>
-    ));
     return (
       <div>
         <h3>Task 2</h3>
@@ -443,8 +438,7 @@ class Second extends Component {
           matrix={[heatmap]}
           palette={Second.grayPalette}
         />
-        <div>{sessionId ? `Session ${sessionId}` : ''}</div>
-        <ul>{messagesHtml}</ul>
+        <WSTable messages={messages} sessionId={sessionId} />
       </div>
     );
   }

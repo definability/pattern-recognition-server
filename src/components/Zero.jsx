@@ -28,6 +28,7 @@ import {
   Form,
 } from 'react-bootstrap';
 
+import WSTable from './WSTable';
 /**
  * The component consists of three main parts:
  * - Header
@@ -120,13 +121,6 @@ class Zero extends Component {
       messages,
       sessionId,
     } = this.state;
-    const messagesHtml = messages.map((message) => (
-      <li>
-        {message.author}
-        {': '}
-        {message.data}
-      </li>
-    ));
     return (
       <div>
         <h3>Task 0</h3>
@@ -149,8 +143,7 @@ class Zero extends Component {
             </Col>
           </Form.Row>
         </Form>
-        <div>{sessionId ? `Session ${sessionId}` : ''}</div>
-        <ul>{messagesHtml}</ul>
+        <WSTable messages={messages} sessionId={sessionId} />
       </div>
     );
   }

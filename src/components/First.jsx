@@ -26,9 +26,11 @@ import {
   Button,
   Col,
   Form,
+  Table,
 } from 'react-bootstrap';
 
 import MatrixCanvas from './MatrixCanvas';
+import WSTable from './WSTable';
 
 /**
  * The component consists of the three main parts:
@@ -237,13 +239,6 @@ class First extends Component {
       messages,
       sessionId,
     } = this.state;
-    const messagesHtml = messages.map((message) => (
-      <li>
-        {message.author}
-        {': '}
-        {message.data}
-      </li>
-    ));
     return (
       <div>
         <h3>Task 1</h3>
@@ -275,8 +270,7 @@ class First extends Component {
             1: '#000000',
           }}
         />
-        <div>{sessionId ? `Session ${sessionId}` : ''}</div>
-        <ul>{messagesHtml}</ul>
+        <WSTable messages={messages} sessionId={sessionId} />
       </div>
     );
   }
