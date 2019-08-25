@@ -1,0 +1,313 @@
+/**
+ * MIT License
+ *
+ * Copyright (c) 2019 char-lie
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the 'Software'), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+const WSExecutor = require('./WSExecutor');
+
+/**
+ * Executor for the second task.
+ *
+ * The task is:
+ * - Create a session on the server under `/second` path
+ * - Send `Let's start with [loss] [width] [totalSteps] [repeats]`
+ *   message to the server,
+ *   where `[loss]` is either `L1` for distance as a loss
+ *   (distance is measured in heatmap bars),
+ *   or a non-negative integer for delta loss.
+ *   The integer is a radius of an allowed interval:
+ *   zero means binary loss function,
+ *   one means current bar and its nearest neighbors,
+ *   and so on,
+ *   `[width]` is a number of bars in heatmaps,
+ *   `[totalSteps]` is a number of heatmaps to deal with,
+ *   and `[repeats]` is a number of attempts per one heatmap.
+ * - Receive the string `Are you ready?` from the server,
+ * - Send the message `Ready` to start completing the task
+ * - Receive a problem in the form
+ *   ```
+ *   Heatmap [step]
+ *   heatmapj
+ *   ```
+ *   where `[step]` is the number of the heatmap,
+ *   and `heatmapj` is an array of positive integers
+ *   not greater than `255`,
+ *   representing the heatmap without normalization.
+ * - Send the response in the form
+ *   ```
+ *   [step]
+ *   guessesj
+ *   ```
+ *   where `[step]` is the heatmap number and `guessesj`
+ *   is an array of your guesses of size `[repeats]` in form
+ *   `G1 G2 ... Grepeats`
+ * - Receive a response in the form
+ *   ```
+ *   Solutions [step] [loss]
+ *   answersj
+ *   guessesj
+ *   heatmapj
+ *   ```
+ *   where `answersj` is the array with right answers
+ *   to the problem `[step]`.
+ * - If there are more problems left to solve
+ *   (`[step]` is less than `[totalSteps]`),
+ *   send `Ready` again and receive a new problem.
+ * - Otherwise, send `Bye`
+ * - Receive `Finish with [loss]`,
+ *   where `[loss]` is the sum of all losses.
+ *
+ * Normalized heatmap contains probabilities of an aim
+ * to be in specific positions.
+ * In order to normalize it, you should divide its values
+ * by their sums.
+ *
+ * Right answers (aim coordinates) are generated according to the heatmap.
+ */
+class WSExecutorSecond extends WSExecutor {
+  static STATES = {
+    START: 'START',
+    READY: 'READY',
+    SOLVE: 'SOLVE',
+    FINISH: 'FINISH',
+  };
+
+  static LOSS_FUNCTION(identifier) {
+    if (identifier === 'L1') {
+      return (guess, answer) => Math.abs(guess - answer);
+    }
+    if (Number.isSafeInteger(Number(identifier))) {
+      return (guess, answer) => Math.abs(guess - answer) <= Number(identifier);
+    }
+    throw new Error(`Unknown loss function identifier ${identifier}`);
+  }
+
+  static PATH = '/second/';
+
+  static DEFAULT_TTL_SECONDS = 300;
+
+  static DEFAULT_TTL = WSExecutorSecond.DEFAULT_TTL_SECONDS * 1E3;
+
+  constructor(data) {
+    super(data);
+
+    this.barsNumber = null;
+    this.currentHistorgram = null;
+    this.currentStep = 0;
+    this.horizontalScale = null;
+    this.loss = null;
+    this.lossName = null;
+    this.repeats = null;
+    this.state = WSExecutorSecond.STATES.START;
+    this.totalLoss = 0;
+    this.totalSteps = null;
+    this.width = null;
+
+    console.log('Executor Second created');
+  }
+
+  onMessage(message) {
+    console.log(`Executor says: '${message}'`);
+    switch (this.state) {
+      case WSExecutorSecond.STATES.START:
+        this.onStart(message);
+        break;
+      case WSExecutorSecond.STATES.READY:
+        this.onReady(message);
+        break;
+      case WSExecutorSecond.STATES.SOLVE:
+        this.onSolve(message);
+        break;
+      case WSExecutorSecond.STATES.FINISH:
+        this.onFinish(message);
+        break;
+      default:
+        console.error(`Unknown state ${this.state}`);
+        break;
+    }
+  }
+
+  onStart(message) {
+    if (!message.startsWith('Let\'s start with ')) {
+      console.error('Wrong message');
+      this.socket.close();
+      return;
+    }
+    const [lossName, width, totalSteps, repeats, ...tail] = (
+      message.slice('Let\'s start with '.length).split(' ')
+    );
+
+    if (tail.length) {
+      console.error('Redundant arguments');
+      this.socket.close();
+      return;
+    }
+
+    if (lossName !== 'L1' && !Number.isSafeInteger(Number(lossName))) {
+      console.error('Unknown loss');
+      this.socket.close();
+      return;
+    }
+    this.lossName = lossName;
+    this.loss = WSExecutorSecond.LOSS_FUNCTION(lossName);
+
+
+    if (!Number.isSafeInteger(Number(width))) {
+      console.error('Incorrect width');
+      this.socket.close();
+      return;
+    }
+    this.width = Number(width);
+
+
+    if (!Number.isSafeInteger(Number(totalSteps))) {
+      console.error('Incorrect total steps');
+      this.socket.close();
+      return;
+    }
+    this.totalSteps = Number(totalSteps);
+
+
+    if (!Number.isSafeInteger(Number(repeats))) {
+      console.error('Incorrect repeats');
+      this.socket.close();
+      return;
+    }
+    this.repeats = Number(repeats);
+
+
+    this.state = WSExecutorSecond.STATES.READY;
+
+    this.send('Are you ready?');
+  }
+
+  onReady(message) {
+    if (message !== 'Ready') {
+      console.error('Wrong message');
+      this.socket.close();
+      return;
+    }
+    this.state = WSExecutorSecond.STATES.SOLVE;
+
+    this.currentStep += 1;
+    this.currentHistorgram = this.generateHeatmap();
+
+    this.send(`Heatmap ${this.currentStep}\n${this.currentHistorgram.join(' ')}`);
+  }
+
+  onSolve(message) {
+    const [step, guessesString] = message.split('\n');
+    if (!guessesString || !guessesString.length) {
+      console.error('No guesses');
+      this.socket.close();
+      return;
+    }
+
+    const guesses = guessesString.split(' ');
+    if (
+      !guesses.reduce((acc, e) => acc && Number.isSafeInteger(Number(e)), true)
+      || guesses.length !== this.repeats
+    ) {
+      console.error('Provided guess cannot be right');
+      this.socket.close();
+      return;
+    }
+    if (Number(step) !== this.currentStep) {
+      console.error('Wrong step number');
+      this.socket.close();
+      return;
+    }
+
+    if (this.currentStep < this.totalSteps) {
+      this.state = WSExecutorSecond.STATES.READY;
+    } else if (this.currentStep === this.totalSteps) {
+      this.state = WSExecutorSecond.STATES.FINISH;
+    } else {
+      console.error(`We have step ${this.currentStep} of ${this.totalSteps}!`);
+      this.socket.close();
+      return;
+    }
+
+    const solutions = this.generateSolutions();
+    this.totalLoss = guesses.reduce(
+      (result, e, i) => result + this.loss(e, solutions[i]),
+      this.totalLoss,
+    );
+
+    const information = `Solutions ${this.currentStep} ${this.lossName}`;
+    const solutionsString = solutions.join(' ');
+    const heatmapString = this.currentHistorgram.join(' ');
+
+    this.send(
+      `${information}\n${solutionsString}\n${guessesString}\n${heatmapString}`,
+    );
+  }
+
+  onFinish(message) {
+    if (message !== 'Bye') {
+      console.error('Wrong message');
+      this.socket.close();
+      return;
+    }
+    this.send(
+      `Finish with ${this.totalLoss}`,
+    );
+  }
+
+  /**
+   * Generate new heatmap.
+   */
+  generateHeatmap() {
+    const heatmap = [Math.random() * 255];
+    for (let i = 1; i < this.width; i += 1) {
+      const value = (
+        heatmap[i - 1] + ((Math.random() - 0.5) * 500) / (this.width ** 0.5)
+      );
+      if (value < 0) {
+        heatmap.push(0);
+      } else if (value > 255) {
+        heatmap.push(255);
+      } else {
+        heatmap.push(value);
+      }
+    }
+    return heatmap.map((e) => (e > 1 ? Math.round(e) : 1));
+  }
+
+  generateSolutions() {
+    const cumulative = this.currentHistorgram.reduce(
+      (result, value, i) => (
+        result.length
+          ? [...result, result[i - 1] + value]
+          : [value]
+      ),
+      [],
+    );
+
+    const result = Array.from({ length: this.repeats }).map(() => {
+      const value = Math.random() * cumulative[cumulative.length - 1];
+      return cumulative.findIndex((element) => element >= value);
+    });
+    return result;
+  }
+}
+
+module.exports = WSExecutorSecond;
