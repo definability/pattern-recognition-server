@@ -351,7 +351,7 @@ class Second extends Component {
       canvasHeight: height,
       offsetY: Math.random() * (height - HelicopterSprite.IMAGES[0].length * 5),
       scale: 5,
-      velocity: VELOCITY * 2,
+      velocity: BASE_VELOCITY * 2,
     });
     const aid = new AidSprite({
       birthDate: new Date(),
@@ -363,7 +363,7 @@ class Second extends Component {
       ),
       helicopter,
       scale: 5,
-      velocity: VELOCITY * 2,
+      velocity: BASE_VELOCITY * 2,
     });
     const aim = new AimSprite({
       aid,
@@ -376,7 +376,7 @@ class Second extends Component {
         - (AimSprite.IMAGES.NEUTRAL[0].length / 2)
       ),
       scale: 3,
-      velocity: VELOCITY,
+      velocity: BASE_VELOCITY,
     });
     this.setState((previousState) => ({
       ...previousState,
