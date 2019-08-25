@@ -136,10 +136,7 @@ class Zero extends Component {
           Observe
           </button>
         </form>
-        <div>
-          Session
-          {sessionId}
-        </div>
+        <div>{sessionId ? `Session ${sessionId}` : ''}</div>
         <ul>{messagesHtml}</ul>
       </div>
     );

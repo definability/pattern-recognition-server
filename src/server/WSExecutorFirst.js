@@ -68,9 +68,9 @@ const WSExecutor = require('./WSExecutor');
  *   matrixj
  *   ```
  *   where `[step]` is the number of the problem,
- *   and `matrixI` is a binary matrix representing the problem
- * - Send the response in the form `[step] solutionj`,
- *   where `[step]` is the problem number and `solutionj`
+ *   and `matrixj` is a binary matrix representing the problem
+ * - Send the response in the form `[step] [solutionj]`,
+ *   where `[step]` is the problem number and `[solutionj]`
  *   is your guess to the problem
  * - Receive a response in the form `[step] answerj`,
  *   where `answerj` is the right answer to the problem `[step]`.

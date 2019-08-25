@@ -25,6 +25,7 @@ Added
   - ``WSExecutor`` listener/emitter to serve task executor.
   - ``WSExecutorZero`` checker for task zero.
   - ``WSExecutorFirst`` checker for first task.
+  - ``WSExecutorSecond`` checker for second task.
   - ``WSTaskServer`` tasks manager.
   - ``WebSocketPool`` serverwise connection pool.
 
@@ -38,7 +39,15 @@ Changed
   - ``first/MatrixCanvas`` to ``MatrixCanvas``.
   - ``first/AnimationCanvas`` to ``AnimationCanvas``.
 
-- Use WebSocket as an interface instead of ``input`` in ``First`` component.
+- Use WebSocket as an interface instead of ``input``
+  in ``First`` and ``Second`` components.
+
+Fixed
+-----
+
+- If ``AidSprite`` has the same drop coordinate
+  as the ``AimSprite`` starting position,
+  aid should not be destroyed until the aim landing.
 
 0.0.1 - 2019-07-28
 ==================
