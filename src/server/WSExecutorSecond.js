@@ -35,7 +35,7 @@ const WSExecutor = require('./WSExecutor');
  *   or a non-negative integer for delta loss.
  *   The integer is a radius of an allowed interval:
  *   zero means binary loss function,
- *   one means current bar and its nearest neighbors,
+ *   one means a current bar and its nearest neighbors,
  *   and so on,
  *   `[width]` is a number of bars in heatmaps,
  *   `[totalSteps]` is a number of heatmaps to deal with,
@@ -66,7 +66,7 @@ const WSExecutor = require('./WSExecutor');
  *   guessesj
  *   heatmapj
  *   ```
- *   where `answersj` is the array with right answers
+ *   where `answersj` is the array with the right answers
  *   to the problem `[step]`.
  * - If there are more problems left to solve
  *   (`[step]` is less than `[totalSteps]`),
