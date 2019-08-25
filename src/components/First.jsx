@@ -26,7 +26,6 @@ import {
   Button,
   Col,
   Form,
-  Table,
 } from 'react-bootstrap';
 
 import MatrixCanvas from './MatrixCanvas';

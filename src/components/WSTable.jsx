@@ -21,48 +21,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Table } from 'react-bootstrap';
 
-class WSTable extends Component {
-  render() {
-    const { messages, sessionId } = this.props;
-    const messagesHtml = messages.map((message, i) => (
+const WSTable = ({ messages, sessionId }) => {
+  const messagesHtml = messages.map((message, i) => (
+    <tr>
+      <td>
+        {i}
+      </td>
+      <td>
+        {message.author}
+      </td>
+      <td>
+        {message.data}
+      </td>
+    </tr>
+  ));
+  const tableCaption = (sessionId
+    ? (
+      <caption>
+        Session
+        {sessionId}
+      </caption>
+    )
+    : (<caption>Waiting for session to start</caption>)
+  );
+  const tableHeading = sessionId ? (
+    <thead>
       <tr>
-        <td>
-          {i}
-        </td>
-        <td>
-          {message.author}
-        </td>
-        <td>
-          {message.data}
-        </td>
+        <th>#</th>
+        <th>Author</th>
+        <th>Message</th>
       </tr>
-    ));
-    const tableCaption = (sessionId
-      ? (<caption>Session {sessionId}</caption>)
-      : (<caption>Waiting for session to start</caption>)
-    );
-    const tableHeading = sessionId ? (
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Author</th>
-          <th>Message</th>
-        </tr>
-      </thead>
-    ) : (<thead />);
-    return (
-      <Table striped bordered hover>
-        {tableCaption}
-        {tableHeading}
-        <tbody>
-          {messagesHtml}
-        </tbody>
-      </Table>
-    );
-  }
+    </thead>
+  ) : (<thead />);
+  return (
+    <Table striped bordered hover>
+      {tableCaption}
+      {tableHeading}
+      <tbody>
+        {messagesHtml}
+      </tbody>
+    </Table>
+  );
+};
+
+WSTable.propTypes = {
+  messages: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  sessionId: PropTypes.string.isRequired,
 };
 
 export default WSTable;
