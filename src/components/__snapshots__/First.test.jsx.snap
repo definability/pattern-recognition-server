@@ -34,9 +34,7 @@ exports[`First should render correctly 1`] = `
     }
     width={300}
   />
-  <div>
-    Session
-  </div>
+  <div />
   <ul />
 </div>
 `;
