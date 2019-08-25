@@ -22,25 +22,35 @@
  * SOFTWARE.
  */
 import React from 'react';
+import { Nav } from 'react-bootstrap';
 import {
   Link,
   Route,
   Switch,
 } from 'react-router-dom';
+import { withRouter } from 'react-router';
 
 import Zero from './Zero';
 import First from './First';
 import Second from './Second';
 import Home from './Home';
 
-const App = () => (
+const App = withRouter(() => (
   <div>
-    <nav>
-      <Link to="/">Home</Link>
-      <Link to="/zero">Zero</Link>
-      <Link to="/first">First</Link>
-      <Link to="/second">Second</Link>
-    </nav>
+    <Nav activeKey={window.location.pathname}>
+      <Nav.Item>
+        <Nav.Link eventKey="/" as={Link} to="/">Home</Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link eventKey="/zero" as={Link} to="/zero">Zero</Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link eventKey="/first" as={Link} to="/first">First</Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link eventKey="/second" as={Link} to="/second">Second</Nav.Link>
+      </Nav.Item>
+    </Nav>
     <Switch>
       <Route
         path="/"
@@ -64,6 +74,6 @@ const App = () => (
       />
     </Switch>
   </div>
-);
+));
 
 export default App;
