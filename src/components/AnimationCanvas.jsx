@@ -37,8 +37,9 @@ class AnimationCanvas extends Component {
     super(props);
     this.state = {
       animationId: null,
-    }
+    };
   }
+
   componentDidMount() {
     window.requestAnimationFrame(() => this.animation());
   }
@@ -76,6 +77,7 @@ class AnimationCanvas extends Component {
 
     updateSprites(time);
     this.setState((previousState) => ({
+      ...previousState,
       animationId: window.requestAnimationFrame(() => this.animation()),
     }));
   }
