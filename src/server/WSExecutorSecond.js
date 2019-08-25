@@ -219,9 +219,9 @@ class WSExecutorSecond extends WSExecutor {
       return;
     }
 
-    const guesses = guessesString.split(' ');
+    const guesses = guessesString.split(' ').map(Number);
     if (
-      !guesses.reduce((acc, e) => acc && Number.isSafeInteger(Number(e)), true)
+      !guesses.reduce((acc, e) => acc && this.isValidGuess(e), true)
       || guesses.length !== this.repeats
     ) {
       console.error('Provided guess cannot be right');
@@ -267,6 +267,14 @@ class WSExecutorSecond extends WSExecutor {
     }
     this.send(
       `Finish with ${this.totalLoss}`,
+    );
+  }
+
+  isValidGuess(guess) {
+    return (
+      Number.isSafeInteger(guess)
+      && guess >= 0
+      && guess < this.currentHistorgram.length
     );
   }
 
