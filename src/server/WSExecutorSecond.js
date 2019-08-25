@@ -112,14 +112,12 @@ class WSExecutorSecond extends WSExecutor {
     this.barsNumber = null;
     this.currentHistorgram = null;
     this.currentStep = 0;
-    this.horizontalScale = null;
     this.loss = null;
     this.lossName = null;
     this.repeats = null;
     this.state = WSExecutorSecond.STATES.START;
     this.totalLoss = 0;
     this.totalSteps = null;
-    this.width = null;
 
     console.log('Executor Second created');
   }
@@ -151,7 +149,7 @@ class WSExecutorSecond extends WSExecutor {
       this.socket.close();
       return;
     }
-    const [lossName, width, totalSteps, repeats, ...tail] = (
+    const [lossName, barsNumber, totalSteps, repeats, ...tail] = (
       message.slice('Let\'s start with '.length).split(' ')
     );
 
@@ -170,12 +168,12 @@ class WSExecutorSecond extends WSExecutor {
     this.loss = WSExecutorSecond.LOSS_FUNCTION(lossName);
 
 
-    if (!Number.isSafeInteger(Number(width))) {
-      console.error('Incorrect width');
+    if (!Number.isSafeInteger(Number(barsNumber))) {
+      console.error('Incorrect barsNumber');
       this.socket.close();
       return;
     }
-    this.width = Number(width);
+    this.barsNumber = Number(barsNumber);
 
 
     if (!Number.isSafeInteger(Number(totalSteps))) {
@@ -277,9 +275,9 @@ class WSExecutorSecond extends WSExecutor {
    */
   generateHeatmap() {
     const heatmap = [Math.random() * 255];
-    for (let i = 1; i < this.width; i += 1) {
+    for (let i = 1; i < this.barsNumber; i += 1) {
       const value = (
-        heatmap[i - 1] + ((Math.random() - 0.5) * 500) / (this.width ** 0.5)
+        heatmap[i - 1] + ((Math.random() - 0.5) * 500) / (this.barsNumber ** 0.5)
       );
       if (value < 0) {
         heatmap.push(0);
