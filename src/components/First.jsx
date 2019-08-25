@@ -262,10 +262,7 @@ class First extends Component {
             1: '#000000',
           }}
         />
-        <div>
-          Session
-          {sessionId}
-        </div>
+        <div>{sessionId ? `Session ${sessionId}` : ''}</div>
         <ul>{messagesHtml}</ul>
       </div>
     );
