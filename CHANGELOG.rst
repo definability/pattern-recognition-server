@@ -48,6 +48,7 @@ Fixed
 - If ``AidSprite`` has the same drop coordinate
   as the ``AimSprite`` starting position,
   aid should not be destroyed until the aim landing.
+- UI error when switching from the ``Second`` task to any other.
 
 0.0.1 - 2019-07-28
 ==================

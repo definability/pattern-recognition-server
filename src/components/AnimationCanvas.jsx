@@ -33,8 +33,20 @@ import drawMatrix from '../scripts/drawMatrix';
  * @param sprites with AnimationSprite instances to render and animate
  */
 class AnimationCanvas extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      animationId: null,
+    };
+  }
+
   componentDidMount() {
     window.requestAnimationFrame(() => this.animation());
+  }
+
+  componentWillUnmount() {
+    const { animationId } = this.state;
+    cancelAnimationFrame(animationId);
   }
 
   animation() {
@@ -64,7 +76,10 @@ class AnimationCanvas extends Component {
     });
 
     updateSprites(time);
-    window.requestAnimationFrame(() => this.animation());
+    this.setState((previousState) => ({
+      ...previousState,
+      animationId: window.requestAnimationFrame(() => this.animation()),
+    }));
   }
 
   render() {
