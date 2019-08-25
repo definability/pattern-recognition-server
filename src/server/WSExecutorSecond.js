@@ -91,7 +91,7 @@ class WSExecutorSecond extends WSExecutor {
   };
 
   static LOSS_FUNCTION(identifier) {
-    if (identifier === 'L1') {
+    if (identifier === WSExecutorSecond.L1_LOSS_NAME) {
       return (guess, answer) => Math.abs(guess - answer);
     }
     if (Number.isSafeInteger(Number(identifier))) {
@@ -111,6 +111,10 @@ class WSExecutorSecond extends WSExecutor {
   static MAX_REPEATS = WSExecutorSecond.MAX_BARS_NUMBER;
 
   static MAX_TOTAL_STEPS = Math.round(1E6);
+
+  static MAX_HISTOGRAM_VALUE = 255;
+
+  static L1_LOSS_NAME = 'L1';
 
   constructor(data) {
     super(data);
@@ -165,14 +169,16 @@ class WSExecutorSecond extends WSExecutor {
       return;
     }
 
-    if (lossName !== 'L1' && !Number.isSafeInteger(Number(lossName))) {
+    if (
+      lossName !== WSExecutorSecond.L1_LOSS_NAME
+      && !Number.isSafeInteger(Number(lossName))
+    ) {
       console.error('Unknown loss');
       this.socket.close();
       return;
     }
     this.lossName = lossName;
     this.loss = WSExecutorSecond.LOSS_FUNCTION(lossName);
-
 
     if (
       !Number.isSafeInteger(Number(barsNumber))
@@ -297,15 +303,17 @@ class WSExecutorSecond extends WSExecutor {
    * Generate new heatmap.
    */
   generateHeatmap() {
-    const heatmap = [Math.random() * 255];
+    const heatmap = [Math.random() * WSExecutorSecond.MAX_HISTOGRAM_VALUE];
     for (let i = 1; i < this.barsNumber; i += 1) {
       const value = (
-        heatmap[i - 1] + ((Math.random() - 0.5) * 500) / (this.barsNumber ** 0.5)
+        heatmap[i - 1]
+        + ((Math.random() - 0.5) * 2 * WSExecutorSecond.MAX_HISTOGRAM_VALUE)
+        / (this.barsNumber ** 0.5)
       );
       if (value < 0) {
         heatmap.push(0);
-      } else if (value > 255) {
-        heatmap.push(255);
+      } else if (value > WSExecutorSecond.MAX_HISTOGRAM_VALUE) {
+        heatmap.push(WSExecutorSecond.MAX_HISTOGRAM_VALUE);
       } else {
         heatmap.push(value);
       }
