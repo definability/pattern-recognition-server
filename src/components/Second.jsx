@@ -56,12 +56,12 @@ class Second extends Component {
   /**
    * Default canvas width.
    */
-  static WIDTH = 100;
+  static WIDTH = 1000;
 
   /**
    * Height of a sky with helicopters there.
    */
-  static SKY_HEIGHT = 100;
+  static SKY_HEIGHT = 300;
 
   /**
    * Palette for heatmap.
@@ -84,54 +84,85 @@ class Second extends Component {
       aimDelta: -1,
       aims: [],
       barsNumber: 1,
+      guesses: null,
       heatmap: [0],
       height: Second.SKY_HEIGHT,
       helicopters: [],
+      messages: [],
+      sessionId: '',
+      solutions: null,
       width: Second.WIDTH,
+      ws: null,
     };
   }
 
-  /**
-   * Change the maximal good distance between aim and aid
-   * in heatmap bars.
-   * Zero beans only current bar.
-   * Set `-1` to remove the constraint.
-   */
-  changeAimDelta(inputAimDelta) {
-    let aimDelta = Number(inputAimDelta);
-    if (aimDelta < -1) {
-      aimDelta = -1;
+  async onServerMessage(message) {
+    const [
+      stepInformation,
+      solutionsString,
+      guessesString,
+      heatmapString,
+      ...tail
+    ] = message.split('\n');
+    const [type, step, loss] = stepInformation.split(' ');
+    if (
+      !Number.isSafeInteger(Number(step))
+      || type !== 'Solutions'
+      || (loss !== 'L1' && !Number.isSafeInteger(Number(loss)))
+      || !solutionsString
+      || !guessesString
+      || !heatmapString
+      || tail.length
+    ) {
+      return;
     }
-    aimDelta = Math.round(aimDelta);
+    const solutions = solutionsString.split(' ').map(Number);
+    if (
+      !solutions.length
+      || !solutions.reduce((acc, e) => acc && Number.isSafeInteger(e), true)
+    ) {
+      return;
+    }
+    const guesses = guessesString.split(' ').map(Number);
+    if (
+      !guesses.length
+      || !guesses.reduce((acc, e) => acc && Number.isSafeInteger(e), true)
+    ) {
+      return;
+    }
+    const heatmap = heatmapString.split(' ').map(Number);
+    if (
+      !heatmap.length
+      || !heatmap.reduce((acc, e) => acc && Number.isSafeInteger(e), true)
+    ) {
+      return;
+    }
+
+    await this.changeAimDelta(loss === 'L1' ? -1 : Number(loss));
+    await this.changeHeatmap(heatmap);
+    this.dropAll(guesses, solutions);
+  }
+
+  /**
+   * Change canvas width.
+   */
+  changeWidth(inputWidth) {
+    let width = Number(inputWidth);
+    if (width < 1) {
+      width = 1;
+    }
+    width = Math.round(width);
     this.setState((previousState) => ({
       ...previousState,
       aids: [],
       aims: [],
-      aimDelta,
       helicopters: [],
+      width,
     }));
   }
 
   /**
-   * Change number of bars in heatmap.
-   */
-  changeBarsNumber(inputBarsNumber) {
-    let barsNumber = Number(inputBarsNumber);
-    if (barsNumber < 1) {
-      barsNumber = 1;
-    }
-    barsNumber = Math.round(barsNumber);
-    this.setState((previousState) => ({
-      ...previousState,
-      aids: [],
-      aims: [],
-      barsNumber,
-      helicopters: [],
-    }));
-  }
-
-  /**
-   * Change number of bars in heatmap.
+   * Change sky height.
    */
   changeHeight(inputHeight) {
     let height = Number(inputHeight);
@@ -148,21 +179,121 @@ class Second extends Component {
     }));
   }
 
-  /**
-   * Change number of bars in heatmap.
-   */
-  changeWidth(inputWidth) {
-    let width = Number(inputWidth);
-    if (width < 1) {
-      width = 1;
+  dropAll(guesses, solutions) {
+    guesses.forEach((guess, i) => this.drop({
+      aimBar: solutions[i],
+      aidBar: guess,
+    }));
+  }
+
+  changeHeatmap(heatmap) {
+    if (
+      !Array.isArray(heatmap)
+      || !heatmap.length
+      || !heatmap.reduce((acc, e) => acc && Number.isSafeInteger(e), true)
+    ) {
+      throw new Error('Heatmap is invalid');
     }
-    width = Math.round(width);
-    this.setState((previousState) => ({
+    return new Promise((resolve) => this.setState(
+      (previousState) => ({
+        ...previousState,
+        aids: [],
+        aims: [],
+        barsNumber: heatmap.length,
+        heatmap,
+        helicopters: [],
+      }),
+      resolve,
+    ));
+  }
+
+  /**
+   * Change the maximal good distance between aim and aid
+   * in heatmap bars.
+   * Zero beans only current bar.
+   * Set `-1` to remove the constraint.
+   */
+  changeAimDelta(inputAimDelta) {
+    let aimDelta = Number(inputAimDelta);
+    if (aimDelta < -1) {
+      aimDelta = -1;
+    }
+    aimDelta = Math.round(aimDelta);
+    return new Promise((resolve) => this.setState((previousState) => ({
       ...previousState,
       aids: [],
       aims: [],
+      aimDelta,
       helicopters: [],
-      width,
+    }),
+    resolve));
+  }
+
+  observeSession() {
+    const {
+      ws: oldWS,
+    } = this.state;
+    const sessionId = this.sessionId.value;
+    if (oldWS && [oldWS.CONNECTING, oldWS.OPEN].includes(oldWS.readyState)) {
+      oldWS.removeEventListener('open', oldWS.onopen);
+      oldWS.removeEventListener('close', oldWS.onclose);
+      oldWS.removeEventListener('error', oldWS.onerror);
+      oldWS.close(1000);
+    }
+    const HOST = window.location.origin.replace(/^http/, 'ws');
+    const ws = new WebSocket(`${HOST}/first/${sessionId}`);
+    ws.addEventListener('open', () => {
+      const message = {
+        author: 'Client',
+        data: `Connect to session ${sessionId}`,
+      };
+      this.setState((previousState) => ({
+        ...previousState,
+        messages: [...previousState.messages, message],
+      }));
+    });
+    ws.addEventListener('close', ({ code, target: { url } }) => {
+      const message = {
+        author: 'Client',
+        data: `Disconnected from ${url} with code ${code}`,
+      };
+      this.setState((previousState) => ({
+        ...previousState,
+        messages: [...previousState.messages, message],
+      }));
+    });
+    ws.addEventListener('error', ({ target: { url } }) => {
+      const message = {
+        author: 'Client',
+        data: `Error in ${url}`,
+      };
+      this.setState((previousState) => ({
+        ...previousState,
+        messages: [...previousState.messages, message],
+      }));
+    });
+    ws.addEventListener('message', ({ data: message }) => {
+      const colonIndex = message.search(':');
+      const author = colonIndex === -1 ? '' : message.slice(0, colonIndex);
+      const dataIndex = colonIndex === -1 ? 0 : colonIndex + 2;
+      const data = message.slice(dataIndex, message.length);
+      const newMessage = {
+        author,
+        data: data.length < 30 ? data : '[hidden message]',
+      };
+      if (author === 'Server') {
+        this.onServerMessage(data);
+      }
+      this.setState((previousState) => ({
+        ...previousState,
+        messages: [...previousState.messages, newMessage],
+      }));
+    });
+    this.setState((previousState) => ({
+      ...previousState,
+      messages: [],
+      sessionId,
+      ws,
     }));
   }
 
@@ -202,25 +333,10 @@ class Second extends Component {
     }
   }
 
-  generateX() {
-    const { heatmap, barsNumber, width } = this.state;
-    const cumulative = heatmap.reduce(
-      (result, value, i) => (
-        result.length
-          ? [...result, result[i - 1] + value]
-          : [value]
-      ),
-      [],
-    );
-    const value = Math.random() * cumulative[cumulative.length - 1];
-    const index = cumulative.findIndex((element) => element >= value);
-    return (width / barsNumber) * (index + 0.5);
-  }
-
   /**
    * Create new helicopter to drop an item.
    */
-  drop() {
+  drop({ aimBar, aidBar }) {
     const {
       aimDelta,
       barsNumber,
@@ -228,22 +344,26 @@ class Second extends Component {
       width,
     } = this.state;
 
+    const BASE_VELOCITY = 100;
     const helicopter = new HelicopterSprite({
       birthDate: new Date(),
       canvasWidth: Math.round(width),
       canvasHeight: height,
       offsetY: Math.random() * (height - HelicopterSprite.IMAGES[0].length * 5),
       scale: 5,
-      velocity: 200,
+      velocity: VELOCITY * 2,
     });
     const aid = new AidSprite({
       birthDate: new Date(),
       canvasHeight: height,
       canvasWidth: Math.round(width),
-      dropX: Math.random() * (width - AidSprite.IMAGE[0].length),
+      dropX: (
+        ((aidBar + 0.5) * width) / barsNumber
+        - (AidSprite.IMAGE[0].length / 2)
+      ),
       helicopter,
       scale: 5,
-      velocity: 200,
+      velocity: VELOCITY * 2,
     });
     const aim = new AimSprite({
       aid,
@@ -251,9 +371,12 @@ class Second extends Component {
       canvasHeight: height,
       canvasWidth: Math.round(width),
       maxDistance: ((aimDelta + 0.5) * width) / barsNumber,
-      offsetX: this.generateX(),
+      offsetX: (
+        ((aimBar + 0.5) * width) / barsNumber
+        - (AimSprite.IMAGES.NEUTRAL[0].length / 2)
+      ),
       scale: 3,
-      velocity: 100,
+      velocity: VELOCITY,
     });
     this.setState((previousState) => ({
       ...previousState,
@@ -263,93 +386,36 @@ class Second extends Component {
     }));
   }
 
-  /**
-   * Generate new heatmap.
-   */
-  generateHeatmap() {
-    const { barsNumber } = this.state;
-    const heatmap = [Math.random() * 255];
-    for (let i = 1; i < barsNumber; i += 1) {
-      const value = (
-        heatmap[i - 1] + ((Math.random() - 0.5) * 500) / (barsNumber ** 0.5)
-      );
-      if (value < 0) {
-        heatmap.push(0);
-      } else if (value > 255) {
-        heatmap.push(255);
-      } else {
-        heatmap.push(value);
-      }
-    }
-    this.setState((previousState) => ({
-      ...previousState,
-      aids: [],
-      aims: [],
-      heatmap: heatmap.map(Math.round),
-      helicopters: [],
-    }));
-  }
-
   render() {
     const {
       aids,
-      aimDelta,
       aims,
-      barsNumber,
       heatmap,
       height,
       helicopters,
+      messages,
+      sessionId,
       width,
     } = this.state;
+    const messagesHtml = messages.map((message) => (
+      <li>
+        {message.author}
+        {': '}
+        {message.data}
+      </li>
+    ));
     return (
       <div>
         <h3>Task B</h3>
         <form>
-          <label htmlFor={this.widthInput}>
-            Width:
+          <label htmlFor={this.sessionId}>
+          Session ID:
             <input
-              ref={(component) => { this.widthInput = component; }}
-              type="number"
-              value={width}
-              step={1}
-              onChange={(event) => this.changeWidth(event.target.value)}
+              ref={(component) => { this.sessionId = component; }}
             />
           </label>
-          <label htmlFor={this.heightInput}>
-            Height:
-            <input
-              ref={(component) => { this.heightInput = component; }}
-              type="number"
-              value={height}
-              step={1}
-              onChange={(event) => this.changeHeight(event.target.value)}
-            />
-          </label>
-          <label htmlFor={this.barsNumberInput}>
-            Bars number:
-            <input
-              ref={(component) => { this.barsNumberInput = component; }}
-              type="number"
-              value={barsNumber}
-              step={1}
-              onChange={(event) => this.changeBarsNumber(event.target.value)}
-            />
-          </label>
-          <label htmlFor={this.aimDeltaInput}>
-            Aim life delta:
-            <input
-              ref={(component) => { this.aimDeltaInput = component; }}
-              type="number"
-              value={aimDelta}
-              step={1}
-              onChange={(event) => this.changeAimDelta(event.target.value)}
-            />
-          </label>
-          <button type="button" onClick={() => this.generateHeatmap()}>
-            Next
-          </button>
-          <button type="button" onClick={() => this.drop()}>
-            Drop
+          <button type="button" onClick={() => this.observeSession()}>
+          Observe
           </button>
         </form>
         <AnimationCanvas
@@ -364,6 +430,8 @@ class Second extends Component {
           matrix={[heatmap]}
           palette={Second.grayPalette}
         />
+        <div>{sessionId ? `Session ${sessionId}` : ''}</div>
+        <ul>{messagesHtml}</ul>
       </div>
     );
   }
