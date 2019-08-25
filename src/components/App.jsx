@@ -22,7 +22,11 @@
  * SOFTWARE.
  */
 import React from 'react';
-import { Nav } from 'react-bootstrap';
+import {
+  Container,
+  Nav,
+  Navbar,
+} from 'react-bootstrap';
 import {
   Link,
   Route,
@@ -36,21 +40,16 @@ import Second from './Second';
 import Home from './Home';
 
 const App = withRouter(() => (
-  <div>
-    <Nav activeKey={window.location.pathname}>
-      <Nav.Item>
+  <Container md={8}>
+    <Navbar bg="light">
+      <Nav activeKey={window.location.pathname}>
+        <Navbar.Brand eventKey="/" as={Link} to="/">Pattern Recognition</Navbar.Brand>
         <Nav.Link eventKey="/" as={Link} to="/">Home</Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
         <Nav.Link eventKey="/zero" as={Link} to="/zero">Zero</Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
         <Nav.Link eventKey="/first" as={Link} to="/first">First</Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
         <Nav.Link eventKey="/second" as={Link} to="/second">Second</Nav.Link>
-      </Nav.Item>
-    </Nav>
+      </Nav>
+    </Navbar>
     <Switch>
       <Route
         path="/"
@@ -73,7 +72,7 @@ const App = withRouter(() => (
         exact
       />
     </Switch>
-  </div>
+  </Container>
 ));
 
 export default App;
