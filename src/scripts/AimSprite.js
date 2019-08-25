@@ -182,7 +182,10 @@ class AimSprite extends AnimationSprite {
   }
 
   needDestroy(time) {
-    if (Math.abs(this.offsetX(time) - this.#aid.offsetX()) <= 1) {
+    if (
+      Math.abs(this.offsetX(time) - this.#aid.offsetX()) <= 1
+      && this.#aid.landingTime(time) <= time
+    ) {
       return true;
     }
     return false;
