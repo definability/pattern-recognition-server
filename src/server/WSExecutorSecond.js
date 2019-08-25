@@ -106,6 +106,12 @@ class WSExecutorSecond extends WSExecutor {
 
   static DEFAULT_TTL = WSExecutorSecond.DEFAULT_TTL_SECONDS * 1E3;
 
+  static MAX_BARS_NUMBER = Math.round(1E3);
+
+  static MAX_REPEATS = WSExecutorSecond.MAX_BARS_NUMBER;
+
+  static MAX_TOTAL_STEPS = Math.round(1E6);
+
   constructor(data) {
     super(data);
 
@@ -168,7 +174,10 @@ class WSExecutorSecond extends WSExecutor {
     this.loss = WSExecutorSecond.LOSS_FUNCTION(lossName);
 
 
-    if (!Number.isSafeInteger(Number(barsNumber))) {
+    if (
+      !Number.isSafeInteger(Number(barsNumber))
+      || Number(barsNumber) > WSExecutorSecond.MAX_BARS_NUMBER
+    ) {
       console.error('Incorrect barsNumber');
       this.socket.close();
       return;
@@ -176,7 +185,10 @@ class WSExecutorSecond extends WSExecutor {
     this.barsNumber = Number(barsNumber);
 
 
-    if (!Number.isSafeInteger(Number(totalSteps))) {
+    if (
+      !Number.isSafeInteger(Number(totalSteps))
+      || Number(totalSteps) > WSExecutorSecond.MAX_TOTAL_STEPS
+    ) {
       console.error('Incorrect total steps');
       this.socket.close();
       return;
@@ -184,7 +196,10 @@ class WSExecutorSecond extends WSExecutor {
     this.totalSteps = Number(totalSteps);
 
 
-    if (!Number.isSafeInteger(Number(repeats))) {
+    if (
+      !Number.isSafeInteger(Number(repeats))
+      || Number(repeats) > WSExecutorSecond.MAX_REPEATS
+    ) {
       console.error('Incorrect repeats');
       this.socket.close();
       return;
