@@ -241,7 +241,10 @@ class First extends Component {
     } = this.state;
     return (
       <div>
-        <h1>Task 1 <small className="text-muted">Digits recognition</small></h1>
+        <h1>
+          Task 1
+          <small className="text-muted">Digits recognition</small>
+        </h1>
         <Row>
           <Col xs={12} lg={6}>
             <Form>

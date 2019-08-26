@@ -406,7 +406,10 @@ class Second extends Component {
     } = this.state;
     return (
       <div>
-        <h1>Task 2 <small className="text-muted">Aiding people</small></h1>
+        <h1>
+          Task 2
+          <small className="text-muted">Aiding people</small>
+        </h1>
         <Row>
           <Col xs={12} lg={6}>
             <Form>

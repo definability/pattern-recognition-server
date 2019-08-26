@@ -124,7 +124,10 @@ class Zero extends Component {
     } = this.state;
     return (
       <div>
-        <h1>Task 0 <small className="text-muted">WebSocket conversation</small></h1>
+        <h1>
+          Task 0
+          <small className="text-muted">WebSocket conversation</small>
+        </h1>
         <Row>
           <Col xs={12} lg={6}>
             <Form>
