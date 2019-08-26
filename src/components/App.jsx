@@ -41,7 +41,7 @@ import Home from './Home';
 
 const App = withRouter(() => (
   <Container>
-    <Navbar bg="light">
+    <Navbar>
       <Nav activeKey={window.location.pathname}>
         <Navbar.Brand as={Link} to="/">Pattern Recognition</Navbar.Brand>
         <Nav.Link eventKey="/" as={Link} to="/">Home</Nav.Link>
