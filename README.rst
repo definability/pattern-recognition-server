@@ -55,14 +55,30 @@ Environment variables
 Tasks
 =====
 
-Common warnings
----------------
+Common recommendations
+----------------------
 
 - Use only space symbol (``0x20``, the 32nd symbol of ASCII table)
   for horizontal spacing.
 - Use only ``\n`` (``0x0A``, the 10th symbol of ASCII table)
   for vertical spacing.
 - The tasks don't allow leading, trailing and repeated whitespaces.
+
+Completing the tasks
+--------------------
+
+- You should create your own application.
+- The application creates a WebSocket client
+  and connects to the WebSocket server.
+- The address to connect is
+  ``wss://sprs.herokuapp.com/task-number/[session-id]``.
+- When you connect to the server,
+  you create a new session named ``[session-id]``,
+  which should be a valid URI segment
+  (for example, a number, word, words separated by ``-`` or ``_``, etc.).
+- Web UI is used only to follow the task completion.
+  Just type the ``[session-id]`` into the corresponding input
+  of the desired task page to start watching it.
 
 Zero
 ----
