@@ -81,6 +81,10 @@ Completing the tasks
   Just type the ``[session-id]`` into the corresponding input
   of the desired task page to start watching it.
 
+**Tip**
+It's better for you to create a local demo WebSocket server
+to get familiar with WebSockets.
+
 Zero
 ----
 
