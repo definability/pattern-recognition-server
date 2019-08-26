@@ -13,9 +13,9 @@ How to use
 Available on `sprs.herokuapp.com`_.
 If it doesn't respond for several seconds,
 just wait.
-I use free Heroku plan,
+I use a free Heroku plan,
 so the application sleeps if it isn't in use for an hour.
-After the response it wakes up again.
+After the response, it wakes up again.
 
 How to launch
 =============
@@ -49,7 +49,7 @@ Environment variables
 
 - ``PORT`` specifies the port to bind the server to.
   ``3000`` by default.
-- ``MAX_CONNECTED_CLIENTS`` is the websocket connection pool size.
+- ``MAX_CONNECTED_CLIENTS`` is the WebSocket connection pool size.
   ``1`` by default.
 
 .. _nvm:
