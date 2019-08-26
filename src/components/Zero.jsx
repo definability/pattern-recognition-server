@@ -126,6 +126,7 @@ class Zero extends Component {
       <div>
         <h1>
           Task 0
+          {' '}
           <small className="text-muted">WebSocket conversation</small>
         </h1>
         <Row>
