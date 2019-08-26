@@ -69,7 +69,8 @@ Completing the tasks
 
 - You should create your own application.
 - The application creates a WebSocket client
-  and connects to the WebSocket server.
+  and connects to the WebSocket server
+  Read `Awesome WebSockets`_ for more information.
 - The address to connect is
   ``wss://sprs.herokuapp.com/task-number/[session-id]``.
 - When you connect to the server,
@@ -221,6 +222,8 @@ by their sums.
 
 Right answers (aim coordinates) are generated according to the heatmap.
 
+.. _Awesome WebSockets:
+    https://github.com/facundofarias/awesome-websockets#awesome-websockets-
 .. _nvm:
     https://github.com/nvm-sh/nvm
 .. _NodeJS:
