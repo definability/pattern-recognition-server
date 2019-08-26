@@ -454,8 +454,10 @@ class Second extends Component {
             />
           </Col>
         </Row>
-        <Row>
-          <WSTable messages={messages} sessionId={sessionId} />
+        <Row className="mt-3">
+          <Col>
+            <WSTable messages={messages} sessionId={sessionId} />
+          </Col>
         </Row>
       </div>
     );
