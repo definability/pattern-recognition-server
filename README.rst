@@ -85,6 +85,40 @@ Completing the tasks
 It's better for you to create a local demo WebSocket server
 to get familiar with WebSockets.
 
+Troubleshooting
+---------------
+
+Server has denied my connection
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Check the URI you're trying to connect to.
+Note that it's case sensitive:
+for example, the ``first`` task address is
+``wss://sprs.herokuapp.com/first``,
+not ``wss://sprs.herokuapp.com/First``
+and not ``wss://sprs.herokuapp.com/FIRST``.
+
+Also, this error may occur if sockets pool is full.
+Contact the lecturer/administrator/char-lie
+if you think this is the problem.
+
+I don't receive any messages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Check whether you're listening for them
+and connected to the server at all
+(you may be disconnected by it for different reasons).
+
+Connection was closed after I've sent a message
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Check instruction and your messages:
+you may have sent a wrong message.
+
+Also, each task has TTL (time to live) of connections.
+If you're working on a task for too long,
+you will be disconnected.
+
 Zero
 ----
 
