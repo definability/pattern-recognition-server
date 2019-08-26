@@ -47,7 +47,7 @@ const WSTable = ({ messages, sessionId }) => {
         {sessionId}
       </caption>
     )
-    : (<caption>Waiting for session to start</caption>)
+    : (<caption />)
   );
   const tableHeading = sessionId ? (
     <thead>
