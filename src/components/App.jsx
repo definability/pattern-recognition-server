@@ -43,7 +43,7 @@ const App = withRouter(() => (
   <Container md={8}>
     <Navbar bg="light">
       <Nav activeKey={window.location.pathname}>
-        <Navbar.Brand eventKey="/" as={Link} to="/">Pattern Recognition</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">Pattern Recognition</Navbar.Brand>
         <Nav.Link eventKey="/" as={Link} to="/">Home</Nav.Link>
         <Nav.Link eventKey="/zero" as={Link} to="/zero">Zero</Nav.Link>
         <Nav.Link eventKey="/first" as={Link} to="/first">First</Nav.Link>
