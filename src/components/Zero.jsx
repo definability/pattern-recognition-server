@@ -26,6 +26,7 @@ import {
   Button,
   Col,
   Form,
+  Row,
 } from 'react-bootstrap';
 
 import WSTable from './WSTable';
@@ -124,26 +125,32 @@ class Zero extends Component {
     return (
       <div>
         <h3>Task 0</h3>
-        <Form>
-          <Form.Row>
-            <Col sm={2}>
-              <Form.Control
-                ref={(component) => { this.sessionId = component; }}
-                placeholder="Session ID"
-              />
-            </Col>
-            <Col sm={1}>
-              <Button
-                variant="primary"
-                type="button"
-                onClick={() => this.observeSession()}
-              >
-                Observe
-              </Button>
-            </Col>
-          </Form.Row>
-        </Form>
-        <WSTable messages={messages} sessionId={sessionId} />
+        <Row className="justify-content-md-center">
+          <Col xs={12} lg={8}>
+            <Form>
+              <Form.Row className="justify-content-md-center">
+                <Col xs={8}>
+                  <Form.Control
+                    ref={(component) => { this.sessionId = component; }}
+                    placeholder="Session ID"
+                  />
+                </Col>
+                <Col xs={4}>
+                  <Button
+                    variant="primary"
+                    type="button"
+                    onClick={() => this.observeSession()}
+                  >
+                    Observe
+                  </Button>
+                </Col>
+              </Form.Row>
+            </Form>
+          </Col>
+        </Row>
+        <Row>
+          <WSTable messages={messages} sessionId={sessionId} />
+        </Row>
       </div>
     );
   }

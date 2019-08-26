@@ -26,6 +26,7 @@ import {
   Button,
   Col,
   Form,
+  Row,
 } from 'react-bootstrap';
 
 import AidSprite from '../scripts/AidSprite';
@@ -406,38 +407,52 @@ class Second extends Component {
     return (
       <div>
         <h3>Task 2</h3>
-        <Form>
-          <Form.Row>
-            <Col sm={2}>
-              <Form.Control
-                ref={(component) => { this.sessionId = component; }}
-                placeholder="Session ID"
-              />
-            </Col>
-            <Col sm={1}>
-              <Button
-                variant="primary"
-                type="button"
-                onClick={() => this.observeSession()}
-              >
-                Observe
-              </Button>
-            </Col>
-          </Form.Row>
-        </Form>
-        <AnimationCanvas
-          height={height}
-          width={Math.round(width)}
-          sprites={[...helicopters, ...aids, ...aims]}
-          updateSprites={(time) => this.updateSprites(time)}
-        />
-        <MatrixCanvas
-          height={Math.round(Second.HEATMAP_HEIGHT)}
-          width={width}
-          matrix={[heatmap]}
-          palette={Second.grayPalette}
-        />
-        <WSTable messages={messages} sessionId={sessionId} />
+        <Row className="justify-content-md-center">
+          <Col xs={12} lg={8}>
+            <Form>
+              <Form.Row className="justify-content-md-center">
+                <Col xs={8}>
+                  <Form.Control
+                    ref={(component) => { this.sessionId = component; }}
+                    placeholder="Session ID"
+                  />
+                </Col>
+                <Col xs={4}>
+                  <Button
+                    variant="primary"
+                    type="button"
+                    onClick={() => this.observeSession()}
+                  >
+                    Observe
+                  </Button>
+                </Col>
+              </Form.Row>
+            </Form>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <AnimationCanvas
+              height={height}
+              width={Math.round(width)}
+              sprites={[...helicopters, ...aids, ...aims]}
+              updateSprites={(time) => this.updateSprites(time)}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <MatrixCanvas
+              height={Math.round(Second.HEATMAP_HEIGHT)}
+              width={width}
+              matrix={[heatmap]}
+              palette={Second.grayPalette}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <WSTable messages={messages} sessionId={sessionId} />
+        </Row>
       </div>
     );
   }
