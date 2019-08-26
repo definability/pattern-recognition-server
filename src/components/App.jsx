@@ -40,7 +40,7 @@ import Second from './Second';
 import Home from './Home';
 
 const App = withRouter(() => (
-  <Container md={8}>
+  <Container>
     <Navbar bg="light">
       <Nav activeKey={window.location.pathname}>
         <Navbar.Brand as={Link} to="/">Pattern Recognition</Navbar.Brand>
