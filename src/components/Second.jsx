@@ -408,6 +408,7 @@ class Second extends Component {
       <div>
         <h1>
           Task 2
+          {' '}
           <small className="text-muted">Aiding people</small>
         </h1>
         <Row>

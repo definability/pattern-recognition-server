@@ -1,7 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Home should render correctly 1`] = `
-<h1>
-  Welcome to the recognition world
-</h1>
+<div>
+  <h1>
+    Welcome to the recognition world
+  </h1>
+  <p>
+    How to complete the tasks above? Read
+     
+    <a
+      href="https://github.com/char-lie/pattern-recognition-server/blob/master/README.rst#tasks"
+    >
+      here
+    </a>
+    .
+  </p>
+  <p>
+    Shorthands to the instructions for each task:
+  </p>
+  <ul>
+    <li>
+      <a
+        href="https://github.com/char-lie/pattern-recognition-server#zero"
+      >
+        Zero
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://github.com/char-lie/pattern-recognition-server#first"
+      >
+        First
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://github.com/char-lie/pattern-recognition-server#second"
+      >
+        Second
+      </a>
+    </li>
+  </ul>
+</div>
 `;

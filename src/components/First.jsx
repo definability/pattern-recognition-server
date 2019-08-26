@@ -243,6 +243,7 @@ class First extends Component {
       <div>
         <h1>
           Task 1
+          {' '}
           <small className="text-muted">Digits recognition</small>
         </h1>
         <Row>

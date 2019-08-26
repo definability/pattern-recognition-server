@@ -16,6 +16,7 @@ Unreleased_
 Added
 -----
 
+- Tasks completion instructions to ``Home`` component and README_.
 - ``Zero`` component for the test practicum (practicum zero).
 - ``WSTable`` component to view WebSocket messages.
 
@@ -94,6 +95,8 @@ Added
 .. _Semantic Versioning:
     http://semver.org/spec/v2.0.0
 
+.. _README:
+    https://github.com/char-lie/pattern-recognition-server/blob/master/README.rst
 .. _React Bootstrap:
     https://react-bootstrap.github.io
 .. _ReactJS:
