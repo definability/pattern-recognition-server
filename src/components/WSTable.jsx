@@ -43,6 +43,7 @@ const WSTable = ({ messages, sessionId }) => {
     ? (
       <caption>
         Session
+        {' '}
         {sessionId}
       </caption>
     )
