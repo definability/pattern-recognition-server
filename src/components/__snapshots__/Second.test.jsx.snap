@@ -4,6 +4,7 @@ exports[`Second should render correctly 1`] = `
 <div>
   <h1>
     Task 2
+     
     <small
       className="text-muted"
     >
