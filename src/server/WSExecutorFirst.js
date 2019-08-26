@@ -372,7 +372,7 @@ class WSExecutorFirst extends WSExecutor {
         matrix.push([]);
         for (let j = 0; j < row.length; j += 1) {
           for (let w = 0; w < this.horizontalScale; w += 1) {
-            matrix[h * WSExecutorFirst.BASIC_HEIGHT + i].push(
+            matrix[i * this.verticalScale + h].push(
               this.applyElementNoise(idealDigit[i][j]),
             );
           }
