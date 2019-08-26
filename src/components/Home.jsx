@@ -23,6 +23,40 @@
  */
 import React from 'react';
 
-const Home = () => (<h1>Welcome to the recognition world</h1>);
+const REPOSITORY_URL = 'https://github.com/char-lie/pattern-recognition-server';
+const README_URL = `${REPOSITORY_URL}/blob/master/README.rst`;
+
+const Home = () => (
+  <div>
+    <h1>Welcome to the recognition world</h1>
+    <p>
+      How to complete the tasks above?
+      Read
+      {' '}
+      <a href={`${README_URL}#tasks`}>here</a>
+      .
+    </p>
+    <p>
+      Shorthands to the instructions for each task:
+    </p>
+    <ul>
+      <li>
+        <a href={`${REPOSITORY_URL}#zero`}>
+          Zero
+        </a>
+      </li>
+      <li>
+        <a href={`${REPOSITORY_URL}#first`}>
+          First
+        </a>
+      </li>
+      <li>
+        <a href={`${REPOSITORY_URL}#second`}>
+          Second
+        </a>
+      </li>
+    </ul>
+  </div>
+);
 
 export default Home;
