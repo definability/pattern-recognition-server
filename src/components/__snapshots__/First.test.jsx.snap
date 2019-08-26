@@ -2,15 +2,19 @@
 
 exports[`First should render correctly 1`] = `
 <div>
-  <h3>
+  <h1>
     Task 1
-  </h3>
+    <small
+      className="text-muted"
+    >
+      Digits recognition
+    </small>
+  </h1>
   <ForwardRef
-    className="justify-content-md-center"
     noGutters={false}
   >
     <Col
-      lg={8}
+      lg={6}
       xs={12}
     >
       <Form

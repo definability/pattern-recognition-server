@@ -2,15 +2,19 @@
 
 exports[`Zero should render correctly 1`] = `
 <div>
-  <h3>
+  <h1>
     Task 0
-  </h3>
+    <small
+      className="text-muted"
+    >
+      WebSocket conversation
+    </small>
+  </h1>
   <ForwardRef
-    className="justify-content-md-center"
     noGutters={false}
   >
     <Col
-      lg={8}
+      lg={6}
       xs={12}
     >
       <Form
