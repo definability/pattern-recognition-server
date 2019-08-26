@@ -51,6 +51,7 @@ Fixed
   as the ``AimSprite`` starting position,
   aid should not be destroyed until the aim landing.
 - UI error when switching from the ``Second`` task to any other.
+- The first task server fail on scales greater than ``1``.
 
 0.0.1 - 2019-07-28
 ==================
