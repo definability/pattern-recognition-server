@@ -2,40 +2,88 @@
 
 exports[`Second should render correctly 1`] = `
 <div>
-  <h3>
-    Task B
-  </h3>
-  <form>
-    <label>
-      Session ID:
-      <input />
-    </label>
-    <button
-      onClick={[Function]}
-      type="button"
+  <h1>
+    Task 2
+    <small
+      className="text-muted"
     >
-      Observe
-    </button>
-  </form>
-  <AnimationCanvas
-    height={300}
-    sprites={Array []}
-    updateSprites={[Function]}
-    width={1000}
-  />
-  <MatrixCanvas
-    height={20}
-    matrix={
-      Array [
-        Array [
-          0,
-        ],
-      ]
-    }
-    palette={[Function]}
-    width={1000}
-  />
-  <div />
-  <ul />
+      Aiding people
+    </small>
+  </h1>
+  <ForwardRef
+    noGutters={false}
+  >
+    <Col
+      lg={6}
+      xs={12}
+    >
+      <Form
+        inline={false}
+      >
+        <FormRow
+          className="justify-content-md-center"
+        >
+          <Col
+            xs={8}
+          >
+            <FormControl
+              placeholder="Session ID"
+            />
+          </Col>
+          <Col
+            xs={4}
+          >
+            <Button
+              active={false}
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+              variant="primary"
+            >
+              Observe
+            </Button>
+          </Col>
+        </FormRow>
+      </Form>
+    </Col>
+  </ForwardRef>
+  <ForwardRef
+    noGutters={false}
+  >
+    <Col>
+      <AnimationCanvas
+        height={300}
+        sprites={Array []}
+        updateSprites={[Function]}
+        width={1000}
+      />
+    </Col>
+  </ForwardRef>
+  <ForwardRef
+    noGutters={false}
+  >
+    <Col>
+      <MatrixCanvas
+        height={20}
+        matrix={
+          Array [
+            Array [
+              0,
+            ],
+          ]
+        }
+        palette={[Function]}
+        width={1000}
+      />
+    </Col>
+  </ForwardRef>
+  <ForwardRef
+    noGutters={false}
+  >
+    <WSTable
+      messages={Array []}
+      sessionId=""
+    />
+  </ForwardRef>
 </div>
 `;

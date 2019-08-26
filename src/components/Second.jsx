@@ -22,12 +22,19 @@
  * SOFTWARE.
  */
 import React, { Component } from 'react';
+import {
+  Button,
+  Col,
+  Form,
+  Row,
+} from 'react-bootstrap';
 
-import MatrixCanvas from './MatrixCanvas';
-import AnimationCanvas from './AnimationCanvas';
-import HelicopterSprite from '../scripts/HelicopterSprite';
 import AidSprite from '../scripts/AidSprite';
 import AimSprite from '../scripts/AimSprite';
+import AnimationCanvas from './AnimationCanvas';
+import HelicopterSprite from '../scripts/HelicopterSprite';
+import MatrixCanvas from './MatrixCanvas';
+import WSTable from './WSTable';
 
 /**
  * The component consists of the three main parts:
@@ -397,41 +404,58 @@ class Second extends Component {
       sessionId,
       width,
     } = this.state;
-    const messagesHtml = messages.map((message) => (
-      <li>
-        {message.author}
-        {': '}
-        {message.data}
-      </li>
-    ));
     return (
       <div>
-        <h3>Task B</h3>
-        <form>
-          <label htmlFor={this.sessionId}>
-          Session ID:
-            <input
-              ref={(component) => { this.sessionId = component; }}
+        <h1>
+          Task 2
+          <small className="text-muted">Aiding people</small>
+        </h1>
+        <Row>
+          <Col xs={12} lg={6}>
+            <Form>
+              <Form.Row className="justify-content-md-center">
+                <Col xs={8}>
+                  <Form.Control
+                    ref={(component) => { this.sessionId = component; }}
+                    placeholder="Session ID"
+                  />
+                </Col>
+                <Col xs={4}>
+                  <Button
+                    variant="primary"
+                    type="button"
+                    onClick={() => this.observeSession()}
+                  >
+                    Observe
+                  </Button>
+                </Col>
+              </Form.Row>
+            </Form>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <AnimationCanvas
+              height={height}
+              width={Math.round(width)}
+              sprites={[...helicopters, ...aids, ...aims]}
+              updateSprites={(time) => this.updateSprites(time)}
             />
-          </label>
-          <button type="button" onClick={() => this.observeSession()}>
-          Observe
-          </button>
-        </form>
-        <AnimationCanvas
-          height={height}
-          width={Math.round(width)}
-          sprites={[...helicopters, ...aids, ...aims]}
-          updateSprites={(time) => this.updateSprites(time)}
-        />
-        <MatrixCanvas
-          height={Math.round(Second.HEATMAP_HEIGHT)}
-          width={width}
-          matrix={[heatmap]}
-          palette={Second.grayPalette}
-        />
-        <div>{sessionId ? `Session ${sessionId}` : ''}</div>
-        <ul>{messagesHtml}</ul>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <MatrixCanvas
+              height={Math.round(Second.HEATMAP_HEIGHT)}
+              width={width}
+              matrix={[heatmap]}
+              palette={Second.grayPalette}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <WSTable messages={messages} sessionId={sessionId} />
+        </Row>
       </div>
     );
   }

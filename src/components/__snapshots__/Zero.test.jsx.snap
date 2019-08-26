@@ -2,22 +2,58 @@
 
 exports[`Zero should render correctly 1`] = `
 <div>
-  <h3>
+  <h1>
     Task 0
-  </h3>
-  <form>
-    <label>
-      Session ID:
-      <input />
-    </label>
-    <button
-      onClick={[Function]}
-      type="button"
+    <small
+      className="text-muted"
     >
-      Observe
-    </button>
-  </form>
-  <div />
-  <ul />
+      WebSocket conversation
+    </small>
+  </h1>
+  <ForwardRef
+    noGutters={false}
+  >
+    <Col
+      lg={6}
+      xs={12}
+    >
+      <Form
+        inline={false}
+      >
+        <FormRow
+          className="justify-content-md-center"
+        >
+          <Col
+            xs={8}
+          >
+            <FormControl
+              placeholder="Session ID"
+            />
+          </Col>
+          <Col
+            xs={4}
+          >
+            <Button
+              active={false}
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+              variant="primary"
+            >
+              Observe
+            </Button>
+          </Col>
+        </FormRow>
+      </Form>
+    </Col>
+  </ForwardRef>
+  <ForwardRef
+    noGutters={false}
+  >
+    <WSTable
+      messages={Array []}
+      sessionId=""
+    />
+  </ForwardRef>
 </div>
 `;

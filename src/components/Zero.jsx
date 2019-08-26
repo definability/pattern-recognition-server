@@ -22,7 +22,14 @@
  * SOFTWARE.
  */
 import React, { Component } from 'react';
+import {
+  Button,
+  Col,
+  Form,
+  Row,
+} from 'react-bootstrap';
 
+import WSTable from './WSTable';
 /**
  * The component consists of three main parts:
  * - Header
@@ -115,29 +122,38 @@ class Zero extends Component {
       messages,
       sessionId,
     } = this.state;
-    const messagesHtml = messages.map((message) => (
-      <li>
-        {message.author}
-        {': '}
-        {message.data}
-      </li>
-    ));
     return (
       <div>
-        <h3>Task 0</h3>
-        <form>
-          <label htmlFor={this.sessionId}>
-          Session ID:
-            <input
-              ref={(component) => { this.sessionId = component; }}
-            />
-          </label>
-          <button type="button" onClick={() => this.observeSession()}>
-          Observe
-          </button>
-        </form>
-        <div>{sessionId ? `Session ${sessionId}` : ''}</div>
-        <ul>{messagesHtml}</ul>
+        <h1>
+          Task 0
+          <small className="text-muted">WebSocket conversation</small>
+        </h1>
+        <Row>
+          <Col xs={12} lg={6}>
+            <Form>
+              <Form.Row className="justify-content-md-center">
+                <Col xs={8}>
+                  <Form.Control
+                    ref={(component) => { this.sessionId = component; }}
+                    placeholder="Session ID"
+                  />
+                </Col>
+                <Col xs={4}>
+                  <Button
+                    variant="primary"
+                    type="button"
+                    onClick={() => this.observeSession()}
+                  >
+                    Observe
+                  </Button>
+                </Col>
+              </Form.Row>
+            </Form>
+          </Col>
+        </Row>
+        <Row>
+          <WSTable messages={messages} sessionId={sessionId} />
+        </Row>
       </div>
     );
   }

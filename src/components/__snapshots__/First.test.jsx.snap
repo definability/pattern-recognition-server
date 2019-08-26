@@ -2,39 +2,85 @@
 
 exports[`First should render correctly 1`] = `
 <div>
-  <h3>
-    Task A
-  </h3>
-  <form>
-    <label>
-      Session ID:
-      <input />
-    </label>
-    <button
-      onClick={[Function]}
-      type="button"
+  <h1>
+    Task 1
+    <small
+      className="text-muted"
     >
-      Observe
-    </button>
-  </form>
-  <MatrixCanvas
-    height={500}
-    matrix={
-      Array [
-        Array [
-          0,
-        ],
-      ]
-    }
-    palette={
-      Object {
-        "0": "#FFFFFF",
-        "1": "#000000",
-      }
-    }
-    width={300}
-  />
-  <div />
-  <ul />
+      Digits recognition
+    </small>
+  </h1>
+  <ForwardRef
+    noGutters={false}
+  >
+    <Col
+      lg={6}
+      xs={12}
+    >
+      <Form
+        inline={false}
+      >
+        <FormRow
+          className="justify-content-md-center"
+        >
+          <Col
+            xs={8}
+          >
+            <FormControl
+              placeholder="Session ID"
+            />
+          </Col>
+          <Col
+            xs={4}
+          >
+            <Button
+              active={false}
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+              variant="primary"
+            >
+              Observe
+            </Button>
+          </Col>
+        </FormRow>
+      </Form>
+    </Col>
+  </ForwardRef>
+  <ForwardRef
+    className="justify-content-md-center"
+    noGutters={false}
+  >
+    <Col
+      lg={4}
+      xs={6}
+    >
+      <MatrixCanvas
+        height={500}
+        matrix={
+          Array [
+            Array [
+              0,
+            ],
+          ]
+        }
+        palette={
+          Object {
+            "0": "#FFFFFF",
+            "1": "#000000",
+          }
+        }
+        width={300}
+      />
+    </Col>
+  </ForwardRef>
+  <ForwardRef
+    noGutters={false}
+  >
+    <WSTable
+      messages={Array []}
+      sessionId=""
+    />
+  </ForwardRef>
 </div>
 `;

@@ -17,6 +17,7 @@ Added
 -----
 
 - ``Zero`` component for the test practicum (practicum zero).
+- ``WSTable`` component to view WebSocket messages.
 
 - WebSocket_ ``server`` module.
 
@@ -32,6 +33,7 @@ Added
 Changed
 -------
 
+- Use `React Bootstrap`_ components instead of default ones.
 - Renamed components
 
   - ``first/FirstA`` to ``First``.
@@ -91,6 +93,8 @@ Added
 .. _Semantic Versioning:
     http://semver.org/spec/v2.0.0
 
+.. _React Bootstrap:
+    https://react-bootstrap.github.io
 .. _ReactJS:
     https://reactjs.org
 .. _ExpressJS:

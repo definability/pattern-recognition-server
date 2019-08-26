@@ -1,50 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`App should render correctly 1`] = `
-<div>
-  <nav>
-    <Link
-      to="/"
-    >
-      Home
-    </Link>
-    <Link
-      to="/zero"
-    >
-      Zero
-    </Link>
-    <Link
-      to="/first"
-    >
-      First
-    </Link>
-    <Link
-      to="/second"
-    >
-      Second
-    </Link>
-  </nav>
-  <Switch>
-    <Route
-      component={[Function]}
-      exact={true}
-      path="/"
-    />
-    <Route
-      component={[Function]}
-      exact={true}
-      path="/zero"
-    />
-    <Route
-      component={[Function]}
-      exact={true}
-      path="/first"
-    />
-    <Route
-      component={[Function]}
-      exact={true}
-      path="/second"
-    />
-  </Switch>
-</div>
+<ContextConsumer>
+  <Component />
+</ContextConsumer>
 `;

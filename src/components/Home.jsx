@@ -23,6 +23,6 @@
  */
 import React from 'react';
 
-const Home = () => <h2>Welcome to the recognition world</h2>;
+const Home = () => (<h1>Welcome to the recognition world</h1>);
 
 export default Home;
