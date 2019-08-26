@@ -21,16 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-html {
-  font-family: monospace;
-}
-
-nav a {
-  padding-right: 1ex;
-  text-decoration: none;
-  color: #00f;
-}
-
-nav a:hover {
-  font-weight: bold;
+canvas {
+  width: 100%;
+  height: auto;
 }
