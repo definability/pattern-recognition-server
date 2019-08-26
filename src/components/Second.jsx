@@ -406,9 +406,9 @@ class Second extends Component {
     } = this.state;
     return (
       <div>
-        <h3>Task 2</h3>
-        <Row className="justify-content-md-center">
-          <Col xs={12} lg={8}>
+        <h1>Task 2 <small className="text-muted">Aiding people</small></h1>
+        <Row>
+          <Col xs={12} lg={6}>
             <Form>
               <Form.Row className="justify-content-md-center">
                 <Col xs={8}>

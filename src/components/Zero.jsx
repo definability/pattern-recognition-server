@@ -124,9 +124,9 @@ class Zero extends Component {
     } = this.state;
     return (
       <div>
-        <h3>Task 0</h3>
-        <Row className="justify-content-md-center">
-          <Col xs={12} lg={8}>
+        <h1>Task 0 <small className="text-muted">WebSocket conversation</small></h1>
+        <Row>
+          <Col xs={12} lg={6}>
             <Form>
               <Form.Row className="justify-content-md-center">
                 <Col xs={8}>
