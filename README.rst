@@ -207,7 +207,9 @@ First
     matrixj
 
   where ``[step]`` is the number of the problem,
-  and ``matrixj`` is a binary matrix representing the problem
+  and ``matrixj`` is a binary matrix representing the problem.
+  Web UI can display this number
+  if you pause the application before the next step.
 - Send the response in the form ``[step] [solutionj]``,
   where ``[step]`` is the problem number and ``[solutionj]``
   is your guess to the problem
@@ -271,6 +273,8 @@ Second
 
   where ``answersj`` is the array with the right answers
   to the problem ``[step]``.
+  Web UI should show the animation here,
+  if you pause the application before going to the next step.
 - If there are more problems left to solve
   (``[step]`` is less than ``[totalSteps]``),
   send ``Ready`` again and receive a new problem.
