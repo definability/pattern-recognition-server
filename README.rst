@@ -108,6 +108,9 @@ for example, the ``first`` task address is
 not ``wss://sprs.herokuapp.com/First``
 and not ``wss://sprs.herokuapp.com/FIRST``.
 
+Check that you have specified session id
+and its format is correct.
+
 Also, this error may occur if sockets pool is full.
 Contact the lecturer/administrator/char-lie
 if you think this is the problem.
@@ -128,6 +131,18 @@ you may have sent a wrong message.
 Also, each task has TTL (time to live) of connections.
 If you're working on a task for too long,
 you will be disconnected.
+
+Web UI doesn't show anything
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Keep in mind that the UI is used only for watching task completion.
+You have to write your own application
+to interact with the WebSocket server and complete the tasks.
+
+If you're completing something
+but the UI doesn't change,
+first check the session id in the UI.
+If it's correct, you should see some messages in its messages table.
 
 Zero
 ----
