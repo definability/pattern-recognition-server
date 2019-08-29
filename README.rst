@@ -77,13 +77,23 @@ Completing the tasks
   you create a new session named ``[session-id]``,
   which should be a valid URI segment
   (for example, a number, word, words separated by ``-`` or ``_``, etc.).
-- Web UI is used only to follow the task completion.
-  Just type the ``[session-id]`` into the corresponding input
-  of the desired task page to start watching it.
 
 **Tip**
 It's better for you to create a local demo WebSocket server
 to get familiar with WebSockets.
+
+Using Web UI
+------------
+
+Web UI is used only to follow the task completion.
+
+- First, connect to the server via your application
+  in order to create new session,
+  and pause your application.
+- Type the ``[session-id]`` into the corresponding input
+  of the desired task page to start watching it.
+- Resume your application to the next step and watch the UI changes.
+- Continue the previous step until the end.
 
 Troubleshooting
 ---------------
