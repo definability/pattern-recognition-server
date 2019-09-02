@@ -77,7 +77,7 @@ class WSExecutorZero extends WSExecutor {
 
   onStart(message) {
     if (message !== 'Let\'s start') {
-      console.error('Wrong message');
+      this.send('Wrong initial message');
       this.socket.close();
       return;
     }
@@ -99,7 +99,7 @@ class WSExecutorZero extends WSExecutor {
       this.expression[2],
     );
     if (Number(message) !== solution) {
-      console.error('Wrong answer');
+      this.send(`Wrong answer. The right one is ${solution}.`);
       this.socket.close();
       return;
     }

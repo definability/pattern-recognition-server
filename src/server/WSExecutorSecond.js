@@ -155,7 +155,7 @@ class WSExecutorSecond extends WSExecutor {
 
   onStart(message) {
     if (!message.startsWith('Let\'s start with ')) {
-      console.error('Wrong message');
+      this.send('You should send a correct starting message');
       this.socket.close();
       return;
     }
@@ -164,7 +164,7 @@ class WSExecutorSecond extends WSExecutor {
     );
 
     if (tail.length) {
-      console.error('Redundant arguments');
+      this.send('Redundant arguments');
       this.socket.close();
       return;
     }
@@ -173,7 +173,7 @@ class WSExecutorSecond extends WSExecutor {
       lossName !== WSExecutorSecond.L1_LOSS_NAME
       && !Number.isSafeInteger(Number(lossName))
     ) {
-      console.error('Unknown loss');
+      this.send('Incorrect number of bars');
       this.socket.close();
       return;
     }
@@ -184,7 +184,7 @@ class WSExecutorSecond extends WSExecutor {
       !Number.isSafeInteger(Number(barsNumber))
       || Number(barsNumber) > WSExecutorSecond.MAX_BARS_NUMBER
     ) {
-      console.error('Incorrect barsNumber');
+      this.send('Unknown loss');
       this.socket.close();
       return;
     }
@@ -195,7 +195,7 @@ class WSExecutorSecond extends WSExecutor {
       !Number.isSafeInteger(Number(totalSteps))
       || Number(totalSteps) > WSExecutorSecond.MAX_TOTAL_STEPS
     ) {
-      console.error('Incorrect total steps');
+      this.send('Incorrect total steps');
       this.socket.close();
       return;
     }
@@ -206,7 +206,7 @@ class WSExecutorSecond extends WSExecutor {
       !Number.isSafeInteger(Number(repeats))
       || Number(repeats) > WSExecutorSecond.MAX_REPEATS
     ) {
-      console.error('Incorrect repeats');
+      this.send('Incorrect repeats number');
       this.socket.close();
       return;
     }
@@ -220,7 +220,7 @@ class WSExecutorSecond extends WSExecutor {
 
   onReady(message) {
     if (message !== 'Ready') {
-      console.error('Wrong message');
+      this.send('You should be "Ready"');
       this.socket.close();
       return;
     }
@@ -235,7 +235,7 @@ class WSExecutorSecond extends WSExecutor {
   onSolve(message) {
     const [step, guessesString] = message.split('\n');
     if (!guessesString || !guessesString.length) {
-      console.error('No guesses');
+      this.send('No guesses');
       this.socket.close();
       return;
     }
@@ -245,12 +245,12 @@ class WSExecutorSecond extends WSExecutor {
       !guesses.reduce((acc, e) => acc && this.isValidGuess(e), true)
       || guesses.length !== this.repeats
     ) {
-      console.error('Provided guess cannot be right');
+      this.send('Provided guess cannot be right');
       this.socket.close();
       return;
     }
     if (Number(step) !== this.currentStep) {
-      console.error('Wrong step number');
+      this.send('Wrong step number');
       this.socket.close();
       return;
     }
@@ -282,7 +282,7 @@ class WSExecutorSecond extends WSExecutor {
 
   onFinish(message) {
     if (message !== 'Bye') {
-      console.error('Wrong message');
+      this.send('You should have said "Bye"');
       this.socket.close();
       return;
     }
