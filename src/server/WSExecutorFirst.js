@@ -232,7 +232,7 @@ class WSExecutorFirst extends WSExecutor {
 
   onStart(message) {
     if (message !== 'Let\'s start') {
-      console.error('Wrong message');
+      this.send('Wrong initial message');
       this.socket.close();
       return;
     }
@@ -251,7 +251,7 @@ class WSExecutorFirst extends WSExecutor {
       messageSplit.length !== 4
       || !messageSplit.reduce((acc, e) => acc && e >= 0)
     ) {
-      console.error('Wrong message');
+      this.send('Wrong setup. You should send 4 numbers separated by space.');
       this.socket.close();
       return;
     }
@@ -267,25 +267,25 @@ class WSExecutorFirst extends WSExecutor {
       Math.round(this.horizontalScale) !== this.horizontalScale
       || this.horizontalScale > WSExecutorFirst.MAX_HORIZONTAL_SCALE
     ) {
-      console.error('Wrong width');
+      this.send('Wrong width');
       this.socket.close();
     }
     if (
       Math.round(this.verticalScale) !== this.verticalScale
       || this.verticalScale > WSExecutorFirst.MAX_VERTICAL_SCALE
     ) {
-      console.error('Wrong height');
+      this.send('Wrong height');
       this.socket.close();
     }
     if (
       Math.round(this.totalSteps) !== this.totalSteps
       || this.totalSteps > WSExecutorFirst.MAX_HORIZONTAL_SCALE
     ) {
-      console.error('Wrong totalSteps number');
+      this.send('Wrong number of steps');
       this.socket.close();
     }
     if (this.noiseLevel < 0 || this.noiseLevel > 1) {
-      console.error('Wrong noise level');
+      this.send('Wrong noise level');
       this.socket.close();
     }
     this.state = WSExecutorFirst.STATES.READY;
@@ -295,7 +295,7 @@ class WSExecutorFirst extends WSExecutor {
 
   onReady(message) {
     if (message !== 'Ready') {
-      console.error('Wrong message');
+      this.send('Wrong message. You should say "Ready"! Try again.');
       this.socket.close();
       return;
     }
@@ -317,12 +317,12 @@ class WSExecutorFirst extends WSExecutor {
   onSolve(message) {
     const [step, answer] = message.split(' ');
     if (!Object.keys(WSExecutorFirst.IDEAL_NUMBERS).includes(answer)) {
-      console.error('Provided answer cannot be right');
+      this.send('Provided answer cannot be right');
       this.socket.close();
       return;
     }
     if (Number(step) !== this.currentStep) {
-      console.error('Wrong step number');
+      this.send(`Wrong step number. The current step is ${this.currentStep}.`);
       this.socket.close();
       return;
     }
@@ -346,7 +346,7 @@ class WSExecutorFirst extends WSExecutor {
 
   onFinish(message) {
     if (message !== 'Bye') {
-      console.error('Wrong message');
+      this.send('You should have said "Bye"');
       this.socket.close();
       return;
     }

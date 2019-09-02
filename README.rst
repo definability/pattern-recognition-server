@@ -227,7 +227,7 @@ Second
 
 - Create a session on the server under ``/second`` path
   (wss://sprs.herokuapp.com/second)
-- Send ``Let's start with [loss] [width] [totalSteps] [repeats]``
+- Send ``Let's start with [width] [loss] [totalSteps] [repeats]``
   message to the server,
   where ``[loss]`` is either ``L1`` for distance as a loss
   (distance is measured in heatmap bars),
