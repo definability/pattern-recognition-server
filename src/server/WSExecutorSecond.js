@@ -30,14 +30,14 @@ const WSExecutor = require('./WSExecutor');
  * - Create a session on the server under `/second` path
  * - Send `Let's start with [loss] [width] [totalSteps] [repeats]`
  *   message to the server,
- *   where `[loss]` is either `L1` for distance as a loss
+ *   where `[width]` is a number of bars in heatmaps,
+ *   `[loss]` is either `L1` for distance as a loss
  *   (distance is measured in heatmap bars),
  *   or a non-negative integer for delta loss.
  *   The integer is a radius of an allowed interval:
  *   zero means binary loss function,
  *   one means a current bar and its nearest neighbors,
  *   and so on,
- *   `[width]` is a number of bars in heatmaps,
  *   `[totalSteps]` is a number of heatmaps to deal with,
  *   and `[repeats]` is a number of attempts per one heatmap.
  * - Receive the string `Are you ready?` from the server,
@@ -159,7 +159,7 @@ class WSExecutorSecond extends WSExecutor {
       this.socket.close();
       return;
     }
-    const [lossName, barsNumber, totalSteps, repeats, ...tail] = (
+    const [barsNumber, lossName, totalSteps, repeats, ...tail] = (
       message.slice('Let\'s start with '.length).split(' ')
     );
 
@@ -170,25 +170,34 @@ class WSExecutorSecond extends WSExecutor {
     }
 
     if (
-      lossName !== WSExecutorSecond.L1_LOSS_NAME
-      && !Number.isSafeInteger(Number(lossName))
+      !Number.isSafeInteger(Number(barsNumber))
+      || Number(barsNumber) > WSExecutorSecond.MAX_BARS_NUMBER
     ) {
       this.send('Incorrect number of bars');
       this.socket.close();
       return;
     }
-    this.lossName = lossName;
-    this.loss = WSExecutorSecond.LOSS_FUNCTION(lossName);
+    this.barsNumber = Number(barsNumber);
 
     if (
-      !Number.isSafeInteger(Number(barsNumber))
-      || Number(barsNumber) > WSExecutorSecond.MAX_BARS_NUMBER
+      lossName !== WSExecutorSecond.L1_LOSS_NAME
+      && !Number.isSafeInteger(Number(lossName))
     ) {
       this.send('Unknown loss');
       this.socket.close();
       return;
     }
-    this.barsNumber = Number(barsNumber);
+    if (
+      Number.isSafeInteger(Number(lossName))
+      && (Number(lossName) < 0 || Number(lossName) >= this.barsNumber)
+    )
+    {
+      this.send('Incorrect loss delta');
+      this.socket.close();
+      return;
+    }
+    this.lossName = lossName;
+    this.loss = WSExecutorSecond.LOSS_FUNCTION(lossName);
 
 
     if (
