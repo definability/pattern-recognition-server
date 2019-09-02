@@ -190,8 +190,7 @@ class WSExecutorSecond extends WSExecutor {
     if (
       Number.isSafeInteger(Number(lossName))
       && (Number(lossName) < 0 || Number(lossName) >= this.barsNumber)
-    )
-    {
+    ) {
       this.send('Incorrect loss delta');
       this.socket.close();
       return;
