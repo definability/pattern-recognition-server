@@ -163,16 +163,18 @@ First
   (wss://sprs.herokuapp.com/first)
 - Send ``Let's start`` message to the server
 - Receive a string ``[width] [height] [N]`` from the server,
-  where ``[width]`` is a basic width (for horizontal scale ``1``)
+  where ``[width]`` is a basic width (when horizontal scale is ``1``)
   of images of a digit in pixels,
-  ``[height]`` is a basic height (for vertical scale ``1``)
-  and ``[N]`` is the total number of digits,
+  ``[height]`` is a basic height (when vertical is scale ``1``)
+  and ``[N]`` is the total number of digits.
 - Send settings to the server in the following format
   ``[width] [height] [noise] [totalSteps]``,
-  where ``[width]`` is a positive integer for the horizontal scale of digits,
-  ``[height]`` is a positive integer for the vertical scale of digits,
+  where ``[width]`` is an integer from ``1`` to ``100``
+  for the horizontal scale of digits,
+  ``[height]`` is an integer from ``1`` to ``100``
+  for the vertical scale of digits,
   ``[noise]`` is a real number from ``0`` to ``1`` representing the noise level.
-  ``[totalSteps]`` is a positive integer,
+  ``[totalSteps]`` is an integer from ``1`` to ``1'000'000``,
   representing the number of digits you want to recognize
 - Receive an array of digit names and corresponding matrices in the form
 
@@ -229,16 +231,20 @@ Second
   (wss://sprs.herokuapp.com/second)
 - Send ``Let's start with [width] [loss] [totalSteps] [repeats]``
   message to the server,
-  where ``[loss]`` is either ``L1`` for distance as a loss
+  where ``[width]`` is an integer from ``2`` to ``1'000``,
+  meaning the number of bars in heatmaps,
+  ``[loss]`` is either ``L1`` for distance as a loss
   (distance is measured in heatmap bars),
   or a non-negative integer for delta loss.
   The integer is a radius of an allowed interval:
   zero means binary loss function,
   one means a current bar and its nearest neighbors,
-  and so on,
-  ``[width]`` is a number of bars in heatmaps,
-  ``[totalSteps]`` is a number of heatmaps to deal with,
-  and ``[repeats]`` is a number of attempts per one heatmap.
+  and so on;
+  must be lower than ``[width]``,
+  ``[totalSteps]`` is an integer from ``1`` to ``1'000'000``,
+  represents a number of heatmaps to deal with,
+  and ``[repeats]`` is an integer from ``1`` to ``1'000``,
+  representig the number of attempts per one heatmap.
 - Receive the string ``Are you ready?`` from the server,
 - Send the message ``Ready`` to start completing the task
 - Receive a problem in the form
