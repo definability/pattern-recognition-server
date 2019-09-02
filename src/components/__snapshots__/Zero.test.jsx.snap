@@ -49,12 +49,15 @@ exports[`Zero should render correctly 1`] = `
     </Col>
   </ForwardRef>
   <ForwardRef
+    className="mt-3"
     noGutters={false}
   >
-    <WSTable
-      messages={Array []}
-      sessionId=""
-    />
+    <Col>
+      <WSTable
+        messages={Array []}
+        sessionId=""
+      />
+    </Col>
   </ForwardRef>
 </div>
 `;

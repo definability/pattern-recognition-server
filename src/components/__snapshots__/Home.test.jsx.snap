@@ -6,14 +6,13 @@ exports[`Home should render correctly 1`] = `
     Welcome to the recognition world
   </h1>
   <p>
-    How to complete the tasks above? Read
-     
     <a
       href="https://github.com/char-lie/pattern-recognition-server/blob/master/README.rst#tasks"
     >
-      here
+      Here
     </a>
-    .
+     
+    is the guideline how to accomplish all the tasks.
   </p>
   <p>
     Shorthands to the instructions for each task:
@@ -25,6 +24,8 @@ exports[`Home should render correctly 1`] = `
       >
         Zero
       </a>
+       
+      WebSocket conversation
     </li>
     <li>
       <a
@@ -32,6 +33,8 @@ exports[`Home should render correctly 1`] = `
       >
         First
       </a>
+       
+      Digits recognition
     </li>
     <li>
       <a
@@ -39,6 +42,8 @@ exports[`Home should render correctly 1`] = `
       >
         Second
       </a>
+       
+      Aiding people
     </li>
   </ul>
 </div>
