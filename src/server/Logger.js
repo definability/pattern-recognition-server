@@ -29,8 +29,8 @@ const {
 } = require('winston');
 
 const DEFAULT_LOG_LEVEL = 'warning';
-const LOG_LEVEL = (process.env.LOG_LEVEL in levels
-  ? process.env.LOG_LEVEL
+const LOG_LEVEL = (process.env.LOG_LEVEL.toLowerCase() in levels
+  ? process.env.LOG_LEVEL.toLowerCase()
   : DEFAULT_LOG_LEVEL);
 
 const Logger = (componentName = 'server') => createLogger({
