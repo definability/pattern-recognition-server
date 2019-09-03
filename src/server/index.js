@@ -27,7 +27,7 @@ const Logger = require('./Logger');
 const WebSocketPool = require('./WebSocketPool');
 const WSExecutorFirst = require('./WSExecutorFirst');
 const WSExecutorSecond = require('./WSExecutorSecond');
-const WSExecutorZero = require('./WSExecutorZero');
+const WSExecutorZeroth = require('./WSExecutorZeroth');
 const WSTaskServer = require('./WSTaskServer');
 
 const PORT = process.env.PORT || 3000;
@@ -56,7 +56,7 @@ const wss = new WSTaskServer({
       return null;
     }
     const executors = [
-      WSExecutorZero,
+      WSExecutorZeroth,
       WSExecutorFirst,
       WSExecutorSecond,
     ].filter((Executor) => (

@@ -25,7 +25,7 @@ const Logger = require('./Logger');
 const WSExecutor = require('./WSExecutor');
 
 /**
- * Executor for task zeroth.
+ * Executor for the zeroth task.
  *
  * The task is:
  * - Create a session on the server under `/zeroth` path
