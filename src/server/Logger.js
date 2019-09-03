@@ -21,20 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-const WSClientListener = require('./WSClientListener');
+const {
+  config: { syslog: { levels } },
+  createLogger,
+  format,
+  transports: { Console },
+} = require('winston');
 
-/**
- * This client is able to send commands
- * to interact with task server.
- */
-class WSExecutor extends WSClientListener {
-  constructor({
-    send = () => {},
-    ...data
-  }) {
-    super(data);
-    this.send = send;
-  }
-}
+const DEFAULT_LOG_LEVEL = 'warning';
+const LOG_LEVEL = (process.env.LOG_LEVEL.toLowerCase() in levels
+  ? process.env.LOG_LEVEL.toLowerCase()
+  : DEFAULT_LOG_LEVEL);
 
-module.exports = WSExecutor;
+const Logger = (componentName = 'server') => createLogger({
+  format: format.combine(
+    format.colorize(),
+    format.timestamp({
+      format: 'YYYY-MM-DD HH:mm:ss',
+    }),
+    format.printf((info) => (
+      `${info.timestamp} [${info.level}] ${componentName}: `
+      + `${info.message}`
+    )),
+  ),
+  level: LOG_LEVEL,
+  levels,
+  transports: [new Console()],
+});
+
+module.exports = Logger;

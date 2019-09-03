@@ -8,6 +8,7 @@
   "parser": "babel-eslint",
   "rules": {
     "class-methods-use-this": "warn",
+    "no-console": "error",
     "no-underscore-dangle": ["error", {
         "allowAfterThis": true
     }]

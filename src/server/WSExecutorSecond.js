@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+const Logger = require('./Logger');
 const WSExecutor = require('./WSExecutor');
 
 /**
@@ -117,7 +118,10 @@ class WSExecutorSecond extends WSExecutor {
   static L1_LOSS_NAME = 'L1';
 
   constructor(data) {
-    super(data);
+    super({
+      ...data,
+      logger: Logger('Task 2'),
+    });
 
     this.barsNumber = null;
     this.currentHistorgram = null;
@@ -129,11 +133,10 @@ class WSExecutorSecond extends WSExecutor {
     this.totalLoss = 0;
     this.totalSteps = null;
 
-    console.log('Executor Second created');
+    this.logger.info('Executor Second created');
   }
 
   onMessage(message) {
-    console.log(`Executor says: '${message}'`);
     switch (this.state) {
       case WSExecutorSecond.STATES.START:
         this.onStart(message);
@@ -148,7 +151,8 @@ class WSExecutorSecond extends WSExecutor {
         this.onFinish(message);
         break;
       default:
-        console.error(`Unknown state ${this.state}`);
+        this.logger.alert(`Unknown state ${this.state}`);
+        this.socket.close();
         break;
     }
   }
@@ -268,7 +272,7 @@ class WSExecutorSecond extends WSExecutor {
     } else if (this.currentStep === this.totalSteps) {
       this.state = WSExecutorSecond.STATES.FINISH;
     } else {
-      console.error(`We have step ${this.currentStep} of ${this.totalSteps}!`);
+      this.logger.alert(`We have step ${this.currentStep} of ${this.totalSteps}!`);
       this.socket.close();
       return;
     }

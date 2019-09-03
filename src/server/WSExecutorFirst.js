@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+const Logger = require('./Logger');
 const WSExecutor = require('./WSExecutor');
 
 /**
@@ -192,7 +193,10 @@ class WSExecutorFirst extends WSExecutor {
   }
 
   constructor(data) {
-    super(data);
+    super({
+      ...data,
+      logger: Logger('Task 3'),
+    });
 
     this.currentSolution = null;
     this.currentStep = 0;
@@ -203,11 +207,10 @@ class WSExecutorFirst extends WSExecutor {
     this.totalSteps = null;
     this.verticalScale = null;
 
-    console.log('Executor First created');
+    this.logger.info('Executor First created');
   }
 
   onMessage(message) {
-    console.log(`Executor says: '${message}'`);
     switch (this.state) {
       case WSExecutorFirst.STATES.START:
         this.onStart(message);
@@ -225,7 +228,8 @@ class WSExecutorFirst extends WSExecutor {
         this.onFinish(message);
         break;
       default:
-        console.error(`Unknown state ${this.state}`);
+        this.logger.alert(`Unknown state ${this.state}`);
+        this.socket.close();
         break;
     }
   }
@@ -332,7 +336,7 @@ class WSExecutorFirst extends WSExecutor {
     } else if (this.currentStep === this.totalSteps) {
       this.state = WSExecutorFirst.STATES.FINISH;
     } else {
-      console.error(`We have step ${this.currentStep} of ${this.totalSteps}!`);
+      this.logger.alert(`We have step ${this.currentStep} of ${this.totalSteps}!`);
       this.socket.close();
       return;
     }

@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+const Logger = require('./Logger');
 const WSClientListener = require('./WSClientListener');
 
 /**
@@ -29,12 +30,20 @@ const WSClientListener = require('./WSClientListener');
  * Attempts to send a message end up with connection close.
  */
 class WSObserver extends WSClientListener {
+  constructor(data) {
+    super({
+      ...data,
+      logger: Logger('Observer'),
+    });
+  }
+
   onMessage(message) {
-    console.log(`Unexpected message from observer: '${message}'`);
+    this.logger.debug(`Unexpected message from observer: '${message}'`);
     this.socket.close();
   }
 
   send(message) {
+    this.logger.debug(`Send '${message}'`);
     this.socket.send(message);
   }
 }
