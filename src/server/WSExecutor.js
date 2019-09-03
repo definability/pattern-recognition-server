@@ -35,10 +35,6 @@ class WSExecutor extends WSClientListener {
     super(data);
     this.send = send;
   }
-
-  onMessage(message) {
-    console.log(`Executor says: '${message}'`);
-  }
 }
 
 module.exports = WSExecutor;
