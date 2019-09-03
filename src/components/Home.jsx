@@ -39,8 +39,8 @@ const Home = () => (
     </p>
     <ul>
       <li>
-        <a href={`${REPOSITORY_URL}#zero`}>
-          Zero
+        <a href={`${REPOSITORY_URL}#zeroth`}>
+          Zeroth
         </a>
         {' '}
         WebSocket conversation

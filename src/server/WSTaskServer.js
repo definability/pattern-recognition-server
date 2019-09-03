@@ -36,9 +36,9 @@ const MAX_PAYLOAD = Math.round(MAX_PAYLOAD_KB * (2 ** 10));
  *
  * Each connection connects to a task,
  * which is the first part of the path (after the hostname).
- * For example, in `wss://server.com/zero/123`
- * the path is `/zero/123`.
- * It belongs to `zero` task executor.
+ * For example, in `wss://server.com/zeroth/123`
+ * the path is `/zeroth/123`.
+ * It belongs to `zeroth` task executor.
  * It's session id is `123`.
  *
  * If the session is not created yet,

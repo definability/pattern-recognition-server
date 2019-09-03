@@ -155,13 +155,13 @@ but the UI doesn't change,
 first check the session id in the UI.
 If it's correct, you should see some messages in its messages table.
 
-Zero
-----
+Zeroth
+------
 
 Time to complete: 1 minute (60 seconds).
 
-- Create a session on the server under ``/zero`` path
-  (wss://sprs.herokuapp.com/zero)
+- Create a session on the server under ``/zeroth`` path
+  (wss://sprs.herokuapp.com/zeroth)
 - Send ``Let's start`` message to the server
 - Receive and parse a string from the server.
   The format is: ``[number] [operator] [number]``,

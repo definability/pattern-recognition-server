@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Zero should render correctly 1`] = `
+exports[`Zeroth should render correctly 1`] = `
 <div>
   <h1>
     Task 0

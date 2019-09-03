@@ -25,10 +25,10 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { shallowToJson } from 'enzyme-to-json';
 
-import Zero from './Zero';
+import Zeroth from './Zeroth';
 
-describe('Zero', () => {
+describe('Zeroth', () => {
   it('should render correctly', () => {
-    expect(shallowToJson(shallow(<Zero />))).toMatchSnapshot();
+    expect(shallowToJson(shallow(<Zeroth />))).toMatchSnapshot();
   });
 });

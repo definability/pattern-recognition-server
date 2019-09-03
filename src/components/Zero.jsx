@@ -45,7 +45,7 @@ import WSTable from './WSTable';
  * Messages list will be populated by messages
  * received by the client as an observer.
  */
-class Zero extends Component {
+class Zeroth extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -67,7 +67,7 @@ class Zero extends Component {
       oldWS.close(1000);
     }
     const HOST = window.location.origin.replace(/^http/, 'ws');
-    const ws = new WebSocket(`${HOST}/zero/${sessionId}`);
+    const ws = new WebSocket(`${HOST}/zeroth/${sessionId}`);
     ws.addEventListener('open', () => {
       const message = {
         author: 'Client',
@@ -162,4 +162,4 @@ class Zero extends Component {
   }
 }
 
-export default Zero;
+export default Zeroth;

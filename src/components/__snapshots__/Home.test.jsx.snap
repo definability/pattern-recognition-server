@@ -20,9 +20,9 @@ exports[`Home should render correctly 1`] = `
   <ul>
     <li>
       <a
-        href="https://github.com/char-lie/pattern-recognition-server#zero"
+        href="https://github.com/char-lie/pattern-recognition-server#zeroth"
       >
-        Zero
+        Zeroth
       </a>
        
       WebSocket conversation

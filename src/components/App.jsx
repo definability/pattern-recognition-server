@@ -34,7 +34,7 @@ import {
 } from 'react-router-dom';
 import { withRouter } from 'react-router';
 
-import Zero from './Zero';
+import Zeroth from './Zeroth';
 import First from './First';
 import Second from './Second';
 import Home from './Home';
@@ -45,7 +45,7 @@ const App = withRouter(() => (
       <Nav activeKey={window.location.pathname}>
         <Navbar.Brand as={Link} to="/">Pattern Recognition</Navbar.Brand>
         <Nav.Link eventKey="/" as={Link} to="/">Home</Nav.Link>
-        <Nav.Link eventKey="/zero" as={Link} to="/zero">Zero</Nav.Link>
+        <Nav.Link eventKey="/zeroth" as={Link} to="/zeroth">Zeroth</Nav.Link>
         <Nav.Link eventKey="/first" as={Link} to="/first">First</Nav.Link>
         <Nav.Link eventKey="/second" as={Link} to="/second">Second</Nav.Link>
       </Nav>
@@ -57,8 +57,8 @@ const App = withRouter(() => (
         exact
       />
       <Route
-        path="/zero"
-        component={Zero}
+        path="/zeroth"
+        component={Zeroth}
         exact
       />
       <Route
