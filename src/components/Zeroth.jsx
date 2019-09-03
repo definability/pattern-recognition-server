@@ -22,7 +22,14 @@
  * SOFTWARE.
  */
 import React, { Component } from 'react';
+import {
+  Button,
+  Col,
+  Form,
+  Row,
+} from 'react-bootstrap';
 
+import WSTable from './WSTable';
 /**
  * The component consists of three main parts:
  * - Header
@@ -38,7 +45,7 @@ import React, { Component } from 'react';
  * Messages list will be populated by messages
  * received by the client as an observer.
  */
-class Zero extends Component {
+class Zeroth extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -60,7 +67,7 @@ class Zero extends Component {
       oldWS.close(1000);
     }
     const HOST = window.location.origin.replace(/^http/, 'ws');
-    const ws = new WebSocket(`${HOST}/zero/${sessionId}`);
+    const ws = new WebSocket(`${HOST}/zeroth/${sessionId}`);
     ws.addEventListener('open', () => {
       const message = {
         author: 'Client',
@@ -115,30 +122,44 @@ class Zero extends Component {
       messages,
       sessionId,
     } = this.state;
-    const messagesHtml = messages.map((message) => (
-      <li>
-        {message.author}
-        {': '}
-        {message.data}
-      </li>
-    ));
     return (
       <div>
-        <h3>Task 0</h3>
-        <label htmlFor={this.sessionId}>
-        Session ID:
-          <input
-            ref={(component) => { this.sessionId = component; }}
-          />
-        </label>
-        <button type="button" onClick={() => this.observeSession()}>
-        Observe
-        </button>
-        <div>{sessionId}</div>
-        <ul>{messagesHtml}</ul>
+        <h1>
+          Task 0
+          {' '}
+          <small className="text-muted">WebSocket conversation</small>
+        </h1>
+        <Row>
+          <Col xs={12} lg={6}>
+            <Form>
+              <Form.Row className="justify-content-md-center">
+                <Col xs={8}>
+                  <Form.Control
+                    ref={(component) => { this.sessionId = component; }}
+                    placeholder="Session ID"
+                  />
+                </Col>
+                <Col xs={4}>
+                  <Button
+                    variant="primary"
+                    type="button"
+                    onClick={() => this.observeSession()}
+                  >
+                    Observe
+                  </Button>
+                </Col>
+              </Form.Row>
+            </Form>
+          </Col>
+        </Row>
+        <Row className="mt-3">
+          <Col>
+            <WSTable messages={messages} sessionId={sessionId} />
+          </Col>
+        </Row>
       </div>
     );
   }
 }
 
-export default Zero;
+export default Zeroth;

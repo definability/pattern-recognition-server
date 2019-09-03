@@ -25,10 +25,10 @@ const Logger = require('./Logger');
 const WSExecutor = require('./WSExecutor');
 
 /**
- * Executor for task zero.
+ * Executor for the zeroth task.
  *
  * The task is:
- * - Create a session on the server under `/zero` path
+ * - Create a session on the server under `/zeroth` path
  * - Send `Let's start` message to the server
  * - Receive and parse a string from the server.
  *   The format is: `[number] [operator] [number]`,
@@ -36,7 +36,7 @@ const WSExecutor = require('./WSExecutor');
  *   and `[operator]` is one of `+`, `-` and `*`.
  * - Send the solution to the problem (an integer).
  */
-class WSExecutorZero extends WSExecutor {
+class WSExecutorZeroth extends WSExecutor {
   static STATES = {
     START: 'START',
     SOLVE: 'SOLVE',
@@ -48,11 +48,11 @@ class WSExecutorZero extends WSExecutor {
     '*': (x, y) => x * y,
   }
 
-  static PATH = '/zero/';
+  static PATH = '/zeroth/';
 
   static DEFAULT_TTL_SECONDS = 60;
 
-  static DEFAULT_TTL = WSExecutorZero.DEFAULT_TTL_SECONDS * 1E3;
+  static DEFAULT_TTL = WSExecutorZeroth.DEFAULT_TTL_SECONDS * 1E3;
 
   constructor(data) {
     super({
@@ -60,17 +60,17 @@ class WSExecutorZero extends WSExecutor {
       logger: Logger('Task 0'),
     });
 
-    this.state = WSExecutorZero.STATES.START;
+    this.state = WSExecutorZeroth.STATES.START;
     this.expression = null;
-    this.logger.info('Zero executor created');
+    this.logger.info('Zeroth executor created');
   }
 
   onMessage(message) {
     switch (this.state) {
-      case WSExecutorZero.STATES.START:
+      case WSExecutorZeroth.STATES.START:
         this.onStart(message);
         break;
-      case WSExecutorZero.STATES.SOLVE:
+      case WSExecutorZeroth.STATES.SOLVE:
         this.onSolve(message);
         break;
       default:
@@ -88,18 +88,18 @@ class WSExecutorZero extends WSExecutor {
     }
     this.expression = [
       Math.round(Math.random() * 99 + 1),
-      Object.keys(WSExecutorZero.OPERATORS)[
+      Object.keys(WSExecutorZeroth.OPERATORS)[
         Math.floor(Math.random()
-        * (Object.keys(WSExecutorZero.OPERATORS).length))
+        * (Object.keys(WSExecutorZeroth.OPERATORS).length))
       ],
       Math.round(Math.random() * 99 + 1),
     ];
-    this.state = WSExecutorZero.STATES.SOLVE;
+    this.state = WSExecutorZeroth.STATES.SOLVE;
     this.send(`Solve ${this.expression.join(' ')}`);
   }
 
   onSolve(message) {
-    const solution = WSExecutorZero.OPERATORS[this.expression[1]](
+    const solution = WSExecutorZeroth.OPERATORS[this.expression[1]](
       this.expression[0],
       this.expression[2],
     );
@@ -112,4 +112,4 @@ class WSExecutorZero extends WSExecutor {
   }
 }
 
-module.exports = WSExecutorZero;
+module.exports = WSExecutorZeroth;

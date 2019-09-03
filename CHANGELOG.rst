@@ -17,7 +17,7 @@ Added
 -----
 
 - Tasks completion instructions to ``Home`` component and README_.
-- ``Zero`` component for the test practicum (practicum zero).
+- ``Zeroth`` component for the test practicum (zeroth practicum).
 - ``WSTable`` component to view WebSocket messages.
 - winston_ logger to the server.
 
@@ -26,9 +26,9 @@ Added
   - ``WSClientListener`` base class to serve connected clients.
   - ``WSObserver`` listener for passive observers of tasks.
   - ``WSExecutor`` listener/emitter to serve task executor.
-  - ``WSExecutorZero`` checker for task zero.
-  - ``WSExecutorFirst`` checker for first task.
-  - ``WSExecutorSecond`` checker for second task.
+  - ``WSExecutorZeroth`` checker for the zeroth task.
+  - ``WSExecutorFirst`` checker for the first task.
+  - ``WSExecutorSecond`` checker for the second task.
   - ``WSTaskServer`` tasks manager.
   - ``WebSocketPool`` serverwise connection pool.
 
