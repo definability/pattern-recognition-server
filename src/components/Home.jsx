@@ -30,11 +30,9 @@ const Home = () => (
   <div>
     <h1>Welcome to the recognition world</h1>
     <p>
-      How to complete the tasks above?
-      Read
+      <a href={`${README_URL}#tasks`}>Here</a>
       {' '}
-      <a href={`${README_URL}#tasks`}>here</a>
-      .
+      is the guideline how to accomplish all the tasks.
     </p>
     <p>
       Shorthands to the instructions for each task:
@@ -44,16 +42,22 @@ const Home = () => (
         <a href={`${REPOSITORY_URL}#zero`}>
           Zero
         </a>
+        {' '}
+        WebSocket conversation
       </li>
       <li>
         <a href={`${REPOSITORY_URL}#first`}>
           First
         </a>
+        {' '}
+        Digits recognition
       </li>
       <li>
         <a href={`${REPOSITORY_URL}#second`}>
           Second
         </a>
+        {' '}
+        Aiding people
       </li>
     </ul>
   </div>

@@ -14,8 +14,8 @@ Available on `sprs.herokuapp.com`_.
 If it doesn't respond for several seconds,
 just wait.
 I use a free Heroku plan,
-so the application sleeps if it isn't in use for an hour.
-After the response, it wakes up again.
+so the application sleeps if it isn't in use for a while.
+After the request, it wakes up again.
 
 How to launch
 =============
@@ -58,8 +58,8 @@ Environment variables
 Tasks
 =====
 
-Common warnings
----------------
+Common recommendations
+----------------------
 
 - Use only space symbol (``0x20``, the 32nd symbol of ASCII table)
   for horizontal spacing.
@@ -67,8 +67,98 @@ Common warnings
   for vertical spacing.
 - The tasks don't allow leading, trailing and repeated whitespaces.
 
+Completing the tasks
+--------------------
+
+- You should create your own application.
+- The application creates a WebSocket client
+  and connects to the WebSocket server
+  Read `Awesome WebSockets`_ for more information.
+- The address to connect is
+  ``wss://sprs.herokuapp.com/task-number/[session-id]``.
+- When you connect to the server,
+  you create a new session named ``[session-id]``,
+  which should be a valid URI segment
+  (for example, a number, word, words separated by ``-`` or ``_``, etc.).
+
+**Tip**
+It's better for you to create a local demo WebSocket server
+to get familiar with WebSockets.
+
+Using Web UI
+------------
+
+Web UI is used only to follow the task completion.
+
+- First, connect to the server via your application
+  in order to create new session,
+  and pause your application.
+- Type the ``[session-id]`` into the corresponding input
+  of the desired task page to start watching it.
+- Resume your application to the next step and watch the UI changes.
+- Continue the previous step until the end.
+
+Troubleshooting
+---------------
+
+Server doesn't respond for several seconds
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+I use `free dyno hours`_,
+so the server sleeps if it's inactive for a specific time.
+In order to wake it,
+send a request to it and wait for a while (multiple seconds).
+
+Server has denied my connection
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Check the URI you're trying to connect to.
+Note that it's case sensitive:
+for example, the ``first`` task address is
+``wss://sprs.herokuapp.com/first``,
+not ``wss://sprs.herokuapp.com/First``
+and not ``wss://sprs.herokuapp.com/FIRST``.
+
+Check that you have specified session id
+and its format is correct.
+
+Also, this error may occur if sockets pool is full.
+Contact the lecturer/administrator/char-lie
+if you think this is the problem.
+
+I don't receive any messages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Check whether you're listening for them
+and connected to the server at all
+(you may be disconnected by it for different reasons).
+
+Connection was closed by the server
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Check instruction and your messages:
+you may have sent a wrong message.
+
+Also, each task has TTL (time to live) of connections.
+If you're working on a task for too long,
+you will be disconnected.
+
+Web UI doesn't show anything
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Keep in mind that the UI is used only for watching task completion.
+You have to write your own application
+to interact with the WebSocket server and complete the tasks.
+
+If you're completing something
+but the UI doesn't change,
+first check the session id in the UI.
+If it's correct, you should see some messages in its messages table.
+
 Zero
 ----
+
+Time to complete: 1 minute (60 seconds).
 
 - Create a session on the server under ``/zero`` path
   (wss://sprs.herokuapp.com/zero)
@@ -82,20 +172,24 @@ Zero
 First
 -----
 
+Time to complete: 5 minutes (300 seconds).
+
 - Create a session on the server under ``/first`` path
   (wss://sprs.herokuapp.com/first)
 - Send ``Let's start`` message to the server
 - Receive a string ``[width] [height] [N]`` from the server,
-  where ``[width]`` is a basic width (for horizontal scale ``1``)
+  where ``[width]`` is a basic width (when horizontal scale is ``1``)
   of images of a digit in pixels,
-  ``[height]`` is a basic height (for vertical scale ``1``)
-  and ``[N]`` is the total number of digits,
+  ``[height]`` is a basic height (when vertical is scale ``1``)
+  and ``[N]`` is the total number of digits.
 - Send settings to the server in the following format
   ``[width] [height] [noise] [totalSteps]``,
-  where ``[width]`` is a positive integer for the horizontal scale of digits,
-  ``[height]`` is a positive integer for the vertical scale of digits,
+  where ``[width]`` is an integer from ``1`` to ``100``
+  for the horizontal scale of digits,
+  ``[height]`` is an integer from ``1`` to ``100``
+  for the vertical scale of digits,
   ``[noise]`` is a real number from ``0`` to ``1`` representing the noise level.
-  ``[totalSteps]`` is a positive integer,
+  ``[totalSteps]`` is an integer from ``1`` to ``1'000'000``,
   representing the number of digits you want to recognize
 - Receive an array of digit names and corresponding matrices in the form
 
@@ -130,7 +224,9 @@ First
     matrixj
 
   where ``[step]`` is the number of the problem,
-  and ``matrixj`` is a binary matrix representing the problem
+  and ``matrixj`` is a binary matrix representing the problem.
+  Web UI can display this number
+  if you pause the application before the next step.
 - Send the response in the form ``[step] [solutionj]``,
   where ``[step]`` is the problem number and ``[solutionj]``
   is your guess to the problem
@@ -146,20 +242,26 @@ First
 Second
 ------
 
+Time to complete: 5 minutes (300 seconds).
+
 - Create a session on the server under ``/second`` path
   (wss://sprs.herokuapp.com/second)
 - Send ``Let's start with [width] [loss] [totalSteps] [repeats]``
   message to the server,
-  where ``[loss]`` is either ``L1`` for distance as a loss
+  where ``[width]`` is an integer from ``2`` to ``1'000``,
+  meaning the number of bars in heatmaps,
+  ``[loss]`` is either ``L1`` for distance as a loss
   (distance is measured in heatmap bars),
   or a non-negative integer for delta loss.
   The integer is a radius of an allowed interval:
   zero means binary loss function,
   one means a current bar and its nearest neighbors,
-  and so on,
-  ``[width]`` is a number of bars in heatmaps,
-  ``[totalSteps]`` is a number of heatmaps to deal with,
-  and ``[repeats]`` is a number of attempts per one heatmap.
+  and so on;
+  must be lower than ``[width]``,
+  ``[totalSteps]`` is an integer from ``1`` to ``1'000'000``,
+  represents a number of heatmaps to deal with,
+  and ``[repeats]`` is an integer from ``1`` to ``1'000``,
+  representig the number of attempts per one heatmap.
 - Receive the string ``Are you ready?`` from the server,
 - Send the message ``Ready`` to start completing the task
 - Receive a problem in the form
@@ -194,6 +296,8 @@ Second
 
   where ``answersj`` is the array with the right answers
   to the problem ``[step]``.
+  Web UI should show the animation here,
+  if you pause the application before going to the next step.
 - If there are more problems left to solve
   (``[step]`` is less than ``[totalSteps]``),
   send ``Ready`` again and receive a new problem.
@@ -208,6 +312,10 @@ by their sums.
 
 Right answers (aim coordinates) are generated according to the heatmap.
 
+.. _Awesome WebSockets:
+    https://github.com/facundofarias/awesome-websockets#awesome-websockets-
+.. _free dyno hours:
+    https://devcenter.heroku.com/articles/free-dyno-hours
 .. _nvm:
     https://github.com/nvm-sh/nvm
 .. _NodeJS:
