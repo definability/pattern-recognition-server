@@ -133,8 +133,8 @@ Check whether you're listening for them
 and connected to the server at all
 (you may be disconnected by it for different reasons).
 
-Connection was closed after I've sent a message
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Connection was closed by the server
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Check instruction and your messages:
 you may have sent a wrong message.
@@ -158,6 +158,8 @@ If it's correct, you should see some messages in its messages table.
 Zero
 ----
 
+Time to complete: 1 minute (60 seconds).
+
 - Create a session on the server under ``/zero`` path
   (wss://sprs.herokuapp.com/zero)
 - Send ``Let's start`` message to the server
@@ -169,6 +171,8 @@ Zero
 
 First
 -----
+
+Time to complete: 5 minutes (300 seconds).
 
 - Create a session on the server under ``/first`` path
   (wss://sprs.herokuapp.com/first)
@@ -237,6 +241,8 @@ First
 
 Second
 ------
+
+Time to complete: 5 minutes (300 seconds).
 
 - Create a session on the server under ``/second`` path
   (wss://sprs.herokuapp.com/second)
