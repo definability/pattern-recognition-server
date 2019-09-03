@@ -14,8 +14,8 @@ Available on `sprs.herokuapp.com`_.
 If it doesn't respond for several seconds,
 just wait.
 I use a free Heroku plan,
-so the application sleeps if it isn't in use for an hour.
-After the response, it wakes up again.
+so the application sleeps if it isn't in use for a while.
+After the request, it wakes up again.
 
 How to launch
 =============
@@ -105,7 +105,7 @@ Server doesn't respond for several seconds
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 I use `free dyno hours`_,
-so the server sleeps after `30` minutes of inactivity.
+so the server sleeps if it's inactive for a specific time.
 In order to wake it,
 send a request to it and wait for a while (multiple seconds).
 
