@@ -51,6 +51,9 @@ Environment variables
   ``3000`` by default.
 - ``MAX_CONNECTED_CLIENTS`` is the WebSocket connection pool size.
   ``1`` by default.
+- ``LOG_LEVEL`` is the bottom line of the logs severities.
+  Uses winston_ logger syslog_ levels.
+  The default value is ``warning``.
 
 Tasks
 =====
@@ -211,3 +214,7 @@ Right answers (aim coordinates) are generated according to the heatmap.
     https://nodejs.org
 .. _sprs.herokuapp.com:
     https://sprs.herokuapp.com
+.. _winston:
+    https://www.npmjs.com/package/winston
+.. _syslog:
+  https://www.npmjs.com/package/winston#logging-levels
