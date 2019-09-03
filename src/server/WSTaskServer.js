@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 const WebSocket = require('ws');
+const Logger = require('./Logger');
 const WSObserver = require('./WSObserver');
 
 const MAX_PAYLOAD_KB = 1;
@@ -61,6 +62,7 @@ class WSTaskServer {
     this.socketPool = socketPool;
     this.taskPath = taskPath;
 
+    this.logger = Logger('Task Server');
     this.sessions = new Map();
 
     this.server = new WebSocket.Server({
@@ -80,8 +82,11 @@ class WSTaskServer {
    */
   verifyClient(info) {
     const { url } = info.req;
-    return !this.socketPool.full()
-      && typeof url === 'string'
+    if (this.socketPool.full()) {
+      this.logger.warning('Socket pool is full');
+      return false;
+    }
+    return typeof url === 'string'
       && typeof this.ExecutorFactory(url) === 'function';
   }
 
@@ -101,11 +106,11 @@ class WSTaskServer {
    * Try not to fail, just print the error.
    */
   onError(error) {
-    console.error(error);
+    this.logger.error(error);
   }
 
   onClose() {
-    console.log('Close the server');
+    this.logger.notice('Close the server');
   }
 
   /**
@@ -134,7 +139,7 @@ class WSTaskServer {
         socket,
       });
     } catch (error) {
-      console.error(
+      this.logger.error(
         `Cannot connect a client to session ${sessionId}. ${error}`,
       );
       this.socketPool.remove(socket);
@@ -172,7 +177,7 @@ class WSTaskServer {
       };
       this.sessions.get(sessionId).add(observer);
       this.broadcastObservers(sessionId, 'Server: New observer connected');
-      console.log(`Connect to ${sessionId} session`);
+      this.logger.info(`Connect to ${sessionId} session`);
     } else {
       const executor = new Executor({
         ...clientData,
@@ -183,6 +188,7 @@ class WSTaskServer {
           this.closeSession(sessionId);
         },
         send: (message) => {
+          this.logger.debug(`Broadcast the message: ${message}`);
           socket.send(message);
           this.broadcastObservers(sessionId, `Server: ${message}`);
         },
@@ -191,7 +197,7 @@ class WSTaskServer {
         sessionId,
         new Set([executor]),
       );
-      console.log(`Open new session ${sessionId}`);
+      this.logger.info(`Open new session '${sessionId}'`);
     }
   }
 
@@ -217,7 +223,7 @@ class WSTaskServer {
     });
     this.sessions.get(sessionId).clear();
     this.sessions.delete(sessionId);
-    console.log(`Close the session ${sessionId}`);
+    this.logger.info(`Close the session '${sessionId}'`);
   }
 }
 

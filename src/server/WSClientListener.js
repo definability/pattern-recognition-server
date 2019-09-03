@@ -33,12 +33,14 @@ class WSClientListener {
     afterClose = () => {},
     afterMessage = () => {},
     connectionDate,
+    logger,
     socket,
     ttl = DEFAULT_WS_TTL_MILLISECONDS,
   }) {
     this.afterClose = afterClose;
     this.afterMessage = afterMessage;
     this.connectionDate = connectionDate;
+    this.logger = logger;
     this.socket = socket;
     this.ttl = ttl;
     this.ttlTimeout = setTimeout(
@@ -51,16 +53,13 @@ class WSClientListener {
     this._registerListeners(this.socket);
   }
 
-  onError(error) {
-    console.error(error);
+  onError() {
   }
 
-  onMessage(message) {
-    console.log(message);
+  onMessage() {
   }
 
   onClose() {
-    console.log('Close client');
   }
 
   close() {
@@ -76,17 +75,20 @@ class WSClientListener {
   _onError(error) {
     clearTimeout(this.ttlTimeout);
     this.onError(error);
+    this.logger.warning(`An error occurred: ${error}`);
     this.afterClose();
   }
 
   _onMessage(message) {
     this.onMessage(message);
+    this.logger.debug(`Receive message ${message}`);
     this.afterMessage(message);
   }
 
   _onClose() {
     clearTimeout(this.ttlTimeout);
     this.onClose();
+    this.logger.info('Close socket');
     this.afterClose();
   }
 }
