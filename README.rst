@@ -101,6 +101,14 @@ Web UI is used only to follow the task completion.
 Troubleshooting
 ---------------
 
+Server doesn't respond for several seconds
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+I use `free dyno hours`_,
+so the server sleeps after `30` minutes of inactivity.
+In order to wake it,
+send a request to it and wait for a while (multiple seconds).
+
 Server has denied my connection
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -300,6 +308,8 @@ Right answers (aim coordinates) are generated according to the heatmap.
 
 .. _Awesome WebSockets:
     https://github.com/facundofarias/awesome-websockets#awesome-websockets-
+.. _free dyno hours:
+    https://devcenter.heroku.com/articles/free-dyno-hours
 .. _nvm:
     https://github.com/nvm-sh/nvm
 .. _NodeJS:
