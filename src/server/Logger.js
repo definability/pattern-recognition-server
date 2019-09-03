@@ -29,7 +29,7 @@ const {
 } = require('winston');
 
 const DEFAULT_LOG_LEVEL = 'warning';
-const LOG_LEVEL = (process.env.LOG_LEVEL.toLowerCase() in levels
+const LOG_LEVEL = ((process.env.LOG_LEVEL || '').toLowerCase() in levels
   ? process.env.LOG_LEVEL.toLowerCase()
   : DEFAULT_LOG_LEVEL);
 
