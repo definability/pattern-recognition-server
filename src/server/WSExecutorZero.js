@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+const Logger = require('./Logger');
 const WSExecutor = require('./WSExecutor');
 
 /**
@@ -54,14 +55,17 @@ class WSExecutorZero extends WSExecutor {
   static DEFAULT_TTL = WSExecutorZero.DEFAULT_TTL_SECONDS * 1E3;
 
   constructor(data) {
-    super(data);
+    super({
+      ...data,
+      logger: Logger('Task 0'),
+    });
+
     this.state = WSExecutorZero.STATES.START;
     this.expression = null;
-    console.log('Zero executor created');
+    this.logger.info('Zero executor created');
   }
 
   onMessage(message) {
-    console.log(`Executor says: '${message}'`);
     switch (this.state) {
       case WSExecutorZero.STATES.START:
         this.onStart(message);
@@ -70,7 +74,8 @@ class WSExecutorZero extends WSExecutor {
         this.onSolve(message);
         break;
       default:
-        console.error(`Unknown state ${this.state}`);
+        this.logger.alert(`Unknown state ${this.state}`);
+        this.socket.close();
         break;
     }
   }
