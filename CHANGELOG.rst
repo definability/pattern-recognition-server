@@ -19,6 +19,7 @@ Added
 - Tasks completion instructions to ``Home`` component and README_.
 - ``Zero`` component for the test practicum (practicum zero).
 - ``WSTable`` component to view WebSocket messages.
+- winston_ logger to the server.
 
 - WebSocket_ ``server`` module.
 
@@ -105,3 +106,5 @@ Added
     https://expressjs.com
 .. _WebSocket:
     https://github.com/websockets/ws
+.. _winston:
+    https://www.npmjs.com/package/winston
