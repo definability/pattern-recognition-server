@@ -31,14 +31,14 @@ const DEFAULT_WS_TTL_MILLISECONDS = 30 * 1E3;
 class WSClientListener {
   constructor({
     afterClose = () => {},
-    afterMessage = () => {},
+    beforeMessage = () => {},
     connectionDate,
     logger,
     socket,
     ttl = DEFAULT_WS_TTL_MILLISECONDS,
   }) {
     this.afterClose = afterClose;
-    this.afterMessage = afterMessage;
+    this.beforeMessage = beforeMessage;
     this.connectionDate = connectionDate;
     this.logger = logger;
     this.socket = socket;
@@ -73,16 +73,16 @@ class WSClientListener {
   }
 
   _onError(error) {
+    this.logger.warning(`An error occurred: ${error}`);
     clearTimeout(this.ttlTimeout);
     this.onError(error);
-    this.logger.warning(`An error occurred: ${error}`);
     this.afterClose();
   }
 
   _onMessage(message) {
-    this.onMessage(message);
     this.logger.debug(`Receive message ${message}`);
-    this.afterMessage(message);
+    this.beforeMessage(message);
+    this.onMessage(message);
   }
 
   _onClose() {

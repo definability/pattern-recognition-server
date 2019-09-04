@@ -181,7 +181,7 @@ class WSTaskServer {
     } else {
       const executor = new Executor({
         ...clientData,
-        afterMessage: (message) => {
+        beforeMessage: (message) => {
           this.broadcastObservers(sessionId, `Executor: ${message}`);
         },
         afterClose: () => {
