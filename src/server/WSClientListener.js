@@ -73,9 +73,9 @@ class WSClientListener {
   }
 
   _onError(error) {
+    this.logger.warning(`An error occurred: ${error}`);
     clearTimeout(this.ttlTimeout);
     this.onError(error);
-    this.logger.warning(`An error occurred: ${error}`);
     this.afterClose();
   }
 
