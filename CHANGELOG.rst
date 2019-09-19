@@ -13,6 +13,11 @@ and this project adheres to `Semantic Versioning`_.
 Unreleased_
 ===========
 
+Fixed
+-----
+
+- In the first task the server should send scaled matrices with ideal images.
+
 `0.0.2`_ - 2019-09-19
 =====================
 
