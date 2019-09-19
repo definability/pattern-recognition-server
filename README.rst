@@ -21,7 +21,7 @@ How to launch
 =============
 
 If you don't want to use `sprs.herokuapp.com`_ for some reason,
-you can launch the application locally,
+you can launch the server locally,
 remember: it tastes better with nvm_.
 
 - Install NodeJS_ 12 or later (you can use ``nvm install node`` for this)
