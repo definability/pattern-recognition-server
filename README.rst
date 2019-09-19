@@ -164,7 +164,7 @@ Zeroth
 TTL: 1 minute (60 seconds).
 
 - Create a session on the server under ``/zeroth`` path
-  (wss://sprs.herokuapp.com/zeroth[session-id])
+  (wss://sprs.herokuapp.com/zeroth/[session-id])
 - Send ``Let's start`` message to the server
 - Receive and parse a string from the server.
   The format is ``[number] [operator] [number]``, where
@@ -180,7 +180,7 @@ First
 TTL: 5 minutes (300 seconds).
 
 - Create a session on the server under ``/first`` path
-  (wss://sprs.herokuapp.com/first[session-id])
+  (wss://sprs.herokuapp.com/first/[session-id])
 - Send ``Let's start`` message to the server
 - Receive a string ``[width] [height] [N]`` from the server,
   where ``[width]`` is a basic width (when the horizontal scale is ``1``)
