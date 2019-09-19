@@ -142,10 +142,22 @@ class WSExecutorFirst extends WSExecutor {
       .join('\n');
   }
 
+  /**
+   * Fisher–Yates shuffle.
+   */
+  static shuffle(array) {
+    const result = [...array];
+    for (let i = array.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+  }
+
   constructor(data) {
     super({
       ...data,
-      logger: Logger('Task 3'),
+      logger: Logger('Task 1'),
     });
 
     this.currentSolution = null;
@@ -156,6 +168,7 @@ class WSExecutorFirst extends WSExecutor {
     this.successes = 0;
     this.totalSteps = null;
     this.verticalScale = null;
+    this.remapping = {};
 
     this.logger.info('Executor First created');
   }
@@ -200,12 +213,18 @@ class WSExecutorFirst extends WSExecutor {
   }
 
   onSetup(message) {
-    const messageSplit = message.split(' ').map(Number);
+    const messageSplit = message.split(' ');
     if (
-      messageSplit.length !== 4
-      || !messageSplit.reduce((acc, e) => acc && e >= 0)
+      messageSplit.length !== 5
     ) {
-      this.send('Wrong setup. You should send 4 numbers separated by space.');
+      this.send('Wrong setup. '
+                + 'You should send 5 parameters separated by space.');
+      this.socket.close();
+      return;
+    }
+    if (!messageSplit.slice(0, 4).map(Number).reduce((acc, e) => acc && e >= 0)) {
+      this.send('Wrong setup. '
+                + 'The first four parameters should be nonnegative numbers.');
       this.socket.close();
       return;
     }
@@ -215,14 +234,20 @@ class WSExecutorFirst extends WSExecutor {
       this.verticalScale,
       this.noiseLevel,
       this.totalSteps,
-    ] = messageSplit;
+    ] = messageSplit.slice(0, 4).map(Number);
 
+    if (!['on', 'off'].includes(messageSplit[4].toLowerCase())) {
+      this.send('The fifth parameter (shuffle) should be either "on" or "off".');
+      this.socket.close();
+      return;
+    }
     if (
       Math.round(this.horizontalScale) !== this.horizontalScale
       || this.horizontalScale > WSExecutorFirst.MAX_HORIZONTAL_SCALE
     ) {
       this.send('Wrong width');
       this.socket.close();
+      return;
     }
     if (
       Math.round(this.verticalScale) !== this.verticalScale
@@ -230,6 +255,7 @@ class WSExecutorFirst extends WSExecutor {
     ) {
       this.send('Wrong height');
       this.socket.close();
+      return;
     }
     if (
       Math.round(this.totalSteps) !== this.totalSteps
@@ -237,18 +263,32 @@ class WSExecutorFirst extends WSExecutor {
     ) {
       this.send('Wrong number of steps');
       this.socket.close();
+      return;
     }
     if (this.noiseLevel < 0 || this.noiseLevel > 1) {
       this.send('Wrong noise level');
       this.socket.close();
+      return;
     }
+
+    if (messageSplit[4].toLowerCase() === 'on') {
+      const names = WSExecutorFirst.shuffle(Object.keys(WSExecutorFirst.IDEAL_NUMBERS));
+      Object.keys(WSExecutorFirst.IDEAL_NUMBERS).forEach((key) => {
+        this.remapping[key] = names.pop();
+      });
+    } else {
+      Object.keys(WSExecutorFirst.IDEAL_NUMBERS).forEach((key) => {
+        this.remapping[key] = key;
+      });
+    }
+
     this.state = WSExecutorFirst.STATES.READY;
 
     const idealNumbersString = (
       Object.keys(WSExecutorFirst.IDEAL_NUMBERS)
         .map((k) => `${k}\n${WSExecutorFirst.matrix2string({
           horizontalScale: this.horizontalScale,
-          matrix: WSExecutorFirst.IDEAL_NUMBERS[k],
+          matrix: WSExecutorFirst.IDEAL_NUMBERS[this.remapping[k]],
           verticalScale: this.verticalScale,
         })}`)
         .join('\n')
@@ -272,7 +312,7 @@ class WSExecutorFirst extends WSExecutor {
       )
     ];
     const matrix = this.generateMatrix(
-      WSExecutorFirst.IDEAL_NUMBERS[this.currentSolution],
+      WSExecutorFirst.IDEAL_NUMBERS[this.remapping[this.currentSolution]],
     );
 
     this.send(`${this.currentStep}\n${WSExecutorFirst.matrix2string({ matrix })}`);

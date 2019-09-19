@@ -13,6 +13,12 @@ and this project adheres to `Semantic Versioning`_.
 Unreleased_
 ===========
 
+Added
+-----
+
+- ``shuffle`` parameter to the first task to add an ability
+  to force parsing of ideal matrices.
+
 Fixed
 -----
 

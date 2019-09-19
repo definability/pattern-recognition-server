@@ -164,13 +164,13 @@ Zeroth
 TTL: 1 minute (60 seconds).
 
 - Create a session on the server under ``/zeroth`` path
-  (wss://sprs.herokuapp.com/zeroth[session-id])
+  (wss://sprs.herokuapp.com/zeroth/[session-id])
 - Send ``Let's start`` message to the server
 - Receive and parse a string from the server.
   The format is ``[number] [operator] [number]``, where
 
-    - ``[number]`` is an integer from ``1`` to ``100``;
-    - ``[operator]`` is one of ``+``, ``-`` and ``*``.
+  - ``[number]`` is an integer from ``1`` to ``100``;
+  - ``[operator]`` is one of ``+``, ``-`` and ``*``.
 
 - Send the solution to the problem (an integer).
 
@@ -180,7 +180,7 @@ First
 TTL: 5 minutes (300 seconds).
 
 - Create a session on the server under ``/first`` path
-  (wss://sprs.herokuapp.com/first[session-id])
+  (wss://sprs.herokuapp.com/first/[session-id])
 - Send ``Let's start`` message to the server
 - Receive a string ``[width] [height] [N]`` from the server,
   where ``[width]`` is a basic width (when the horizontal scale is ``1``)
@@ -188,7 +188,7 @@ TTL: 5 minutes (300 seconds).
   ``[height]`` is a basic height (when the vertical is scale ``1``)
   and ``[N]`` is the total number of digits.
 - Send settings to the server in the format
-  ``[width] [height] [noise] [totalSteps]``, where
+  ``[width] [height] [noise] [totalSteps] [shuffle]``, where
 
   - ``[width]`` is an integer from ``1`` to ``100``
     for the horizontal scale of digits;
@@ -196,7 +196,14 @@ TTL: 5 minutes (300 seconds).
     for the vertical scale of digits;
   - ``[noise]`` is a real number from ``0`` to ``1`` representing the noise level;
   - ``[totalSteps]`` is an integer from ``1`` to ``1'000'000``
-    representing the number of digits you want to recognize.
+    representing the number of digits you want to recognize;
+  - ``[shuffle]`` is either ``on`` or ``off``,
+    and ``off`` means using default correspondence
+    between digit names and their matrices
+    (matrix for ``5`` is visually similar to the digit ``5``),
+    and ``on`` means shuffling of the correspondences
+    (so, digit ``1`` may have a matrix of the digit ``8`` and so on)
+    to check whether you're parsing the next message from the server.
 
 - Receive an array of digit names and corresponding matrices in the form
 
@@ -256,20 +263,21 @@ TTL: 5 minutes (300 seconds).
 - Send ``Let's start with [width] [loss] [totalSteps] [repeats]``
   message to the server, where
 
-    - ``[width]`` is an integer from ``2`` to ``1'000``,
-      meaning the number of bars in heatmaps,
-    - ``[loss]`` is either ``L1`` for distance as a loss
-      (distance is measured in heatmap bars),
-      or a non-negative integer for delta loss.
-      The integer is a radius of an allowed interval:
-      zero means binary loss function,
-      one means a current bar and its nearest neighbors,
-      and so on;
-      must be lower than ``[width]``;
-    - ``[totalSteps]`` is an integer from ``1`` to ``1'000'000``,
-      represents a number of heatmaps to deal with;
-    - ``[repeats]`` is an integer from ``1`` to ``1'000``,
-      representing the number of attempts per one heatmap.
+  - ``[width]`` is an integer from ``2`` to ``1'000``,
+    meaning the number of bars in heatmaps,
+  - ``[loss]`` is either ``L1`` for distance as a loss
+    (distance is measured in heatmap bars),
+    or a non-negative integer for delta loss.
+    The integer is a radius of an allowed interval:
+    zero means binary loss function,
+    one means a current bar and its nearest neighbors,
+    and so on;
+    must be lower than ``[width]``;
+  - ``[totalSteps]`` is an integer from ``1`` to ``1'000'000``,
+    represents a number of heatmaps to deal with;
+  - ``[repeats]`` is an integer from ``1`` to ``1'000``,
+    representing the number of attempts per one heatmap.
+
 - Receive the string ``Are you ready?`` from the server,
 - Send the message ``Ready`` to start completing the task
 - Receive a problem in the form
