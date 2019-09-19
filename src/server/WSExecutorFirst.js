@@ -26,61 +26,6 @@ const WSExecutor = require('./WSExecutor');
 
 /**
  * Executor for the first task.
- *
- * The task is:
- * - Create a session on the server under `/first` path
- * - Send `Let's start` message to the server
- * - Receive a string `[width] [height] [N]` from the server,
- *   where `[width]` is a basic width (for horizontal scale `1`)
- *   of images of a digit in pixels,
- *   `[height]` is a basic height (for vertical scale `1`)
- *   and `[N]` is the total number of digits,
- * - Send settings to the server in the following format
- *   `[width] [height] [noise] [totalSteps]`,
- *   where `[width]` is a positive integer for the horizontal scale of digits,
- *   `[height]` is a positive integer for the vertical scale of digits,
- *   `[noise]` is a real number from `0` to `1` representing the noise level.
- *   `[totalSteps]` is a positive integer,
- *   representing the number of digits you want to recognize
- * - Receive an array of digit names and corresponding matrices in the form
- *   ```
- *   digit1
- *   matrix1
- *   digit2
- *   matrix2
- *   ...
- *   digitN
- *   matrixN
- *   ```
- *   and each matrix is a binary matrix of form
- *   ```
- *   d11 d12 ... d1n
- *   d21 d22 ... d2n
- *         ...
- *   dm1 dm2 ... dmn
- *   ```
- *   where `dij` is `0` or `1` value for `i`-th row and `j`-th column
- *   of the image, `n` its width (horizontal scale multiplied by basic width)
- *   and `m` is its height (vertical scale multiplied by basic height).
- * - Send the message `Ready` to start completing the task
- * - Receive a problem in the form
- *   ```
- *   [step]
- *   matrixj
- *   ```
- *   where `[step]` is the number of the problem,
- *   and `matrixj` is a binary matrix representing the problem
- * - Send the response in the form `[step] [solutionj]`,
- *   where `[step]` is the problem number and `[solutionj]`
- *   is your guess to the problem
- * - Receive a response in the form `[step] answerj`,
- *   where `answerj` is the right answer to the problem `[step]`.
- * - If there are more problems left to solve
- *   (`[step]` is less than `[totalSteps]`),
- *   send `Ready` again and receive a new problem.
- * - Otherwise, send `Bye`
- * - Receive `Finish with [successes] successes of [totalSteps]`,
- *   where `[successes]` is the number of success guesses.
  */
 class WSExecutorFirst extends WSExecutor {
   static STATES = {

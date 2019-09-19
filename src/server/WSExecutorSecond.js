@@ -26,62 +26,6 @@ const WSExecutor = require('./WSExecutor');
 
 /**
  * Executor for the second task.
- *
- * The task is:
- * - Create a session on the server under `/second` path
- * - Send `Let's start with [loss] [width] [totalSteps] [repeats]`
- *   message to the server,
- *   where `[width]` is a number of bars in heatmaps,
- *   `[loss]` is either `L1` for distance as a loss
- *   (distance is measured in heatmap bars),
- *   or a non-negative integer for delta loss.
- *   The integer is a radius of an allowed interval:
- *   zero means binary loss function,
- *   one means a current bar and its nearest neighbors,
- *   and so on,
- *   `[totalSteps]` is a number of heatmaps to deal with,
- *   and `[repeats]` is a number of attempts per one heatmap.
- * - Receive the string `Are you ready?` from the server,
- * - Send the message `Ready` to start completing the task
- * - Receive a problem in the form
- *   ```
- *   Heatmap [step]
- *   heatmapj
- *   ```
- *   where `[step]` is the number of the heatmap,
- *   and `heatmapj` is an array of positive integers
- *   not greater than `255`,
- *   representing the heatmap without normalization.
- * - Send the response in the form
- *   ```
- *   [step]
- *   guessesj
- *   ```
- *   where `[step]` is the heatmap number and `guessesj`
- *   is an array of your guesses of size `[repeats]` in form
- *   `G1 G2 ... Grepeats`
- * - Receive a response in the form
- *   ```
- *   Solutions [step] [loss]
- *   answersj
- *   guessesj
- *   heatmapj
- *   ```
- *   where `answersj` is the array with the right answers
- *   to the problem `[step]`.
- * - If there are more problems left to solve
- *   (`[step]` is less than `[totalSteps]`),
- *   send `Ready` again and receive a new problem.
- * - Otherwise, send `Bye`
- * - Receive `Finish with [loss]`,
- *   where `[loss]` is the sum of all losses.
- *
- * Normalized heatmap contains probabilities of an aim
- * to be in specific positions.
- * In order to normalize it, you should divide its values
- * by their sums.
- *
- * Right answers (aim coordinates) are generated according to the heatmap.
  */
 class WSExecutorSecond extends WSExecutor {
   static STATES = {
