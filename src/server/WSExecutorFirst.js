@@ -157,7 +157,7 @@ class WSExecutorFirst extends WSExecutor {
   constructor(data) {
     super({
       ...data,
-      logger: Logger('Task 3'),
+      logger: Logger('Task 1'),
     });
 
     this.currentSolution = null;
