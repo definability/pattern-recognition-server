@@ -113,10 +113,6 @@ class WSExecutorFirst extends WSExecutor {
     ],
   };
 
-  static IDEAL_NUMBERS_STRING = (
-    Object.keys(WSExecutorFirst.IDEAL_NUMBERS).map((k) => `${k}\n${WSExecutorFirst.matrix2string(WSExecutorFirst.IDEAL_NUMBERS[k])}`).join('\n')
-  );
-
   static BASIC_WIDTH = Object.values(WSExecutorFirst.IDEAL_NUMBERS)[0][0].length
 
   static BASIC_HEIGHT = Object.values(WSExecutorFirst.IDEAL_NUMBERS)[0].length
@@ -133,8 +129,17 @@ class WSExecutorFirst extends WSExecutor {
 
   static MAX_HORIZONTAL_SCALE = 100;
 
-  static matrix2string(matrix) {
-    return matrix.map((row) => row.join(' ')).join('\n');
+  static matrix2string({
+    horizontalScale = 1,
+    matrix,
+    verticalScale = 1,
+  }) {
+    return matrix
+      .map((row) => row
+        .map((cell) => Array.from({ length: horizontalScale }).map(() => cell)).flat()
+        .join(' '))
+      .map((row) => Array.from({ length: verticalScale }).map(() => row)).flat()
+      .join('\n');
   }
 
   constructor(data) {
@@ -239,7 +244,17 @@ class WSExecutorFirst extends WSExecutor {
     }
     this.state = WSExecutorFirst.STATES.READY;
 
-    this.send(WSExecutorFirst.IDEAL_NUMBERS_STRING);
+    const idealNumbersString = (
+      Object.keys(WSExecutorFirst.IDEAL_NUMBERS)
+        .map((k) => `${k}\n${WSExecutorFirst.matrix2string({
+          horizontalScale: this.horizontalScale,
+          matrix: WSExecutorFirst.IDEAL_NUMBERS[k],
+          verticalScale: this.verticalScale,
+        })}`)
+        .join('\n')
+    );
+
+    this.send(idealNumbersString);
   }
 
   onReady(message) {
@@ -260,7 +275,7 @@ class WSExecutorFirst extends WSExecutor {
       WSExecutorFirst.IDEAL_NUMBERS[this.currentSolution],
     );
 
-    this.send(`${this.currentStep}\n${WSExecutorFirst.matrix2string(matrix)}`);
+    this.send(`${this.currentStep}\n${WSExecutorFirst.matrix2string({ matrix })}`);
   }
 
   onSolve(message) {
