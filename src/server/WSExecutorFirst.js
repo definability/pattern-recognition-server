@@ -168,6 +168,7 @@ class WSExecutorFirst extends WSExecutor {
     this.successes = 0;
     this.totalSteps = null;
     this.verticalScale = null;
+    this.remapping = {};
 
     this.logger.info('Executor First created');
   }
@@ -212,12 +213,18 @@ class WSExecutorFirst extends WSExecutor {
   }
 
   onSetup(message) {
-    const messageSplit = message.split(' ').map(Number);
+    const messageSplit = message.split(' ');
     if (
-      messageSplit.length !== 4
-      || !messageSplit.reduce((acc, e) => acc && e >= 0)
+      messageSplit.length !== 5
     ) {
-      this.send('Wrong setup. You should send 4 numbers separated by space.');
+      this.send('Wrong setup. '
+                + 'You should send 5 parameters separated by space.');
+      this.socket.close();
+      return;
+    }
+    if (!messageSplit.slice(0, 4).map(Number).reduce((acc, e) => acc && e >= 0)) {
+      this.send('Wrong setup. '
+                + 'The first four parameters should be nonnegative numbers.');
       this.socket.close();
       return;
     }
@@ -227,8 +234,13 @@ class WSExecutorFirst extends WSExecutor {
       this.verticalScale,
       this.noiseLevel,
       this.totalSteps,
-    ] = messageSplit;
+    ] = messageSplit.slice(0, 4).map(Number);
 
+    if (!['on', 'off'].includes(messageSplit[4].toLowerCase())) {
+      this.send('The fifth parameter (shuffle) should be either "on" or "off".');
+      this.socket.close();
+      return;
+    }
     if (
       Math.round(this.horizontalScale) !== this.horizontalScale
       || this.horizontalScale > WSExecutorFirst.MAX_HORIZONTAL_SCALE
