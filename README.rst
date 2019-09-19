@@ -20,7 +20,8 @@ After the request, it wakes up again.
 How to launch
 =============
 
-If you want to launch the application locally,
+If you don't want to use `sprs.herokuapp.com`_ for some reason,
+you can launch the application locally,
 remember: it tastes better with nvm_.
 
 - Install NodeJS_ 12 or later (you can use ``nvm install node`` for this)
@@ -72,7 +73,7 @@ Completing the tasks
 
 - You should create your own application.
 - The application creates a WebSocket client
-  and connects to the WebSocket server
+  and connects to the WebSocket server.
   Read `Awesome WebSockets`_ for more information.
 - The address to connect is
   ``wss://sprs.herokuapp.com/task-number/[session-id]``.
@@ -158,49 +159,60 @@ If it's correct, you should see some messages in its messages table.
 Zeroth
 ------
 
-Time to complete: 1 minute (60 seconds).
+TTL: 1 minute (60 seconds).
 
 - Create a session on the server under ``/zeroth`` path
-  (wss://sprs.herokuapp.com/zeroth)
+  (wss://sprs.herokuapp.com/zeroth[session-id])
 - Send ``Let's start`` message to the server
 - Receive and parse a string from the server.
-  The format is: ``[number] [operator] [number]``,
-  where ``[number]`` is an integer from ``1`` to ``100``
-  and ``[operator]`` is one of ``+``, ``-`` and ``*``.
+  The format is ``[number] [operator] [number]``, where
+
+    - ``[number]`` is an integer from ``1`` to ``100``;
+    - ``[operator]`` is one of ``+``, ``-`` and ``*``.
+
 - Send the solution to the problem (an integer).
 
 First
 -----
 
-Time to complete: 5 minutes (300 seconds).
+TTL: 5 minutes (300 seconds).
 
 - Create a session on the server under ``/first`` path
-  (wss://sprs.herokuapp.com/first)
+  (wss://sprs.herokuapp.com/first[session-id])
 - Send ``Let's start`` message to the server
 - Receive a string ``[width] [height] [N]`` from the server,
   where ``[width]`` is a basic width (when horizontal scale is ``1``)
   of images of a digit in pixels,
   ``[height]`` is a basic height (when vertical is scale ``1``)
   and ``[N]`` is the total number of digits.
-- Send settings to the server in the following format
-  ``[width] [height] [noise] [totalSteps]``,
-  where ``[width]`` is an integer from ``1`` to ``100``
-  for the horizontal scale of digits,
-  ``[height]`` is an integer from ``1`` to ``100``
-  for the vertical scale of digits,
-  ``[noise]`` is a real number from ``0`` to ``1`` representing the noise level.
-  ``[totalSteps]`` is an integer from ``1`` to ``1'000'000``,
-  representing the number of digits you want to recognize
+- Send settings to the server in the format
+  ``[width] [height] [noise] [totalSteps] [shuffle]``, where
+
+  - ``[width]`` is an integer from ``1`` to ``100``
+    for the horizontal scale of digits;
+  - ``[height]`` is an integer from ``1`` to ``100``
+    for the vertical scale of digits;
+  - ``[noise]`` is a real number from ``0`` to ``1`` representing the noise level;
+  - ``[totalSteps]`` is an integer from ``1`` to ``1'000'000``
+    representing the number of digits you want to recognize;
+  - ``[shuffle]`` is either ``on`` or ``off``,
+    and ``off`` means using default correspondence
+    between digit names and their matrices
+    (matrix for ``5`` is visually similar to the digit ``5``),
+    and ``on`` means shuffling of the correspondences
+    (so, digit ``1`` may have a matrix of the digit ``8`` and so on)
+    to check whether you're parsing the next message from the server.
+
 - Receive an array of digit names and corresponding matrices in the form
 
   ::
 
-    digit1
+    [digit1]
     matrix1
-    digit2
+    [digit2]
     matrix2
     ...
-    digitN
+    [digitN]
     matrixN
 
   and each matrix is a binary matrix of form
@@ -213,25 +225,25 @@ Time to complete: 5 minutes (300 seconds).
     dm1 dm2 ... dmn
 
   where ``dij`` is ``0`` or ``1`` value for ``i``-th row and ``j``-th column
-  of the image, ``n`` its width (horizontal scale multiplied by basic width)
-  and ``m`` is its height (vertical scale multiplied by basic height).
+  of the image, ``n`` its width (horizontal scale multiplied by the basic width)
+  and ``m`` is its height (vertical scale multiplied by the basic height).
 - Send the message ``Ready`` to start completing the task
 - Receive a problem in the form
 
   ::
 
     [step]
-    matrixj
+    matrix
 
   where ``[step]`` is the number of the problem,
-  and ``matrixj`` is a binary matrix representing the problem.
+  and ``matrix`` is a binary matrix representing the problem.
   Web UI can display this number
   if you pause the application before the next step.
-- Send the response in the form ``[step] [solutionj]``,
-  where ``[step]`` is the problem number and ``[solutionj]``
+- Send the response in the form ``[step] [solution]``,
+  where ``[step]`` is the problem number and ``[solution]``
   is your guess to the problem
-- Receive a response in the form ``[step] answerj``,
-  where ``answerj`` is the right answer to the problem ``[step]``.
+- Receive a response in the form ``[step] [answer]``,
+  where ``[answer]`` is the right answer to the problem ``[step]``.
 - If there are more problems left to solve
   (``[step]`` is less than ``[totalSteps]``),
   send ``Ready`` again and receive a new problem.
@@ -242,26 +254,27 @@ Time to complete: 5 minutes (300 seconds).
 Second
 ------
 
-Time to complete: 5 minutes (300 seconds).
+TTL: 5 minutes (300 seconds).
 
 - Create a session on the server under ``/second`` path
-  (wss://sprs.herokuapp.com/second)
+  (wss://sprs.herokuapp.com/second/[session-id])
 - Send ``Let's start with [width] [loss] [totalSteps] [repeats]``
-  message to the server,
-  where ``[width]`` is an integer from ``2`` to ``1'000``,
-  meaning the number of bars in heatmaps,
-  ``[loss]`` is either ``L1`` for distance as a loss
-  (distance is measured in heatmap bars),
-  or a non-negative integer for delta loss.
-  The integer is a radius of an allowed interval:
-  zero means binary loss function,
-  one means a current bar and its nearest neighbors,
-  and so on;
-  must be lower than ``[width]``,
-  ``[totalSteps]`` is an integer from ``1`` to ``1'000'000``,
-  represents a number of heatmaps to deal with,
-  and ``[repeats]`` is an integer from ``1`` to ``1'000``,
-  representig the number of attempts per one heatmap.
+  message to the server, where
+
+    - ``[width]`` is an integer from ``2`` to ``1'000``,
+      meaning the number of bars in heatmaps,
+    - ``[loss]`` is either ``L1`` for distance as a loss
+      (distance is measured in heatmap bars),
+      or a non-negative integer for delta loss.
+      The integer is a radius of an allowed interval:
+      zero means binary loss function,
+      one means a current bar and its nearest neighbors,
+      and so on;
+      must be lower than ``[width]``;
+    - ``[totalSteps]`` is an integer from ``1`` to ``1'000'000``,
+      represents a number of heatmaps to deal with;
+    - ``[repeats]`` is an integer from ``1`` to ``1'000``,
+      representig the number of attempts per one heatmap.
 - Receive the string ``Are you ready?`` from the server,
 - Send the message ``Ready`` to start completing the task
 - Receive a problem in the form
@@ -269,10 +282,10 @@ Time to complete: 5 minutes (300 seconds).
   ::
 
     Heatmap [step]
-    heatmapj
+    heatmap
 
   where ``[step]`` is the number of the heatmap,
-  ``heatmapj`` is an array of positive integers
+  ``heatmap`` is an array of positive integers
   not greater than ``255``,
   and representing the heatmap without normalization.
 - Send the response in the form
@@ -280,9 +293,9 @@ Time to complete: 5 minutes (300 seconds).
   ::
 
     [step]
-    guessesj
+    guesses
 
-  where ``[step]`` is the heatmap number and ``guessesj``
+  where ``[step]`` is the heatmap number and ``guesses``
   is an array of your guesses of size ``[repeats]`` in form
   ``G1 G2 ... Grepeats``
 - Receive a response in the form
@@ -290,11 +303,11 @@ Time to complete: 5 minutes (300 seconds).
   ::
 
     Solutions [step] [loss]
-    answersj
-    guessesj
-    heatmapj
+    answers
+    guesses
+    heatmap
 
-  where ``answersj`` is the array with the right answers
+  where ``answers`` is the array with the right answers
   to the problem ``[step]``.
   Web UI should show the animation here,
   if you pause the application before going to the next step.
