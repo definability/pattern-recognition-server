@@ -13,6 +13,9 @@ and this project adheres to `Semantic Versioning`_.
 Unreleased_
 ===========
 
+`0.0.2`_ - 2019-09-19
+=====================
+
 Added
 -----
 
@@ -90,7 +93,9 @@ Added
   - ``index`` module serves the ReactJS static.
 
 .. _Unreleased:
-    https://github.com/char-lie/pattern-recognition-server/compare/v0.0.1...HEAD
+    https://github.com/char-lie/pattern-recognition-server/compare/v0.0.2...HEAD
+.. _0.0.2:
+    https://github.com/char-lie/pattern-recognition-server/compare/v0.0.1...v0.0.2
 
 .. _Keep a Changelog:
     http://keepachangelog.com/en/1.0.0
