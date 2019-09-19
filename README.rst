@@ -76,7 +76,9 @@ Completing the tasks
   and connects to the WebSocket server.
   Read `Awesome WebSockets`_ for more information.
 - The address to connect is
-  ``wss://sprs.herokuapp.com/task-number/[session-id]``.
+  ``wss://sprs.herokuapp.com/task-number/[session-id]``,
+  and also supports insecure WebSocket connection via
+  ``ws://sprs.herokuapp.com/task-number/[session-id]``.
 - When you connect to the server,
   you create a new session named ``[session-id]``,
   which should be a valid URI segment
