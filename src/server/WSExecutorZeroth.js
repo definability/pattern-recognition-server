@@ -26,15 +26,6 @@ const WSExecutor = require('./WSExecutor');
 
 /**
  * Executor for the zeroth task.
- *
- * The task is:
- * - Create a session on the server under `/zeroth` path
- * - Send `Let's start` message to the server
- * - Receive and parse a string from the server.
- *   The format is: `[number] [operator] [number]`,
- *   where `[number]` is an integer from `1` to `100`
- *   and `[operator]` is one of `+`, `-` and `*`.
- * - Send the solution to the problem (an integer).
  */
 class WSExecutorZeroth extends WSExecutor {
   static STATES = {
