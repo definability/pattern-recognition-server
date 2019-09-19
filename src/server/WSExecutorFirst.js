@@ -247,6 +247,7 @@ class WSExecutorFirst extends WSExecutor {
     ) {
       this.send('Wrong width');
       this.socket.close();
+      return;
     }
     if (
       Math.round(this.verticalScale) !== this.verticalScale
@@ -254,6 +255,7 @@ class WSExecutorFirst extends WSExecutor {
     ) {
       this.send('Wrong height');
       this.socket.close();
+      return;
     }
     if (
       Math.round(this.totalSteps) !== this.totalSteps
@@ -261,10 +263,12 @@ class WSExecutorFirst extends WSExecutor {
     ) {
       this.send('Wrong number of steps');
       this.socket.close();
+      return;
     }
     if (this.noiseLevel < 0 || this.noiseLevel > 1) {
       this.send('Wrong noise level');
       this.socket.close();
+      return;
     }
     this.state = WSExecutorFirst.STATES.READY;
 
