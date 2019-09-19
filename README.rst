@@ -94,7 +94,7 @@ Using Web UI
 Web UI is used only to follow the task completion.
 
 - First, connect to the server via your application
-  in order to create new session,
+  in order to create a new session,
   and pause your application.
 - Type the ``[session-id]`` into the corresponding input
   of the desired task page to start watching it.
@@ -183,9 +183,9 @@ TTL: 5 minutes (300 seconds).
   (wss://sprs.herokuapp.com/first[session-id])
 - Send ``Let's start`` message to the server
 - Receive a string ``[width] [height] [N]`` from the server,
-  where ``[width]`` is a basic width (when horizontal scale is ``1``)
+  where ``[width]`` is a basic width (when the horizontal scale is ``1``)
   of images of a digit in pixels,
-  ``[height]`` is a basic height (when vertical is scale ``1``)
+  ``[height]`` is a basic height (when the vertical is scale ``1``)
   and ``[N]`` is the total number of digits.
 - Send settings to the server in the format
   ``[width] [height] [noise] [totalSteps]``, where
@@ -269,7 +269,7 @@ TTL: 5 minutes (300 seconds).
     - ``[totalSteps]`` is an integer from ``1`` to ``1'000'000``,
       represents a number of heatmaps to deal with;
     - ``[repeats]`` is an integer from ``1`` to ``1'000``,
-      representig the number of attempts per one heatmap.
+      representing the number of attempts per one heatmap.
 - Receive the string ``Are you ready?`` from the server,
 - Send the message ``Ready`` to start completing the task
 - Receive a problem in the form
@@ -304,7 +304,7 @@ TTL: 5 minutes (300 seconds).
 
   where ``answers`` is the array with the right answers
   to the problem ``[step]``.
-  Web UI should show the animation here,
+  Web UI should show the animation here
   if you pause the application before going to the next step.
 - If there are more problems left to solve
   (``[step]`` is less than ``[totalSteps]``),
