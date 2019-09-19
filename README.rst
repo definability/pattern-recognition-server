@@ -186,7 +186,7 @@ TTL: 5 minutes (300 seconds).
   ``[height]`` is a basic height (when vertical is scale ``1``)
   and ``[N]`` is the total number of digits.
 - Send settings to the server in the format
-  ``[width] [height] [noise] [totalSteps] [shuffle]``, where
+  ``[width] [height] [noise] [totalSteps]``, where
 
   - ``[width]`` is an integer from ``1`` to ``100``
     for the horizontal scale of digits;
@@ -194,14 +194,7 @@ TTL: 5 minutes (300 seconds).
     for the vertical scale of digits;
   - ``[noise]`` is a real number from ``0`` to ``1`` representing the noise level;
   - ``[totalSteps]`` is an integer from ``1`` to ``1'000'000``
-    representing the number of digits you want to recognize;
-  - ``[shuffle]`` is either ``on`` or ``off``,
-    and ``off`` means using default correspondence
-    between digit names and their matrices
-    (matrix for ``5`` is visually similar to the digit ``5``),
-    and ``on`` means shuffling of the correspondences
-    (so, digit ``1`` may have a matrix of the digit ``8`` and so on)
-    to check whether you're parsing the next message from the server.
+    representing the number of digits you want to recognize.
 
 - Receive an array of digit names and corresponding matrices in the form
 
