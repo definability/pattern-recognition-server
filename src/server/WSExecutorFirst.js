@@ -270,13 +270,25 @@ class WSExecutorFirst extends WSExecutor {
       this.socket.close();
       return;
     }
+
+    if (messageSplit[4].toLowerCase() === 'on') {
+      const names = WSExecutorFirst.shuffle(Object.keys(WSExecutorFirst.IDEAL_NUMBERS));
+      Object.keys(WSExecutorFirst.IDEAL_NUMBERS).forEach((key) => {
+        this.remapping[key] = names.pop();
+      });
+    } else {
+      Object.keys(WSExecutorFirst.IDEAL_NUMBERS).forEach((key) => {
+        this.remapping[key] = key;
+      });
+    }
+
     this.state = WSExecutorFirst.STATES.READY;
 
     const idealNumbersString = (
       Object.keys(WSExecutorFirst.IDEAL_NUMBERS)
         .map((k) => `${k}\n${WSExecutorFirst.matrix2string({
           horizontalScale: this.horizontalScale,
-          matrix: WSExecutorFirst.IDEAL_NUMBERS[k],
+          matrix: WSExecutorFirst.IDEAL_NUMBERS[this.remapping[k]],
           verticalScale: this.verticalScale,
         })}`)
         .join('\n')
@@ -300,7 +312,7 @@ class WSExecutorFirst extends WSExecutor {
       )
     ];
     const matrix = this.generateMatrix(
-      WSExecutorFirst.IDEAL_NUMBERS[this.currentSolution],
+      WSExecutorFirst.IDEAL_NUMBERS[this.remapping[this.currentSolution]],
     );
 
     this.send(`${this.currentStep}\n${WSExecutorFirst.matrix2string({ matrix })}`);
