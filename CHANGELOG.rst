@@ -13,6 +13,13 @@ and this project adheres to `Semantic Versioning`_.
 Unreleased_
 ===========
 
+Fixed
+-----
+
+- In the second task with the ``interval`` loss function,
+  the server should send the number of failed attempts
+  instead of successful ones.
+
 `0.1.0`_ - 2019-09-19
 =====================
 
