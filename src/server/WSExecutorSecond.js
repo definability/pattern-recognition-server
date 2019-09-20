@@ -40,7 +40,7 @@ class WSExecutorSecond extends WSExecutor {
       return (guess, answer) => Math.abs(guess - answer);
     }
     if (Number.isSafeInteger(Number(identifier))) {
-      return (guess, answer) => Math.abs(guess - answer) <= Number(identifier);
+      return (guess, answer) => Math.abs(guess - answer) > Number(identifier);
     }
     throw new Error(`Unknown loss function identifier ${identifier}`);
   }
