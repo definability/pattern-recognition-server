@@ -244,7 +244,7 @@ TTL: 5 minutes (300 seconds).
   if you pause the application before the next step.
 - Send the response in the form ``[step] [solution]``,
   where ``[step]`` is the problem number and ``[solution]``
-  is your guess to the problem &mdash; a digit represented by the ``matrix``.
+  is your guess to the problem — a digit represented by the ``matrix``.
 - Receive a response in the form ``[step] [answer]``,
   where ``[answer]`` is the right answer to the problem ``[step]``.
 - If there are more problems left to solve
