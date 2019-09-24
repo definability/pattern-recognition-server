@@ -85,8 +85,9 @@ Completing the tasks
   (for example, a number, word, words separated by ``-`` or ``_``, etc.).
 
 **Tip**
-It's better for you to create a local demo WebSocket server
-to get familiar with WebSockets.
+Use ``wss://echo.websocket.org`` and ``ws://echo.websocket.org``
+to learn how to connect to WebSocket server
+and check how your messages look like.
 
 Using Web UI
 ------------
@@ -187,7 +188,7 @@ TTL: 5 minutes (300 seconds).
   of images of a digit in pixels,
   ``[height]`` is a basic height (when the vertical is scale ``1``)
   and ``[N]`` is the total number of digits.
-- Send settings to the server in the format
+- Send a string with settings to the server in the format
   ``[width] [height] [noise] [totalSteps] [shuffle]``, where
 
   - ``[width]`` is an integer from ``1`` to ``100``
@@ -243,7 +244,7 @@ TTL: 5 minutes (300 seconds).
   if you pause the application before the next step.
 - Send the response in the form ``[step] [solution]``,
   where ``[step]`` is the problem number and ``[solution]``
-  is your guess to the problem
+  is your guess to the problem — a digit represented by the ``matrix``.
 - Receive a response in the form ``[step] [answer]``,
   where ``[answer]`` is the right answer to the problem ``[step]``.
 - If there are more problems left to solve
@@ -300,7 +301,11 @@ TTL: 5 minutes (300 seconds).
 
   where ``[step]`` is the heatmap number and ``guesses``
   is an array of your guesses of size ``[repeats]`` in form
-  ``G1 G2 ... Grepeats``
+  ``G1 G2 ... Grepeats``,
+  where each ``Gi`` is a non-negative integer
+  smaller than the heatmap size,
+  representing the number of the bar you've chosen
+  (indexing from zero).
 - Receive a response in the form
 
   ::

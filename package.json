@@ -58,11 +58,11 @@
   ],
   "homepage": "https://github.com/char-lie/pattern-recognition-server#readme",
   "devDependencies": {
-    "@babel/core": "^7.6.0",
+    "@babel/core": "^7.6.2",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/plugin-proposal-private-methods": "^7.6.0",
-    "@babel/plugin-transform-runtime": "^7.6.0",
-    "@babel/preset-env": "^7.6.0",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",
     "autoprefixer": "^9.6.1",
     "babel-eslint": "^10.0.3",
@@ -89,7 +89,7 @@
     "style-loader": "^1.0.0",
     "stylelint": "^11.0.0",
     "stylelint-config-standard": "^19.0.0",
-    "webpack": "^4.40.2",
+    "webpack": "^4.41.0",
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.8.1"
   },
@@ -99,8 +99,8 @@
     "react": "^16.9.0",
     "react-bootstrap": "^1.0.0-beta.12",
     "react-dom": "^16.9.0",
-    "react-router": "^5.0.1",
-    "react-router-dom": "^5.0.1",
+    "react-router": "^5.1.0",
+    "react-router-dom": "^5.1.0",
     "winston": "^3.2.1",
     "ws": "^7.1.2"
   }

@@ -11,6 +11,7 @@
     "no-console": "error",
     "no-underscore-dangle": ["error", {
         "allowAfterThis": true
-    }]
+    }],
+    "no-useless-escape": "warn"
   }
 }
