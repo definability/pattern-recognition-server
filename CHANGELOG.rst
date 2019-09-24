@@ -13,6 +13,11 @@ and this project adheres to `Semantic Versioning`_.
 Unreleased_
 ===========
 
+Added
+-----
+
+- Validation of symbols in the setup for the first task executor.
+
 Fixed
 -----
 
