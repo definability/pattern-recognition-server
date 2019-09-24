@@ -217,9 +217,9 @@ class WSExecutorFirst extends WSExecutor {
     if (!/^[\da-zA-Z\-\. ]+$/.test(message)) {
       const wrongSymbols = [...new Set(message.match(/[^\da-zA-Z\-\. ]/g))];
       this.send(
-        'Your message contains not allowed symbols: '
-        + wrongSymbols.join(' ')
-        + `. Check whether you message "${message}" meets the needs.`
+        `Your message contains not allowed symbols: ${
+          wrongSymbols.join(' ')
+        }. Check whether you message "${message}" meets the needs.`,
       );
       this.socket.close();
       return;
