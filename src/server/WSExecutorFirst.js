@@ -214,6 +214,16 @@ class WSExecutorFirst extends WSExecutor {
 
   onSetup(message) {
     const messageSplit = message.split(' ');
+    if (!/^[\da-zA-Z\-\. ]+$/.test(message)) {
+      const wrongLetters = [...new Set(message.match(/[^\da-zA-Z\-\. ]/g))];
+      this.send(
+        'Your message contains not allowed symbols: '
+        + wrongLetters.join(' ')
+        + `. Check whether you message "${message}" meets the needs.`
+      );
+      this.socket.close();
+      return;
+    }
     if (
       messageSplit.length !== 5
     ) {
