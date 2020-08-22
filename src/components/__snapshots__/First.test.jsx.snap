@@ -11,7 +11,7 @@ exports[`First should render correctly 1`] = `
       Digits recognition
     </small>
   </h1>
-  <ForwardRef
+  <Row
     noGutters={false}
   >
     <Col
@@ -47,8 +47,8 @@ exports[`First should render correctly 1`] = `
         </FormRow>
       </Form>
     </Col>
-  </ForwardRef>
-  <ForwardRef
+  </Row>
+  <Row
     className="justify-content-md-center"
     noGutters={false}
   >
@@ -74,8 +74,8 @@ exports[`First should render correctly 1`] = `
         width={300}
       />
     </Col>
-  </ForwardRef>
-  <ForwardRef
+  </Row>
+  <Row
     className="mt-3"
     noGutters={false}
   >
@@ -85,6 +85,6 @@ exports[`First should render correctly 1`] = `
         sessionId=""
       />
     </Col>
-  </ForwardRef>
+  </Row>
 </div>
 `;

@@ -11,7 +11,7 @@ exports[`Zeroth should render correctly 1`] = `
       WebSocket conversation
     </small>
   </h1>
-  <ForwardRef
+  <Row
     noGutters={false}
   >
     <Col
@@ -47,8 +47,8 @@ exports[`Zeroth should render correctly 1`] = `
         </FormRow>
       </Form>
     </Col>
-  </ForwardRef>
-  <ForwardRef
+  </Row>
+  <Row
     className="mt-3"
     noGutters={false}
   >
@@ -58,6 +58,6 @@ exports[`Zeroth should render correctly 1`] = `
         sessionId=""
       />
     </Col>
-  </ForwardRef>
+  </Row>
 </div>
 `;

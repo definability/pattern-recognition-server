@@ -11,7 +11,7 @@ exports[`Second should render correctly 1`] = `
       Aiding people
     </small>
   </h1>
-  <ForwardRef
+  <Row
     noGutters={false}
   >
     <Col
@@ -47,8 +47,8 @@ exports[`Second should render correctly 1`] = `
         </FormRow>
       </Form>
     </Col>
-  </ForwardRef>
-  <ForwardRef
+  </Row>
+  <Row
     noGutters={false}
   >
     <Col>
@@ -59,8 +59,8 @@ exports[`Second should render correctly 1`] = `
         width={1000}
       />
     </Col>
-  </ForwardRef>
-  <ForwardRef
+  </Row>
+  <Row
     noGutters={false}
   >
     <Col>
@@ -77,8 +77,8 @@ exports[`Second should render correctly 1`] = `
         width={1000}
       />
     </Col>
-  </ForwardRef>
-  <ForwardRef
+  </Row>
+  <Row
     className="mt-3"
     noGutters={false}
   >
@@ -88,6 +88,6 @@ exports[`Second should render correctly 1`] = `
         sessionId=""
       />
     </Col>
-  </ForwardRef>
+  </Row>
 </div>
 `;
