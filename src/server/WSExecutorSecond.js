@@ -146,7 +146,6 @@ class WSExecutorSecond extends WSExecutor {
     this.lossName = lossName;
     this.loss = WSExecutorSecond.LOSS_FUNCTION(lossName);
 
-
     if (
       !Number.isSafeInteger(Number(totalSteps))
       || Number(totalSteps) > WSExecutorSecond.MAX_TOTAL_STEPS
@@ -157,7 +156,6 @@ class WSExecutorSecond extends WSExecutor {
     }
     this.totalSteps = Number(totalSteps);
 
-
     if (
       !Number.isSafeInteger(Number(repeats))
       || Number(repeats) > WSExecutorSecond.MAX_REPEATS
@@ -167,7 +165,6 @@ class WSExecutorSecond extends WSExecutor {
       return;
     }
     this.repeats = Number(repeats);
-
 
     this.state = WSExecutorSecond.STATES.READY;
 

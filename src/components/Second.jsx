@@ -71,6 +71,11 @@ class Second extends Component {
   static SKY_HEIGHT = 300;
 
   /**
+   * Default heatmap height.
+   */
+  static HEATMAP_HEIGHT = 20;
+
+  /**
    * Palette for heatmap.
    * Converts color value from `[0; 255]`
    * to `[#000000; #FFFFFF]` grayscale.
@@ -78,11 +83,6 @@ class Second extends Component {
   static grayPalette = (color) => (
     `#${color.toString(16).toUpperCase().padStart(2, '0').repeat(3)}`
   );
-
-  /**
-   * Default heatmap height.
-   */
-  static HEATMAP_HEIGHT = 20;
 
   constructor(props) {
     super(props);
