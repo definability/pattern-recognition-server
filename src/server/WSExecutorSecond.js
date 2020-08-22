@@ -119,6 +119,7 @@ class WSExecutorSecond extends WSExecutor {
 
     if (
       !Number.isSafeInteger(Number(barsNumber))
+      || Number(barsNumber) < 1
       || Number(barsNumber) > WSExecutorSecond.MAX_BARS_NUMBER
     ) {
       this.send('Incorrect number of bars');
@@ -148,6 +149,7 @@ class WSExecutorSecond extends WSExecutor {
 
     if (
       !Number.isSafeInteger(Number(totalSteps))
+      || Number(totalSteps) < 1
       || Number(totalSteps) > WSExecutorSecond.MAX_TOTAL_STEPS
     ) {
       this.send('Incorrect total steps');
@@ -158,6 +160,7 @@ class WSExecutorSecond extends WSExecutor {
 
     if (
       !Number.isSafeInteger(Number(repeats))
+      || Number(repeats) < 1
       || Number(repeats) > WSExecutorSecond.MAX_REPEATS
     ) {
       this.send('Incorrect repeats number');
