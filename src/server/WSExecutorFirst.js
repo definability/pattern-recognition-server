@@ -252,7 +252,7 @@ class WSExecutorFirst extends WSExecutor {
       return;
     }
     if (
-      Math.round(this.horizontalScale) !== this.horizontalScale
+      !Number.isSafeInteger(this.horizontalScale)
       || this.horizontalScale > WSExecutorFirst.MAX_HORIZONTAL_SCALE
     ) {
       this.send('Wrong width');
@@ -260,7 +260,7 @@ class WSExecutorFirst extends WSExecutor {
       return;
     }
     if (
-      Math.round(this.verticalScale) !== this.verticalScale
+      !Number.isSafeInteger(this.verticalScale)
       || this.verticalScale > WSExecutorFirst.MAX_VERTICAL_SCALE
     ) {
       this.send('Wrong height');
@@ -268,7 +268,8 @@ class WSExecutorFirst extends WSExecutor {
       return;
     }
     if (
-      Math.round(this.totalSteps) !== this.totalSteps
+      !Number.isSafeInteger(this.totalSteps)
+      || this.totalSteps < 1
       || this.totalSteps > WSExecutorFirst.MAX_HORIZONTAL_SCALE
     ) {
       this.send('Wrong number of steps');
