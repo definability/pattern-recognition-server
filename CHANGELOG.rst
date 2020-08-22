@@ -24,6 +24,13 @@ Fixed
 - In the second task with the ``interval`` loss function,
   the server should send the number of failed attempts
   instead of successful ones.
+- In the first and second tasks should allow only positive values
+  for ``repeats``, ``totalSteps``, ``height`` and ``width``.
+- Maximal ``totalSteps`` of the first task
+  should be ``1'000'000``, not ``100``.
+- Maximal payload of the WebSocket server should successfully handle
+  the allowed messages from clients.
+- Server should not fail if the client initialization fails.
 
 `0.1.0`_ - 2019-09-19
 =====================
