@@ -270,7 +270,7 @@ class WSExecutorFirst extends WSExecutor {
     if (
       !Number.isSafeInteger(this.totalSteps)
       || this.totalSteps < 1
-      || this.totalSteps > WSExecutorFirst.MAX_HORIZONTAL_SCALE
+      || this.totalSteps > WSExecutorFirst.MAX_TOTAL_STEPS
     ) {
       this.send('Wrong number of steps');
       this.socket.close();
