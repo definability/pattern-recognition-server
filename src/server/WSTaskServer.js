@@ -217,6 +217,13 @@ class WSTaskServer {
   }
 
   closeSession(sessionId) {
+    if (!this.sessions.has(sessionId)) {
+      this.logger.warning(
+        `Unable to close the session '${sessionId}' `
+        + 'because it\'s not opened',
+      );
+      return;
+    }
     this.sessions.get(sessionId).forEach((client) => {
       client.close();
       this.socketPool.remove(client.socket);
