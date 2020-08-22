@@ -25,7 +25,7 @@ const WebSocket = require('ws');
 const Logger = require('./Logger');
 const WSObserver = require('./WSObserver');
 
-const MAX_PAYLOAD_KB = 1;
+const MAX_PAYLOAD_KB = 5;
 const MAX_PAYLOAD = Math.round(MAX_PAYLOAD_KB * (2 ** 10));
 
 /**
