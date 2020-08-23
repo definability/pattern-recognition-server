@@ -1,6 +1,6 @@
 {
   "name": "pattern-recognition-server",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Server for pattern recognition computer practica",
   "scripts": {
     "build": "webpack --mode production",
