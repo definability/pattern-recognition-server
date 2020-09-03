@@ -35,6 +35,34 @@ class WSExecutor extends WSClientListener {
     super(data);
     this.send = send;
   }
+
+  sendMessage(message, ...args) {
+    const payload = {
+      data: { ...message },
+      success: true,
+    };
+    return this.send(JSON.stringify(payload), ...args);
+  }
+
+  sendErrors(errors, ...args) {
+    const payload = {
+      errors: Array.isArray(errors) ? errors : [errors],
+      success: false,
+    };
+    return this.send(JSON.stringify(payload), ...args);
+  }
+
+  /**
+   * JSON error response generator
+   * for the case of validation error.
+   */
+  sendValidationError(e) {
+    this.sendErrors({
+      title: 'The message is invalid',
+      detail: e,
+    });
+    this.socket.close();
+  }
 }
 
 module.exports = WSExecutor;

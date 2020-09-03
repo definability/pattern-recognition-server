@@ -21,6 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+const Ajv = require('ajv');
+
+const ajv = new Ajv({ allErrors: true });
+
 const DEFAULT_WS_TTL_MILLISECONDS = 30 * 1E3;
 
 /**
@@ -29,6 +33,17 @@ const DEFAULT_WS_TTL_MILLISECONDS = 30 * 1E3;
  * and adds listeners.
  */
 class WSClientListener {
+  static SCHEMA = ajv.compile({
+    type: 'object',
+    additionalProperties: false,
+    required: ['data'],
+    properties: {
+      data: {
+        type: 'object',
+      },
+    },
+  });
+
   constructor({
     afterClose = () => {},
     beforeMessage = () => {},
@@ -62,6 +77,12 @@ class WSClientListener {
   onClose() {
   }
 
+  validate() {
+  }
+
+  validateSchema() {
+  }
+
   close() {
     this.socket.close();
   }
@@ -82,7 +103,15 @@ class WSClientListener {
   _onMessage(message) {
     this.logger.debug(`Receive message ${message}`);
     this.beforeMessage(message);
-    this.onMessage(message);
+    if (this.schema) {
+      const parsedMessage = this._validate(message);
+      if (parsedMessage === undefined) {
+        return;
+      }
+      this.onMessage(parsedMessage);
+    } else {
+      this.onMessage(message);
+    }
   }
 
   _onClose() {
@@ -90,6 +119,35 @@ class WSClientListener {
     this.onClose();
     this.logger.info('Close socket');
     this.afterClose();
+  }
+
+  _validate(message) {
+    let parsedMessage = {};
+    try {
+      parsedMessage = JSON.parse(message);
+    } catch (e) {
+      if (e instanceof SyntaxError) {
+        this.sendErrors({
+          title: 'The message is not a valid JSON string',
+          detail: `${e}`,
+        });
+        this.socket.close();
+        return undefined;
+      }
+      throw e;
+    }
+
+    if (!WSClientListener.SCHEMA(parsedMessage)) {
+      this.sendErrors(WSClientListener.SCHEMA.errors);
+      return undefined;
+    }
+
+    if (!this.schema(parsedMessage.data)) {
+      this.sendErrors(this.schema.errors);
+      return undefined;
+    }
+
+    return parsedMessage.data;
   }
 }
 

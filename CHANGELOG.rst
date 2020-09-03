@@ -13,6 +13,11 @@ and this project adheres to `Semantic Versioning`_.
 Unreleased_
 ===========
 
+Added
+-----
+
+- Server-side support of JSON messages.
+
 `0.1.1`_ - 2020-08-23
 =====================
 

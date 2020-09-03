@@ -94,6 +94,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "ajv": "^6.12.4",
     "express": "^4.17.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
