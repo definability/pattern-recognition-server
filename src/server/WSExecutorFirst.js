@@ -376,7 +376,8 @@ class WSExecutorFirst extends WSExecutor {
 
   onFinish() {
     this.sendMessage({
-      message: `Finish with ${this.successes} successes of ${this.totalSteps}`,
+      successes: this.successes,
+      totalSteps: this.totalSteps,
     });
   }
 
