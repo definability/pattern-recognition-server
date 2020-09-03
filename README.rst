@@ -166,14 +166,16 @@ TTL: 1 minute (60 seconds).
 
 - Create a session on the server under ``/zeroth`` path
   (wss://sprs.herokuapp.com/zeroth/[session-id])
-- Send ``Let's start`` message to the server
+- Send ``{ "message": "Let's start" }`` message to the server
 - Receive and parse a string from the server.
-  The format is ``[number] [operator] [number]``, where
+  The format is ``{ "operands": [<operand1>, <operand2>], "operator": "<operand>" }``,
+  where
 
-  - ``[number]`` is an integer from ``1`` to ``100``;
-  - ``[operator]`` is one of ``+``, ``-`` and ``*``.
+  - ``<operand(1,2)>`` is an integer from ``1`` to ``100``;
+  - ``<operator>`` is one of ``+``, ``-`` and ``*``.
 
-- Send the solution to the problem (an integer).
+- Send the solution to the problem in format ``{ "answer": <answer> }``,
+  where ``<answer>`` should be an integer.
 
 First
 -----
