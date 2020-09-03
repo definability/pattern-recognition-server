@@ -21,8 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+const Ajv = require('ajv');
+
 const Logger = require('./Logger');
 const WSExecutor = require('./WSExecutor');
+
+const ajv = new Ajv({ allErrors: true });
 
 /**
  * Executor for the first task.
@@ -129,18 +133,85 @@ class WSExecutorFirst extends WSExecutor {
 
   static MAX_HORIZONTAL_SCALE = 100;
 
-  static matrix2string({
-    horizontalScale = 1,
-    matrix,
-    verticalScale = 1,
-  }) {
-    return matrix
-      .map((row) => row
-        .map((cell) => Array.from({ length: horizontalScale }).map(() => cell)).flat()
-        .join(' '))
-      .map((row) => Array.from({ length: verticalScale }).map(() => row)).flat()
-      .join('\n');
-  }
+  static VALIDATION_SCHEMAS = {
+    [WSExecutorFirst.STATES.START]: ajv.compile({
+      type: 'object',
+      additionalProperties: false,
+      required: ['message'],
+      properties: {
+        message: {
+          type: 'string',
+          const: 'Let\'s start',
+        },
+      },
+    }),
+    [WSExecutorFirst.STATES.SETUP]: ajv.compile({
+      type: 'object',
+      additionalProperties: false,
+      required: ['width', 'height', 'totalSteps', 'noise', 'shuffle'],
+      properties: {
+        width: {
+          type: 'integer',
+          minimum: 1,
+          maximum: WSExecutorFirst.MAX_HORIZONTAL_SCALE,
+        },
+        height: {
+          type: 'integer',
+          minimum: 1,
+          maximum: WSExecutorFirst.MAX_VERTICAL_SCALE,
+        },
+        totalSteps: {
+          type: 'integer',
+          minimum: 1,
+          maximum: WSExecutorFirst.MAX_TOTAL_STEPS,
+        },
+        noise: {
+          type: 'number',
+          minimum: 0,
+          maximum: 1,
+        },
+        shuffle: {
+          type: 'boolean',
+        },
+      },
+    }),
+    [WSExecutorFirst.STATES.READY]: ajv.compile({
+      type: 'object',
+      additionalProperties: false,
+      required: ['message'],
+      properties: {
+        message: {
+          type: 'string',
+          const: 'Ready',
+        },
+      },
+    }),
+    [WSExecutorFirst.STATES.SOLVE]: ajv.compile({
+      type: 'object',
+      additionalProperties: false,
+      required: ['step', 'answer'],
+      properties: {
+        step: {
+          type: 'integer',
+          minimum: 1,
+        },
+        answer: {
+          enum: Object.keys(WSExecutorFirst.IDEAL_NUMBERS),
+        },
+      },
+    }),
+    [WSExecutorFirst.STATES.FINISH]: ajv.compile({
+      type: 'object',
+      additionalProperties: false,
+      required: ['message'],
+      properties: {
+        message: {
+          type: 'string',
+          const: 'Bye',
+        },
+      },
+    }),
+  };
 
   /**
    * Fisher–Yates shuffle.
@@ -152,6 +223,14 @@ class WSExecutorFirst extends WSExecutor {
       [result[i], result[j]] = [result[j], result[i]];
     }
     return result;
+  }
+
+  /**
+   * Apply Bernoulli noise to the value and return the new one.
+   */
+  static applyElementNoise(value, noiseLevel) {
+    /* eslint-disable-next-line no-bitwise */
+    return value ^ (Math.random() < noiseLevel);
   }
 
   constructor(data) {
@@ -176,19 +255,19 @@ class WSExecutorFirst extends WSExecutor {
   onMessage(message) {
     switch (this.state) {
       case WSExecutorFirst.STATES.START:
-        this.onStart(message);
+        this.onStart();
         break;
       case WSExecutorFirst.STATES.SETUP:
         this.onSetup(message);
         break;
       case WSExecutorFirst.STATES.READY:
-        this.onReady(message);
+        this.onReady();
         break;
       case WSExecutorFirst.STATES.SOLVE:
         this.onSolve(message);
         break;
       case WSExecutorFirst.STATES.FINISH:
-        this.onFinish(message);
+        this.onFinish();
         break;
       default:
         this.logger.alert(`Unknown state ${this.state}`);
@@ -197,92 +276,24 @@ class WSExecutorFirst extends WSExecutor {
     }
   }
 
-  onStart(message) {
-    if (message !== 'Let\'s start') {
-      this.send('Wrong initial message');
-      this.socket.close();
-      return;
-    }
+  onStart() {
     this.state = WSExecutorFirst.STATES.SETUP;
 
-    const width = WSExecutorFirst.BASIC_WIDTH;
-    const height = WSExecutorFirst.BASIC_HEIGHT;
-    const number = Object.keys(WSExecutorFirst.IDEAL_NUMBERS).length;
-
-    this.send(`${width} ${height} ${number}`);
+    this.sendMessage({
+      width: WSExecutorFirst.BASIC_WIDTH,
+      height: WSExecutorFirst.BASIC_HEIGHT,
+      number: Object.keys(WSExecutorFirst.IDEAL_NUMBERS).length,
+    });
   }
 
-  onSetup(message) {
-    const messageSplit = message.split(' ');
-    if (!/^[\da-zA-Z\-\. ]+$/.test(message)) {
-      const wrongSymbols = [...new Set(message.match(/[^\da-zA-Z\-\. ]/g))];
-      this.send(
-        `Your message contains not allowed symbols: ${
-          wrongSymbols.join(' ')
-        }. Check whether you message "${message}" meets the needs.`,
-      );
-      this.socket.close();
-      return;
-    }
-    if (
-      messageSplit.length !== 5
-    ) {
-      this.send('Wrong setup. '
-                + 'You should send 5 parameters separated by space.');
-      this.socket.close();
-      return;
-    }
-    if (!messageSplit.slice(0, 4).map(Number).reduce((acc, e) => acc && e >= 0)) {
-      this.send('Wrong setup. '
-                + 'The first four parameters should be nonnegative numbers.');
-      this.socket.close();
-      return;
-    }
-
-    [
-      this.horizontalScale,
-      this.verticalScale,
-      this.noiseLevel,
-      this.totalSteps,
-    ] = messageSplit.slice(0, 4).map(Number);
-
-    if (!['on', 'off'].includes(messageSplit[4].toLowerCase())) {
-      this.send('The fifth parameter (shuffle) should be either "on" or "off".');
-      this.socket.close();
-      return;
-    }
-    if (
-      !Number.isSafeInteger(this.horizontalScale)
-      || this.horizontalScale > WSExecutorFirst.MAX_HORIZONTAL_SCALE
-    ) {
-      this.send('Wrong width');
-      this.socket.close();
-      return;
-    }
-    if (
-      !Number.isSafeInteger(this.verticalScale)
-      || this.verticalScale > WSExecutorFirst.MAX_VERTICAL_SCALE
-    ) {
-      this.send('Wrong height');
-      this.socket.close();
-      return;
-    }
-    if (
-      !Number.isSafeInteger(this.totalSteps)
-      || this.totalSteps < 1
-      || this.totalSteps > WSExecutorFirst.MAX_TOTAL_STEPS
-    ) {
-      this.send('Wrong number of steps');
-      this.socket.close();
-      return;
-    }
-    if (this.noiseLevel < 0 || this.noiseLevel > 1) {
-      this.send('Wrong noise level');
-      this.socket.close();
-      return;
-    }
-
-    if (messageSplit[4].toLowerCase() === 'on') {
+  onSetup({
+    height,
+    width,
+    noise,
+    totalSteps,
+    shuffle,
+  }) {
+    if (shuffle) {
       const names = WSExecutorFirst.shuffle(Object.keys(WSExecutorFirst.IDEAL_NUMBERS));
       Object.keys(WSExecutorFirst.IDEAL_NUMBERS).forEach((key) => {
         this.remapping[key] = names.pop();
@@ -293,27 +304,27 @@ class WSExecutorFirst extends WSExecutor {
       });
     }
 
+    [
+      this.horizontalScale,
+      this.verticalScale,
+      this.noiseLevel,
+      this.totalSteps,
+    ] = [height, width, noise, totalSteps];
+
     this.state = WSExecutorFirst.STATES.READY;
 
-    const idealNumbersString = (
-      Object.keys(WSExecutorFirst.IDEAL_NUMBERS)
-        .map((k) => `${k}\n${WSExecutorFirst.matrix2string({
-          horizontalScale: this.horizontalScale,
-          matrix: WSExecutorFirst.IDEAL_NUMBERS[this.remapping[k]],
-          verticalScale: this.verticalScale,
-        })}`)
-        .join('\n')
-    );
+    const idealNumbers = {};
+    Object.keys(WSExecutorFirst.IDEAL_NUMBERS).forEach((key) => {
+      idealNumbers[key] = this.generateMatrix(
+        WSExecutorFirst.IDEAL_NUMBERS[this.remapping[key]],
+        0,
+      );
+    });
 
-    this.send(idealNumbersString);
+    this.sendMessage(idealNumbers);
   }
 
-  onReady(message) {
-    if (message !== 'Ready') {
-      this.send('Wrong message. You should say "Ready"! Try again.');
-      this.socket.close();
-      return;
-    }
+  onReady() {
     this.state = WSExecutorFirst.STATES.SOLVE;
 
     this.currentStep += 1;
@@ -324,20 +335,21 @@ class WSExecutorFirst extends WSExecutor {
     ];
     const matrix = this.generateMatrix(
       WSExecutorFirst.IDEAL_NUMBERS[this.remapping[this.currentSolution]],
+      this.noiseLevel,
     );
 
-    this.send(`${this.currentStep}\n${WSExecutorFirst.matrix2string({ matrix })}`);
+    this.sendMessage({
+      currentStep: this.currentStep,
+      matrix,
+    });
   }
 
-  onSolve(message) {
-    const [step, answer] = message.split(' ');
-    if (!Object.keys(WSExecutorFirst.IDEAL_NUMBERS).includes(answer)) {
-      this.send('Provided answer cannot be right');
-      this.socket.close();
-      return;
-    }
-    if (Number(step) !== this.currentStep) {
-      this.send(`Wrong step number. The current step is ${this.currentStep}.`);
+  onSolve({ step, answer }) {
+    if (step !== this.currentStep) {
+      this.sendErrors({
+        title: 'Wrong step number',
+        detail: `The current step is ${this.currentStep}`,
+      });
       this.socket.close();
       return;
     }
@@ -356,18 +368,16 @@ class WSExecutorFirst extends WSExecutor {
       this.successes += 1;
     }
 
-    this.send(`${this.currentStep} ${this.currentSolution}`);
+    this.sendMessage({
+      step: this.currentStep,
+      solution: this.currentSolution,
+    });
   }
 
-  onFinish(message) {
-    if (message !== 'Bye') {
-      this.send('You should have said "Bye"');
-      this.socket.close();
-      return;
-    }
-    this.send(
-      `Finish with ${this.successes} successes of ${this.totalSteps}`,
-    );
+  onFinish() {
+    this.sendMessage({
+      message: `Finish with ${this.successes} successes of ${this.totalSteps}`,
+    });
   }
 
   /**
@@ -379,7 +389,7 @@ class WSExecutorFirst extends WSExecutor {
    * Then, we add a noise to the matrix
    * by xoring each element with random values generated by Bernoulli law.
    */
-  generateMatrix(idealDigit) {
+  generateMatrix(idealDigit, noiseLevel) {
     const matrix = [];
 
     idealDigit.forEach((row, i) => {
@@ -388,7 +398,7 @@ class WSExecutorFirst extends WSExecutor {
         for (let j = 0; j < row.length; j += 1) {
           for (let w = 0; w < this.horizontalScale; w += 1) {
             matrix[i * this.verticalScale + h].push(
-              this.applyElementNoise(idealDigit[i][j]),
+              WSExecutorFirst.applyElementNoise(idealDigit[i][j], noiseLevel),
             );
           }
         }
@@ -398,12 +408,8 @@ class WSExecutorFirst extends WSExecutor {
     return matrix;
   }
 
-  /**
-   * Apply Bernoulli noise to the value and return the new one.
-   */
-  applyElementNoise(value) {
-    /* eslint-disable-next-line no-bitwise */
-    return value ^ (Math.random() < this.noiseLevel);
+  get schema() {
+    return WSExecutorFirst.VALIDATION_SCHEMAS[this.state];
   }
 }
 
