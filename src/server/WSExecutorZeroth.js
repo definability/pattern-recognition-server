@@ -21,8 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+const Ajv = require('ajv');
+
 const Logger = require('./Logger');
 const WSExecutor = require('./WSExecutor');
+
+const ajv = new Ajv({ allErrors: true });
 
 /**
  * Executor for the zeroth task.
@@ -45,6 +49,30 @@ class WSExecutorZeroth extends WSExecutor {
 
   static DEFAULT_TTL = WSExecutorZeroth.DEFAULT_TTL_SECONDS * 1E3;
 
+  static VALIDATION_SCHEMAS = {
+    [WSExecutorZeroth.STATES.START]: ajv.compile({
+      type: 'object',
+      additionalProperties: false,
+      required: ['message'],
+      properties: {
+        message: {
+          type: 'string',
+          const: 'Let\'s start',
+        },
+      },
+    }),
+    [WSExecutorZeroth.STATES.SOLVE]: ajv.compile({
+      type: 'object',
+      additionalProperties: false,
+      required: ['answer'],
+      properties: {
+        answer: {
+          type: 'integer',
+        },
+      },
+    }),
+  };
+
   constructor(data) {
     super({
       ...data,
@@ -52,14 +80,15 @@ class WSExecutorZeroth extends WSExecutor {
     });
 
     this.state = WSExecutorZeroth.STATES.START;
-    this.expression = null;
+    this.operands = null;
+    this.operator = null;
     this.logger.info('Zeroth executor created');
   }
 
   onMessage(message) {
     switch (this.state) {
       case WSExecutorZeroth.STATES.START:
-        this.onStart(message);
+        this.onStart();
         break;
       case WSExecutorZeroth.STATES.SOLVE:
         this.onSolve(message);
@@ -71,35 +100,38 @@ class WSExecutorZeroth extends WSExecutor {
     }
   }
 
-  onStart(message) {
-    if (message !== 'Let\'s start') {
-      this.send('Wrong initial message');
-      this.socket.close();
-      return;
-    }
-    this.expression = [
+  onStart() {
+    this.operands = [
       Math.round(Math.random() * 99 + 1),
-      Object.keys(WSExecutorZeroth.OPERATORS)[
-        Math.floor(Math.random()
-        * (Object.keys(WSExecutorZeroth.OPERATORS).length))
-      ],
       Math.round(Math.random() * 99 + 1),
     ];
+    this.operator = Object.keys(WSExecutorZeroth.OPERATORS)[
+      Math.floor(Math.random()
+      * (Object.keys(WSExecutorZeroth.OPERATORS).length))
+    ];
     this.state = WSExecutorZeroth.STATES.SOLVE;
-    this.send(`Solve ${this.expression.join(' ')}`);
+    this.sendMessage({
+      operands: this.operands,
+      operator: this.operator,
+    });
   }
 
-  onSolve(message) {
-    const solution = WSExecutorZeroth.OPERATORS[this.expression[1]](
-      this.expression[0],
-      this.expression[2],
-    );
-    if (Number(message) !== solution) {
-      this.send(`Wrong answer. The right one is ${solution}.`);
-      this.socket.close();
+  onSolve({ answer }) {
+    const solution = WSExecutorZeroth.OPERATORS[this.operator](...this.operands);
+    if (answer !== solution) {
+      this.sendErrors({
+        title: 'Wrong answer',
+        detail: `The right answer is ${solution}.`,
+      });
       return;
     }
-    this.send('Correct!');
+    this.sendMessage({
+      answer: 'Correct!',
+    });
+  }
+
+  get schema() {
+    return WSExecutorZeroth.VALIDATION_SCHEMAS[this.state];
   }
 }
 
