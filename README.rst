@@ -210,7 +210,7 @@ TTL: 5 minutes (300 seconds).
 
 - Receive a dictionary with digit names as keys and corresponding matrices as values in the form
 
-  .. code-block:: json
+  ::
 
     {
       "data": {
@@ -224,7 +224,7 @@ TTL: 5 minutes (300 seconds).
 
   and each matrix is a binary matrix of form
 
-  .. code-block:: json
+  ::
 
     [
       [d11, d12, ... d1n],
@@ -239,7 +239,7 @@ TTL: 5 minutes (300 seconds).
 - Send the message ``{ "data": { "message": "Ready" } }`` to start completing the task
 - Receive a problem in the form
 
-  .. code-block:: json
+  ::
 
     {
       "data": {
