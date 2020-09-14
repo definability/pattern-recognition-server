@@ -272,34 +272,39 @@ TTL: 5 minutes (300 seconds).
 
 - Create a session on the server under ``/second`` path
   (wss://sprs.herokuapp.com/second/[session-id])
-- Send ``Let's start with [width] [loss] [totalSteps] [repeats]``
+- Send ``{ "data": { "width": <width>, "loss": <loss>, "totalSteps": <totalSteps>, "repeats": <repeats> } }``
   message to the server, where
 
-  - ``[width]`` is an integer from ``2`` to ``1'000``,
+  - ``<width>`` is an integer from ``2`` to ``1'000``,
     meaning the number of bars in heatmaps,
-  - ``[loss]`` is either ``L1`` for distance as a loss
+  - ``<loss>`` is either ``"L1"`` for distance as a loss
     (distance is measured in heatmap bars),
     or a non-negative integer for delta loss.
     The integer is a radius of an allowed interval:
     zero means binary loss function,
     one means a current bar and its nearest neighbors,
     and so on;
-    must be lower than ``[width]``;
-  - ``[totalSteps]`` is an integer from ``1`` to ``1'000'000``,
+    must be lower than ``<width>``;
+  - ``<totalSteps]`` is an integer from ``1`` to ``1'000'000``,
     represents a number of heatmaps to deal with;
-  - ``[repeats]`` is an integer from ``1`` to ``1'000``,
+  - ``<repeats>`` is an integer from ``1`` to ``1'000``,
     representing the number of attempts per one heatmap.
 
-- Receive the string ``Are you ready?`` from the server,
-- Send the message ``Ready`` to start completing the task
+- Receive the string ``{ "data": { "message": "Are you ready?" }, "success": true }`` from the server,
+- Send the message ``{ "data": { "message": Ready } }`` to start completing the task
 - Receive a problem in the form
 
   ::
 
-    Heatmap [step]
-    heatmap
+    {
+      "data": {
+        "step": <step>,
+        "heatmap": [heatmap]
+      },
+      "success": true
+    }
 
-  where ``[step]`` is the number of the heatmap,
+  where ``<step>`` is the number of the heatmap,
   ``heatmap`` is an array of positive integers
   not greater than ``255``,
   and representing the heatmap without normalization.
@@ -307,11 +312,15 @@ TTL: 5 minutes (300 seconds).
 
   ::
 
-    [step]
-    guesses
+    {
+      "data": {
+        "step": <step>,
+        "guesses": [guesses]
+      }
+    }
 
-  where ``[step]`` is the heatmap number and ``guesses``
-  is an array of your guesses of size ``[repeats]`` in form
+  where ``<step>`` is the heatmap number and ``guesses``
+  is an array of your guesses of size ``<repeats>`` in form
   ``G1 G2 ... Grepeats``,
   where each ``Gi`` is a non-negative integer
   smaller than the heatmap size,
@@ -321,21 +330,27 @@ TTL: 5 minutes (300 seconds).
 
   ::
 
-    Solutions [step] [loss]
-    answers
-    guesses
-    heatmap
+    {
+      "data": {
+        step: <step>,
+        loss: <loss>,
+        solutions: [solutions],
+        guesses: [guesses],
+        heatmap: [heatmap]
+      }
+      "success": true
+    }
 
-  where ``answers`` is the array with the right answers
-  to the problem ``[step]``.
+  where ``solutions`` is the array with the right answers
+  to the problem ``<step>``.
   Web UI should show the animation here
   if you pause the application before going to the next step.
 - If there are more problems left to solve
-  (``[step]`` is less than ``[totalSteps]``),
-  send ``Ready`` again and receive a new problem.
-- Otherwise, send ``Bye``
-- Receive ``Finish with [loss]``,
-  where ``[loss]`` is the sum of all losses.
+  (``<step>`` is less than ``<totalSteps>``),
+  send ``{ "data": { "message": "Ready" } }`` again and receive a new problem.
+- Otherwise, send ``{ "data": { "message": "Bye" } }``
+- Receive ``{ "data": { "loss": <loss> } }``,
+  where ``<loss>`` is the sum of all losses.
 
 Normalized heatmap contains probabilities of an aim
 to be in specific positions.
