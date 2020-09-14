@@ -166,15 +166,15 @@ TTL: 1 minute (60 seconds).
 
 - Create a session on the server under ``/zeroth`` path
   (wss://sprs.herokuapp.com/zeroth/[session-id])
-- Send ``{ "message": "Let's start" }`` message to the server
+- Send ``{ "data": { "message": "Let's start" } }`` message to the server
 - Receive and parse a string from the server.
-  The format is ``{ "operands": [<operand1>, <operand2>], "operator": "<operand>" }``,
+  The format is ``{ "data": { "operands": [<operand1>, <operand2>], "operator": "<operand>" }, "success": true }``,
   where
 
   - ``<operand(1,2)>`` is an integer from ``1`` to ``100``;
   - ``<operator>`` is one of ``+``, ``-`` and ``*``.
 
-- Send the solution to the problem in format ``{ "answer": <answer> }``,
+- Send the solution to the problem in format ``{ "data": { "answer": <answer> } }``,
   where ``<answer>`` should be an integer.
 
 First
@@ -184,14 +184,14 @@ TTL: 5 minutes (300 seconds).
 
 - Create a session on the server under ``/first`` path
   (wss://sprs.herokuapp.com/first/[session-id])
-- Send ``{ "message": "Let's start" }`` message to the server
-- Receive a string ``{ "width": <width>, "height": <height>, "number": <number> }`` from the server,
+- Send ``{ "data": { "message": "Let's start"}  }`` message to the server
+- Receive a string ``{ "data": { "width": <width>, "height": <height>, "number": <number> }, "success": true }`` from the server,
   where ``<width>`` is a basic width (when the horizontal scale is ``1``)
   of images of a digit in pixels,
   ``<height>`` is a basic height (when the vertical is scale ``1``)
   and ``<number>`` is the total number of digits.
 - Send a message with settings to the server in the format
-  ``{ "width": <width>, "height": <height>, "totalSteps": <totalSteps>, "noise": <noise>, "shuffle": <shuffle> }``, where
+  ``{ "data": { "width": <width>, "height": <height>, "totalSteps": <totalSteps>, "noise": <noise>, "shuffle": <shuffle> } }``, where
 
   - ``<width>`` is an integer from ``1`` to ``100``
     for the horizontal scale of digits;
@@ -210,18 +210,21 @@ TTL: 5 minutes (300 seconds).
 
 - Receive a dictionary with digit names as keys and corresponding matrices as values in the form
 
-  ::
+  .. code-block:: json
 
     {
+      "data": {
         <digit1>: matrix1,
         <digit2>: matrix2,
         ...
         <digitN>: matrixN
+      },
+      "success": true
     }
 
   and each matrix is a binary matrix of form
 
-  ::
+  .. code-block:: json
 
     [
       [d11, d12, ... d1n],
@@ -233,30 +236,33 @@ TTL: 5 minutes (300 seconds).
   where ``dij`` is ``0`` or ``1`` value for ``i``-th row and ``j``-th column
   of the image, ``n`` its width (horizontal scale multiplied by the basic width)
   and ``m`` is its height (vertical scale multiplied by the basic height).
-- Send the message ``{ "message": "Ready" }`` to start completing the task
+- Send the message ``{ "data": { "message": "Ready" } }`` to start completing the task
 - Receive a problem in the form
 
-  ::
+  .. code-block:: json
 
     {
-      "currentStep": <step>,
-      "matrix": <matrix>
+      "data": {
+        "currentStep": <step>,
+        "matrix": <matrix>
+      },
+      "success": true
     }
 
   where ``<step>`` is the number of the problem,
   and ``<matrix>`` is a binary matrix representing the problem.
   Web UI can display this number
   if you pause the application before the next step.
-- Send the response in the form ``{ "step": <step>, "answer": <answer> }``,
+- Send the response in the form ``{ "data": { "step": <step>, "answer": <answer> } }``,
   where ``<step>`` is the problem number and ``<answer>``
   is your guess to the problem — a digit represented by the ``matrix``.
-- Receive a response in the form ``{ "step": <step>, "answer": <answer> }``,
+- Receive a response in the form ``{ "data": { "step": <step>, "answer": <answer> }, "success": true }``,
   where ``<answer>`` is the right answer to the problem ``<step>``.
 - If there are more problems left to solve
   (``<step>`` is less than ``<totalSteps>``),
-  send ``{ "message": "Ready" }`` again and receive a new problem.
-- Otherwise, send ``{ "message": "Bye" }``
-- Receive ``{ "successes": <successes>, "totalSteps": <totalSteps> }``,
+  send ``{ "data": { "message": "Ready" } }`` again and receive a new problem.
+- Otherwise, send ``{ "data": { "message": "Bye" } }``
+- Receive ``{ "data": { "successes": <successes>, "totalSteps": <totalSteps> }, "success": true }``,
   where ``<successes>`` is the number of success guesses.
 
 Second
