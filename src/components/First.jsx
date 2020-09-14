@@ -145,12 +145,17 @@ class First extends Component {
     };
   }
 
-  onServerMessage(message) {
-    const [step, ...matrixString] = message.split('\n');
-    if (!Number.isSafeInteger(Number(step)) || !matrixString.length) {
+  onServerMessage({ data }) {
+    if (!data) {
       return;
     }
-    const matrix = matrixString.map((row) => row.split(' ').map(Number));
+
+    const { matrix } = data;
+
+    if (!matrix) {
+      return;
+    }
+
     const width = matrix[0].length;
     if (!matrix.reduce((acc, row) => (
       acc
@@ -218,7 +223,11 @@ class First extends Component {
         data: data.length < 30 ? data : '[hidden message]',
       };
       if (author === 'Server') {
-        this.onServerMessage(data);
+        try {
+          this.onServerMessage(JSON.parse(data));
+        } catch (e) {
+          this.onServerMessage(data);
+        }
       }
       this.setState((previousState) => ({
         ...previousState,
