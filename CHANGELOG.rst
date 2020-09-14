@@ -16,7 +16,12 @@ Unreleased_
 Added
 -----
 
-- Server-side support of JSON messages.
+- Server-side support of `JSON`_ messages.
+
+Changed
+-----
+
+- Using only the `JSON`_ format for all tasks.
 
 `0.1.1`_ - 2020-08-23
 =====================
@@ -147,6 +152,8 @@ Added
 .. _Semantic Versioning:
     http://semver.org/spec/v2.0.0
 
+.. _JSON:
+    https://www.json.org
 .. _README:
     https://github.com/char-lie/pattern-recognition-server/blob/master/README.rst
 .. _React Bootstrap:
