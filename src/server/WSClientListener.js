@@ -139,11 +139,13 @@ class WSClientListener {
 
     if (!WSClientListener.SCHEMA(parsedMessage)) {
       this.sendErrors(WSClientListener.SCHEMA.errors);
+      this.socket.close();
       return undefined;
     }
 
     if (!this.schema(parsedMessage.data)) {
       this.sendErrors(this.schema.errors);
+      this.socket.close();
       return undefined;
     }
 
