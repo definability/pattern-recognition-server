@@ -103,41 +103,39 @@ class Second extends Component {
     };
   }
 
-  async onServerMessage(message) {
-    const [
-      stepInformation,
-      solutionsString,
-      guessesString,
-      heatmapString,
-      ...tail
-    ] = message.split('\n');
-    const [type, step, loss] = stepInformation.split(' ');
+  async onServerMessage({ data }) {
+    if (!data) {
+      return;
+    }
+
+    const {
+      step,
+      loss,
+      solutions,
+      guesses,
+      heatmap,
+    } = data;
     if (
-      !Number.isSafeInteger(Number(step))
-      || type !== 'Solutions'
-      || (loss !== 'L1' && !Number.isSafeInteger(Number(loss)))
-      || !solutionsString
-      || !guessesString
-      || !heatmapString
-      || tail.length
+      !Number.isSafeInteger(step)
+      || (loss !== 'L1' && !Number.isSafeInteger(loss))
+      || !solutions
+      || !guesses
+      || !heatmap
     ) {
       return;
     }
-    const solutions = solutionsString.split(' ').map(Number);
     if (
       !solutions.length
       || !solutions.reduce((acc, e) => acc && Number.isSafeInteger(e), true)
     ) {
       return;
     }
-    const guesses = guessesString.split(' ').map(Number);
     if (
       !guesses.length
       || !guesses.reduce((acc, e) => acc && Number.isSafeInteger(e), true)
     ) {
       return;
     }
-    const heatmap = heatmapString.split(' ').map(Number);
     if (
       !heatmap.length
       || !heatmap.reduce((acc, e) => acc && Number.isSafeInteger(e), true)
@@ -289,7 +287,11 @@ class Second extends Component {
         data: data.length < 30 ? data : '[hidden message]',
       };
       if (author === 'Server') {
-        this.onServerMessage(data);
+        try {
+          this.onServerMessage(JSON.parse(data));
+        } catch (e) {
+          this.onServerMessage(data);
+        }
       }
       this.setState((previousState) => ({
         ...previousState,

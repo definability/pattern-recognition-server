@@ -21,8 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+const Ajv = require('ajv');
+
 const Logger = require('./Logger');
 const WSExecutor = require('./WSExecutor');
+
+const ajv = new Ajv({ allErrors: true, $data: true });
 
 /**
  * Executor for the second task.
@@ -61,6 +65,85 @@ class WSExecutorSecond extends WSExecutor {
 
   static L1_LOSS_NAME = 'L1';
 
+  static VALIDATION_SCHEMAS = {
+    [WSExecutorSecond.STATES.START]: ajv.compile({
+      type: 'object',
+      additionalProperties: false,
+      required: ['width', 'loss', 'totalSteps', 'repeats'],
+      properties: {
+        width: {
+          type: 'integer',
+          minimum: 1,
+          maximum: WSExecutorSecond.MAX_BARS_NUMBER,
+        },
+        loss: {
+          oneOf: [{
+            type: 'integer',
+            minimum: 0,
+            maximum: {
+              $data: '1/width',
+            },
+          }, {
+            const: WSExecutorSecond.L1_LOSS_NAME,
+          }],
+        },
+        totalSteps: {
+          type: 'integer',
+          minimum: 1,
+          maximum: WSExecutorSecond.MAX_TOTAL_STEPS,
+        },
+        repeats: {
+          type: 'integer',
+          minimum: 1,
+          maximum: WSExecutorSecond.MAX_REPEATS,
+        },
+      },
+    }),
+    [WSExecutorSecond.STATES.READY]: ajv.compile({
+      type: 'object',
+      additionalProperties: false,
+      required: ['message'],
+      properties: {
+        message: {
+          type: 'string',
+          const: 'Ready',
+        },
+      },
+    }),
+    [WSExecutorSecond.STATES.SOLVE]: ajv.compile({
+      type: 'object',
+      additionalProperties: false,
+      required: ['step', 'guesses'],
+      properties: {
+        step: {
+          type: 'integer',
+          minimum: 1,
+        },
+        guesses: {
+          type: 'array',
+          minItems: 1,
+          items: {
+            type: 'integer',
+          },
+          additionalItems: {
+            type: 'integer',
+          },
+        },
+      },
+    }),
+    [WSExecutorSecond.STATES.FINISH]: ajv.compile({
+      type: 'object',
+      additionalProperties: false,
+      required: ['message'],
+      properties: {
+        message: {
+          type: 'string',
+          const: 'Bye',
+        },
+      },
+    }),
+  };
+
   constructor(data) {
     super({
       ...data,
@@ -86,13 +169,13 @@ class WSExecutorSecond extends WSExecutor {
         this.onStart(message);
         break;
       case WSExecutorSecond.STATES.READY:
-        this.onReady(message);
+        this.onReady();
         break;
       case WSExecutorSecond.STATES.SOLVE:
         this.onSolve(message);
         break;
       case WSExecutorSecond.STATES.FINISH:
-        this.onFinish(message);
+        this.onFinish();
         break;
       default:
         this.logger.alert(`Unknown state ${this.state}`);
@@ -101,112 +184,63 @@ class WSExecutorSecond extends WSExecutor {
     }
   }
 
-  onStart(message) {
-    if (!message.startsWith('Let\'s start with ')) {
-      this.send('You should send a correct starting message');
-      this.socket.close();
-      return;
-    }
-    const [barsNumber, lossName, totalSteps, repeats, ...tail] = (
-      message.slice('Let\'s start with '.length).split(' ')
-    );
+  onStart({
+    width,
+    loss,
+    totalSteps,
+    repeats,
+  }) {
+    [
+      this.barsNumber,
+      this.lossName,
+      this.totalSteps,
+      this.repeats,
+    ] = [width, loss, totalSteps, repeats];
 
-    if (tail.length) {
-      this.send('Redundant arguments');
-      this.socket.close();
-      return;
-    }
-
-    if (
-      !Number.isSafeInteger(Number(barsNumber))
-      || Number(barsNumber) < 1
-      || Number(barsNumber) > WSExecutorSecond.MAX_BARS_NUMBER
-    ) {
-      this.send('Incorrect number of bars');
-      this.socket.close();
-      return;
-    }
-    this.barsNumber = Number(barsNumber);
-
-    if (
-      lossName !== WSExecutorSecond.L1_LOSS_NAME
-      && !Number.isSafeInteger(Number(lossName))
-    ) {
-      this.send('Unknown loss');
-      this.socket.close();
-      return;
-    }
-    if (
-      Number.isSafeInteger(Number(lossName))
-      && (Number(lossName) < 0 || Number(lossName) >= this.barsNumber)
-    ) {
-      this.send('Incorrect loss delta');
-      this.socket.close();
-      return;
-    }
-    this.lossName = lossName;
-    this.loss = WSExecutorSecond.LOSS_FUNCTION(lossName);
-
-    if (
-      !Number.isSafeInteger(Number(totalSteps))
-      || Number(totalSteps) < 1
-      || Number(totalSteps) > WSExecutorSecond.MAX_TOTAL_STEPS
-    ) {
-      this.send('Incorrect total steps');
-      this.socket.close();
-      return;
-    }
-    this.totalSteps = Number(totalSteps);
-
-    if (
-      !Number.isSafeInteger(Number(repeats))
-      || Number(repeats) < 1
-      || Number(repeats) > WSExecutorSecond.MAX_REPEATS
-    ) {
-      this.send('Incorrect repeats number');
-      this.socket.close();
-      return;
-    }
-    this.repeats = Number(repeats);
+    this.loss = WSExecutorSecond.LOSS_FUNCTION(this.lossName);
 
     this.state = WSExecutorSecond.STATES.READY;
 
-    this.send('Are you ready?');
+    this.sendMessage({
+      message: 'Are you ready?',
+    });
   }
 
-  onReady(message) {
-    if (message !== 'Ready') {
-      this.send('You should be "Ready"');
-      this.socket.close();
-      return;
-    }
+  onReady() {
     this.state = WSExecutorSecond.STATES.SOLVE;
 
     this.currentStep += 1;
     this.currentHistorgram = this.generateHeatmap();
 
-    this.send(`Heatmap ${this.currentStep}\n${this.currentHistorgram.join(' ')}`);
+    this.sendMessage({
+      step: this.currentStep,
+      heatmap: this.currentHistorgram,
+    });
   }
 
-  onSolve(message) {
-    const [step, guessesString] = message.split('\n');
-    if (!guessesString || !guessesString.length) {
-      this.send('No guesses');
+  onSolve({ step, guesses }) {
+    if (guesses.length !== this.repeats) {
+      this.sendErrors({
+        title: 'Provided guess cannot be right',
+        detail: `The number of guesses should be ${this.repeats}`,
+      });
       this.socket.close();
       return;
     }
-
-    const guesses = guessesString.split(' ').map(Number);
-    if (
-      !guesses.reduce((acc, e) => acc && this.isValidGuess(e), true)
-      || guesses.length !== this.repeats
-    ) {
-      this.send('Provided guess cannot be right');
+    if (!guesses.reduce((acc, e) => acc && this.isValidGuess(e), true)) {
+      this.sendErrors({
+        title: 'Provided guess cannot be right',
+        detail: 'One or more guesses is less than 0 '
+              + `or greater than ${this.currentHistorgram.length}`,
+      });
       this.socket.close();
       return;
     }
-    if (Number(step) !== this.currentStep) {
-      this.send('Wrong step number');
+    if (step !== this.currentStep) {
+      this.sendErrors({
+        title: 'Wrong step number',
+        detail: `The current step is ${this.currentStep}`,
+      });
       this.socket.close();
       return;
     }
@@ -227,24 +261,19 @@ class WSExecutorSecond extends WSExecutor {
       this.totalLoss,
     );
 
-    const information = `Solutions ${this.currentStep} ${this.lossName}`;
-    const solutionsString = solutions.join(' ');
-    const heatmapString = this.currentHistorgram.join(' ');
-
-    this.send(
-      `${information}\n${solutionsString}\n${guessesString}\n${heatmapString}`,
-    );
+    this.sendMessage({
+      step: this.currentStep,
+      loss: this.lossName,
+      solutions,
+      guesses,
+      heatmap: this.currentHistorgram,
+    });
   }
 
-  onFinish(message) {
-    if (message !== 'Bye') {
-      this.send('You should have said "Bye"');
-      this.socket.close();
-      return;
-    }
-    this.send(
-      `Finish with ${this.totalLoss}`,
-    );
+  onFinish() {
+    this.sendMessage({
+      loss: this.totalLoss,
+    });
   }
 
   isValidGuess(guess) {
@@ -292,6 +321,10 @@ class WSExecutorSecond extends WSExecutor {
       return cumulative.findIndex((element) => element >= value);
     });
     return result;
+  }
+
+  get schema() {
+    return WSExecutorSecond.VALIDATION_SCHEMAS[this.state];
   }
 }
 
