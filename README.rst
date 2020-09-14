@@ -59,20 +59,11 @@ Environment variables
 Tasks
 =====
 
-Common recommendations
-----------------------
-
-- Use only space symbol (``0x20``, the 32nd symbol of ASCII table)
-  for horizontal spacing.
-- Use only ``\n`` (``0x0A``, the 10th symbol of ASCII table)
-  for vertical spacing.
-- The tasks don't allow leading, trailing and repeated whitespaces.
-
 Completing the tasks
 --------------------
 
-- You should create your own application.
-- The application creates a WebSocket client
+- You should create your own application to automatically solve the tasks.
+- Your application should create a WebSocket client
   and connects to the WebSocket server.
   Read `Awesome WebSockets`_ for more information.
 - The address to connect is
@@ -84,10 +75,13 @@ Completing the tasks
   which should be a valid URI segment
   (for example, a number, word, words separated by ``-`` or ``_``, etc.).
 
-**Tip**
-Use ``wss://echo.websocket.org`` and ``ws://echo.websocket.org``
-to learn how to connect to WebSocket server
-and check how your messages look like.
+Tips
+----
+
+- Use ``wss://echo.websocket.org`` and ``ws://echo.websocket.org``
+  to learn how to connect to WebSocket server
+  and check how your messages look like.
+- Meet the `JSON`_ format to understand more.
 
 Using Web UI
 ------------
@@ -363,6 +357,8 @@ Right answers (aim coordinates) are generated according to the heatmap.
     https://github.com/facundofarias/awesome-websockets#awesome-websockets-
 .. _free dyno hours:
     https://devcenter.heroku.com/articles/free-dyno-hours
+.. _JSON:
+    https://www.json.org
 .. _nvm:
     https://github.com/nvm-sh/nvm
 .. _NodeJS:
