@@ -83,8 +83,15 @@ class WSClientListener {
   validateSchema() {
   }
 
+  /**
+   * Terminate socket in order to avoid an error
+   * when a client ignores the close request
+   * and sends a message.
+   * The server may try to remove it from the pool
+   * but this causes an error.
+   */
   close() {
-    this.socket.close();
+    this.socket.terminate();
   }
 
   _registerListeners(socket) {
@@ -139,11 +146,13 @@ class WSClientListener {
 
     if (!WSClientListener.SCHEMA(parsedMessage)) {
       this.sendErrors(WSClientListener.SCHEMA.errors);
+      this.socket.close();
       return undefined;
     }
 
     if (!this.schema(parsedMessage.data)) {
       this.sendErrors(this.schema.errors);
+      this.socket.close();
       return undefined;
     }
 
