@@ -18,6 +18,11 @@ Added
 
 - Server-side support of JSON messages.
 
+Fixed
+-----
+
+- Observer should not cause server failure by ignoring the socket close.
+
 `0.1.1`_ - 2020-08-23
 =====================
 
