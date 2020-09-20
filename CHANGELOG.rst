@@ -13,6 +13,11 @@ and this project adheres to `Semantic Versioning`_.
 Unreleased_
 ===========
 
+Fixed
+-----
+
+- Build failed with new ``autoprefixer`` (version ``10``).
+
 `0.2.0`_ - 2020-09-19
 =====================
 
