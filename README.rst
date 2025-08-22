@@ -2,6 +2,8 @@
 Pattern Recognition Server
 ==========================
 
+The project is not hosted now, so I decided to archive it. Maybe forever.
+
 .. image:: https://travis-ci.org/char-lie/pattern-recognition-server.svg?branch=master
     :target: https://travis-ci.org/char-lie/pattern-recognition-server
 
